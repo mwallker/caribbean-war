@@ -11,12 +11,13 @@ function Connector() {
 	var host2 = "ws://warm-crag-3328.herokuapp.com/ws";
 
 	//Open WebSocket connection
-	this.wsOpen = function(){
+	this.wsOpen = function(request){
   		if(!ws){
   			ws = new WebSocket(local);
 			
 			ws.onopen = function(event){
 				console.log("Connected to server");
+				ws.send(request);
 			};
 
 			ws.onmessage = function (event) {

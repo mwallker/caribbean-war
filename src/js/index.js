@@ -14,9 +14,7 @@ function auth(credits){
       password:CryptoJS.SHA256(credits.password).toString()
     }
   });
-  conn.wsOpen();
-  console.log(request);
-  conn.wsSend(request);
+  conn.wsOpen(request);
 }
 
 function handle(data){
