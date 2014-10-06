@@ -7,13 +7,13 @@ function Connector() {
 
 	var ws = false;
 	var local = "ws://localhost:5000/";
-	var host = "ws://safe-bayou-1072.herokuapp.com/";
-	var host2 = "ws://warm-crag-3328.herokuapp.com/ws";
+	//var host = "ws://safe-bayou-1072.herokuapp.com/";
+	//var host2 = "ws://warm-crag-3328.herokuapp.com/ws";
 
 	//Open WebSocket connection
 	this.wsOpen = function(request){
   		if(!ws){
-  			ws = new WebSocket(local);
+  			ws = new WebSocket(host2);
 			
 			ws.onopen = function(event){
 				console.log("Connected to server");
