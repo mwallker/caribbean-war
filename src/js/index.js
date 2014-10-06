@@ -6,35 +6,30 @@ var userInfo = {
 
 var conn = new Connector();
 
-function connect(){
-  console.log("Trying to connect...");
-  conn.wsOpen();
-}
-
-function closer(){
-  console.log("Trying to close...");
-  conn.wsClose();
-}
-
-function auth(){
-  var responce = {
+function auth(credits){
+  var request = JSON.stringify({
     action:"auth",
     details:{
-      login:"mwallker@mail.com",
-      password:CryptoJS.SHA256("12345678").toString()
+      login:credits.login||"",
+      password:CryptoJS.SHA256(credits.password).toString()
     }
-  }
-  conn.wsSend(JSON.stringify(responce));
+  });
+  conn.wsOpen();
+  console.log(request);
+  conn.wsSend(request);
 }
 
 function handle(data){
   if(data.action == "auth"){ 
-    id = data.details.id;
+    if(data.details!={}){
+    	userInfo.id = data.details.id;
+    	userInfo.name = data.details.name;
+    	console.log(userInfo);
+    }
+    else{
+    	conn.wsClose();
+    }
   }
-  if(data.action == "chat"){
-    var li = document.createElement('li');
-    li.innerHTML = data.details.sender + ":" + data.details.body;
-    document.querySelector('#pings').appendChild(li);
-  }  
-}
-        
+}     
+
+
