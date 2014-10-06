@@ -8,19 +8,13 @@
 
 </head>
 <body>  
-  <div class="debug-pannel">
-      <div onclick="connect()">Connect</div>
-      <div onclick="closer()">Close</div>
-      <div onclick="auth()">Login as</div>
+  <div>
+    <form class="auth-form" accept-charset="utf-8">
+      <span>Email: </span><input type="text" name="login-input">
+      <span>Password: </span><input type="password" name="password-input">
+      <input type="submit" value="Enter">   
+    </form>
   </div>
-
-  <form class="auth-form" accept-charset="utf-8">
-    <span>Email: </span><input type="text" name="login-input">
-    <span>Password: </span><input type="password" name="password-input">
-    <input type="submit" value="Enter">   
-  </form>
-
-  <canvas id="renderCanvas"></canvas>
 
   <!--- JS files-->
   <script src="./js/libs/jquery.min.js" type="text/javascript" charset="utf-8"></script>
