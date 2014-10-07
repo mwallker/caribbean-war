@@ -1,15 +1,17 @@
 $(".auth-form").on("submit", function(event){
 	event.preventDefault();
-	auth({
+	authorize({
 		login: $('[name="login-input"]').val()||"",
 		password: $('[name="password-input"]').val()||""
 	});
 });
 
-$("body,html").on("auth-succeed", function(event){
-	//Убираем форму, выводим инфу о человеке, меняем фон, инфо лежит в обьекте userInfo, рисуем окно чата
+$(".auth-form").on("auth-succeed", function(event){
+	//Убираем форму, выводим инфу о человеке, инфо лежит в обьекте userInfo, меняем фон, pисуем окно чата
+	console.log("Succeed");
 });
 
-$("body,html").on("auth-fail", function(event){
+$(".auth-form").on("auth-fail", function(event){
 	//Выводим окошко с инфой, почему авторизация не удалась (инфа будет в event.info)
+	console.log("Fail");
 });

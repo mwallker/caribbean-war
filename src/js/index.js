@@ -5,26 +5,30 @@ var userInfo = {
 	id:false,
 	name:false,
 	cash:false,
-	ship:{
+	ship:[]
+}
 
+var conn = new Connector();
+
+function authorize(credits){
+	//Simpe validation
+	if(credits.login && credits.password){
+		credits.password = CryptoJS.SHA256(credits.password).toString();
+		conn.wsOpen(envelopeRequest("auth",credits));
+	}
+	else{
+		$(".auth-form").trigger({
+			type:"auth-fail",
+			info:"Empty email or password"
+		});
 	}
 }
 
-// +----------------------+
-// | INPUT EVENTS HANDLE: |
-// +----------------------+
-var conn = new Connector();
-
-function auth(credits){
-	var request = JSON.stringify({
-		action:"auth",
-		details:{
-			login:credits.login||"",
-			password:CryptoJS.SHA256(credits.password).toString()
-    	}
+function envelopeRequest(header, body){
+	return JSON.stringify({
+		action:header,
+		details:body
   	});
-  	console.log("Open with param: "+request);
-	conn.wsOpen(request);
 }
 
 
@@ -49,9 +53,16 @@ $("body, html").on("auth", function(event){
     	userInfo.name = data.details["Email"];
     	userInfo.cash = data.details["Cash"];
     	console.log(userInfo);
+    	$(".auth-form").trigger({
+    		type:"auth-succeed"
+    	});
     }
     else{
-    	conn.wsClose();
+    	$(".auth-form").trigger({
+			type:"auth-fail",
+			info:"No user found"
+		});
+		conn.wsClose();
     }
 });
 

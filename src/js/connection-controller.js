@@ -23,7 +23,7 @@ function Connector() {
 			ws.onmessage = function (event) {
 				try{
 	    			var data = JSON.parse(event.data);
-	  				if(handle) handle(data);
+	  				handle(data);
 				}catch(e){
 					console.log(e);
 				}
