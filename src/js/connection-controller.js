@@ -8,7 +8,7 @@ function Connector() {
 	var ws = false;
 	var local = "ws://localhost:5000/";
 	//var host = "ws://safe-bayou-1072.herokuapp.com/";
-	//var host2 = "ws://warm-crag-3328.herokuapp.com/ws";
+	var host2 = "ws://warm-crag-3328.herokuapp.com/ws";
 
 	//Open WebSocket connection
 	this.wsOpen = function(request){
@@ -30,9 +30,9 @@ function Connector() {
 				}
 			};
 
-			ws.onclose = function(){
+			ws.onclose = function(event){
 				ws = false;
-				console.log("Connection closed");
+				console.log(event);
 			};
 
 			ws.onerror = function(){
@@ -54,6 +54,7 @@ function Connector() {
 	this.wsSend = function(data) {
 		if(ws){
 			ws.send(data);
+			console.log("Send: "+data);
 		}
 		else{
 			return false;
