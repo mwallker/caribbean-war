@@ -19,11 +19,12 @@ function auth(credits){
 }
 
 function handle(data){
-	console.log("Incomming datas: "+data);
+	console.log(data);
 	if(data.action == "auth"){ 
-		if(data.details!={}){
-			userInfo.id = data.details.id;
-    		userInfo.name = data.details.name;
+		if(data.details!="{}"){
+			userInfo.id = data.details["ID"];
+    		userInfo.name = data.details["Email"];
+    		userInfo.cash = data.details["Cash"];
     		console.log(userInfo);
     	}
     	else{

@@ -19,4 +19,11 @@ body div form {
   left: 25%;
   width: 200px;
 }
+div #chat-container {
+  position: absolute;
+  width: 20%;
+  height: 20%;
+  background: #FF8000;
+  z-index: 3;
+}
 /*canvas properties*/
