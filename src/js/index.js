@@ -25,7 +25,7 @@ function authorize(credits){
 
 function sendChatMessage(message){
 	if(userInfo.id){
-		conn.wsSend(envelopeRequest("chat",message);
+		conn.wsSend(envelopeRequest("chat", message));
 	}
 }
 
