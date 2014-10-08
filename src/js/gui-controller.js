@@ -31,8 +31,8 @@ $("#chat-layout form").on("submit", function(event){
 
 $("#chat-layout").on("incoming", function(event){
 	var ms = template.clone();
-	ms.find("sender").text(event.info.sender);
-	ms.find("message").text(event.info.message);
+	ms.find(".sender").text(event.info.sender);
+	ms.find(".message").text(event.info.message);
 	ms.show();
-	$("#chat-layout section").append(m);
+	$("#chat-layout section").append(ms);
 });

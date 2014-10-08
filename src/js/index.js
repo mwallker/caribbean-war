@@ -75,7 +75,7 @@ $("body").on("auth", function(event){
 $("body").on("chat", function(event){
 	if(userInfo.id){
 		$("#chat-layout").trigger({
-			type:"incomming",
+			type:"incoming",
 			info:event.details
 		});
 	}	
