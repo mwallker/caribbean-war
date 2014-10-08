@@ -20,14 +20,16 @@ $("#lobby-layout").on("load-lobby", function(event){
 
 //CHAT GUI CONTROL
 var template = $(".message-template").clone();
-var chat = $("#chat-layout");
-var inputForm = $("#chat-layout form");
-var history = $(".chat-history");
+var chatLayout = $("#chat-layout");
+var chatLayoutForm = $("#chat-layout form");
+var chatHistory = $(".chat-history");
 var chatInput = $('[name="chat-input"]');
 
 
 chatLayoutForm.on("submit", function(event){
 	event.preventDefault();
+	//chatLayoutForm.reset();
+	chatHistory[0].scrollTop = chatHistory[0].scrollHeight;
 	sendChatMessage({
 		sender:userInfo.nickname,
 		message:chatInput.val()
@@ -39,5 +41,5 @@ chatLayout.on("incoming", function(event){
 	ms.find(".sender").text(event.info.sender);
 	ms.find(".message").text(event.info.message);
 	ms.show();
-	$("#chat-layout section").append(ms);
+	chatHistory.append(ms);
 });

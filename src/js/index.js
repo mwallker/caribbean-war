@@ -7,10 +7,13 @@ var userInfo = {
 	ship:[]
 }
 
+
+
 function authorize(credits){
 	//Simpe validation
 	if(credits.login && credits.password){
 		credits.password = CryptoJS.SHA256(credits.password).toString();
+		console.log(envelopeRequest("auth",credits));
 		Connector.wsOpen(envelopeRequest("auth",credits));
 	}
 	else{

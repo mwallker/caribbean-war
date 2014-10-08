@@ -26,11 +26,12 @@ body {
   background: #FF8000;
   z-index: 3;
 }
-#chat-layout section {
+#chat-layout div.chat-history {
   background: #C0C0C0;
   height: 90%;
   width: 99%;
   margin: 1px auto;
+  overflow-y: scroll;
 }
 #chat-layout form {
   position: relative;
