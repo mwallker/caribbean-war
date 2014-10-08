@@ -2,15 +2,13 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title></title>
   <link rel="stylesheet" href="./css/style.css">
-
 </head>
 <body>
 
   <div id="login-layout">
-    <form accept-charset="utf-8">
+    <form>
       <span>Email: </span><input type="text" name="login-input">
       <span>Password: </span><input type="password" name="password-input">
       <input type="submit" value="Enter">   
@@ -22,11 +20,11 @@
   </div>
 
   <div id="chat-layout"> 
-    <section>
-      <article hidden="true">
+    <div class="chat-history">
+      <div class="message-template" hidden="true">
         <span class="sender"></span>:<span class="message"></span>
-      </article>
-    </section>
+      </div>
+    </div>
     <form>
       <input type="text" name="chat-input">
     </form>

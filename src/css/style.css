@@ -4,7 +4,7 @@ body {
   background-size: 100%;
   position: relative;
 }
-div#login-layout {
+#login-layout {
   position: fixed;
   top: 20%;
   left: 40%;
@@ -13,29 +13,29 @@ div#login-layout {
   background: url('../images/popupBg.png') no-repeat center center;
   background-size: 100%;
 }
-div#login-layout form {
+#login-layout form {
   position: absolute;
   top: 35%;
   left: 25%;
   width: 200px;
 }
-div#chat-layout {
+#chat-layout {
   position: absolute;
   width: 280px;
   height: 200px;
   background: #FF8000;
   z-index: 3;
 }
-div#chat-layout section {
+#chat-layout section {
   background: #C0C0C0;
   height: 90%;
   width: 99%;
   margin: 1px auto;
 }
-div#chat-layout form {
+#chat-layout form {
   position: relative;
 }
-div#chat-layout form input {
+#chat-layout form input {
   width: 97%px;
   position-top: 100px;
 }

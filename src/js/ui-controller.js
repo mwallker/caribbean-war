@@ -19,17 +19,22 @@ $("#lobby-layout").on("load-lobby", function(event){
 });
 
 //CHAT GUI CONTROL
-var template = $("#chat-layout section article").clone();
+var template = $(".message-template").clone();
+var chat = $("#chat-layout");
+var inputForm = $("#chat-layout form");
+var history = $(".chat-history");
+var chatInput = $('[name="chat-input"]');
 
-$("#chat-layout form").on("submit", function(event){
+
+chatLayoutForm.on("submit", function(event){
 	event.preventDefault();
 	sendChatMessage({
 		sender:userInfo.nickname,
-		message:$('[name="chat-input"]').val()
+		message:chatInput.val()
 	});
 });
 
-$("#chat-layout").on("incoming", function(event){
+chatLayout.on("incoming", function(event){
 	var ms = template.clone();
 	ms.find(".sender").text(event.info.sender);
 	ms.find(".message").text(event.info.message);
