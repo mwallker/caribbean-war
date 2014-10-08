@@ -1,7 +1,7 @@
 // USER DATAS
 var userInfo = {
 	id:false,
-	name:false,
+	nickname:false,
 	email:false,
 	cash:false,
 	ship:[]
@@ -55,6 +55,7 @@ $("body").on("auth", function(event){
 	if(event.details!="{}"){
 		userInfo.id = event.details["ID"];
     	userInfo.name = event.details["Email"];
+    	userInfo.nickname = event.details["Nick"];
     	userInfo.cash = event.details["Cash"];
     	console.log(userInfo);
     	$("#lobby-layout").trigger({

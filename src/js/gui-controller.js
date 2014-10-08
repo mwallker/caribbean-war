@@ -24,7 +24,7 @@ var template = $("#chat-layout section article").clone();
 $("#chat-layout form").on("submit", function(event){
 	event.preventDefault();
 	sendChatMessage({
-		sender:userInfo.name,
+		sender:userInfo.nickname,
 		message:$('[name="chat-input"]').val()
 	});
 });
