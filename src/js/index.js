@@ -7,13 +7,11 @@ var userInfo = {
 	ship:[]
 }
 
-var conn = new Connector();
-
 function authorize(credits){
 	//Simpe validation
 	if(credits.login && credits.password){
 		credits.password = CryptoJS.SHA256(credits.password).toString();
-		conn.wsOpen(envelopeRequest("auth",credits));
+		Connector.wsOpen(envelopeRequest("auth",credits));
 	}
 	else{
 		$("#login-layout").trigger({
@@ -25,7 +23,7 @@ function authorize(credits){
 
 function sendChatMessage(message){
 	if(userInfo.id){
-		conn.wsSend(envelopeRequest("chat", message));
+		Connector.wsSend(envelopeRequest("chat", message));
 	}
 }
 
@@ -67,7 +65,7 @@ $("body").on("auth", function(event){
 			type:"auth-fail",
 			info:"No user found"
 		});
-		conn.wsClose();
+		Connector.wsClose();
     }
 });
 
