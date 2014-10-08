@@ -48,10 +48,10 @@ function handle(data){
 
 $("body, html").on("auth", function(event){
 	console.log(event.details);
-	if(data.details!="{}"){
-		userInfo.id = data.details["ID"];
-    	userInfo.name = data.details["Email"];
-    	userInfo.cash = data.details["Cash"];
+	if(event.details!="{}"){
+		userInfo.id = event.details["ID"];
+    	userInfo.name = event.details["Email"];
+    	userInfo.cash = event.details["Cash"];
     	console.log(userInfo);
     	$(".auth-form").trigger({
     		type:"auth-succeed"
