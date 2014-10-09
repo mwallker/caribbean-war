@@ -1,6 +1,5 @@
 /*common properties*/
 body {
-  background-image: url('../images/loginPageBg.jpg');
   background-size: 100%;
   position: relative;
 }
@@ -10,7 +9,6 @@ body {
   left: 40%;
   width: 400px;
   height: 400px;
-  background: url('../images/popupBg.png') no-repeat center center;
   background-size: 100%;
 }
 #login-layer form {

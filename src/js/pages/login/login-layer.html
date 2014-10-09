@@ -1,8 +1,9 @@
 <!-- LOGIN FORM -->
 <div id="login-layer">
-	<form>
-		<span>Email: </span><input type="text" ng-model="login"/>
+	<form ng-submit="connect()">
+		<span>Email: </span><input type="text" ng-model="email"/>
 		<span>Password: </span><input type="password" ng-model="password"/>
-		<input ng-disabled="form.$invalid" type="submit" value="Enter" ng-submit="connect()"/>
+		<input type="checkbox" ng-checked="confirm" ng-model="confirm" ng-change="remember()"/>
+		<input ng-disabled="form.$invalid" type="submit" value="Enter" />
 	</form>
 </div>

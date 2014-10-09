@@ -16,11 +16,5 @@ caribbeanWarApp.config(function($stateProvider, $urlRouterProvider){
      		url: '/harbor',
             templateUrl: 'js/pages/harbor/harbor-layer.html'
             //controller:"harborCtrl"
-        })
-
-        .state('world', {
-     		url: '/world',
-            templateUrl: 'js/pages/harbor/world-layer.html'
-            //controller:"worldCtrl"
         });
 });
