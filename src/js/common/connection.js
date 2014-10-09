@@ -57,3 +57,55 @@ var connection = (function () {
 
 	return result;
 })();
+
+
+angular.module('caribbean-war').service('connection', function ($q) {
+	var socketUrl = "ws://warm-crag-3328.herokuapp.com/ws";
+
+	var exports = Object.create(require('events').EventEmitter.prototype);
+
+	var socket = null;
+	var defer = null;
+
+	var getSocket = function () {
+		if (!connectionOpened()) {
+			defer = $q.defer();
+			try {
+				socket = new WebSocket(socketUrl);
+				socket.onopen = function() {
+					defer.resolve(socket);
+					socket.onmessage = onmessageCallback;
+				};
+				socket.onerror = function(e) {
+					exports.emit('connectionError');
+				};
+				socket.onclose = function(e) {
+					exports.emit('connectionError');
+				};
+			} catch (message) {
+				exports.emit('connectionError');
+			}
+		}
+		return defer.promise;
+	};
+
+	var connectionOpened = function () {
+		return socket && (socket.readyState === WebSocket.OPEN || socket.readyState === WebSocket.CONNECTING);
+	};
+
+	var onmessageCallback = function (message) {
+		var data = angular.fromJson(message.data);
+		exports.emit(data.action, data.details);
+	};
+
+	exports.send = function (type, data) {
+		getSocket().then(function(socket) {
+			socket.send(angular.toJson({
+				action: type,
+				details: data
+			}));
+		});
+		return this;
+	};
+	return exports;
+});
