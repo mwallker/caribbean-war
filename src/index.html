@@ -4,38 +4,24 @@
   <meta charset="utf-8">
   <title></title>
   <link rel="stylesheet" href="./css/style.css">
+
+  <!--- JS libs files-->
+  <script src="./js/libs/jquery/dist/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/libs/jsSHA/src/sha256.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/libs/angular/angular.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/libs/angular-ui-router/release/angular-ui-router.min.js" type="text/javascript" charset="utf-8"></script>
+
 </head>
-<body>
+<body ng-app="caribbean-war">
 
-  <div id="login-layout">
-    <form>
-      <span>Email: </span><input type="text" name="login-input">
-      <span>Password: </span><input type="password" name="password-input">
-      <input type="submit" value="Enter">   
-    </form>
-  </div>
-  
-  <div id="loddy-layout">
-    
-  </div>
+  <section ui-view></section>  
 
-  <div id="chat-layout"> 
-    <div class="chat-history">
-      <div class="message-template" hidden="true">
-        <span class="sender"></span>:<span class="message"></span>
-      </div>
-    </div>
-    <form>
-      <input type="text" name="chat-input">
-    </form>
-  </div>
-  
+  <!--- JS controllers files-->
+  <script src="./js/app.js" type="text/javascript" charset="utf-8"></script>
 
-  <!--- JS files-->
-  <script src="./js/libs/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-  <script src="./js/libs/crypto.min.js" type="text/javascript" charset="utf-8"></script>
-  <script src="./js/connection-controller.js" type="text/javascript" charset="utf-8"></script>
-  <script src="./js/ui-controller.js" type="text/javascript" charset="utf-8"></script>
-  <script src="./js/index.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/pages/login/loginCtrl.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/pages/harbor/harborCtrl.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/pages/world/worldCtrl.js" type="text/javascript" charset="utf-8"></script>
+
 </body>
 </html>

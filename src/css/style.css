@@ -4,7 +4,7 @@ body {
   background-size: 100%;
   position: relative;
 }
-#login-layout {
+#login-layer {
   position: fixed;
   top: 20%;
   left: 40%;
@@ -13,7 +13,7 @@ body {
   background: url('../images/popupBg.png') no-repeat center center;
   background-size: 100%;
 }
-#login-layout form {
+#login-layer form {
   position: absolute;
   top: 35%;
   left: 25%;

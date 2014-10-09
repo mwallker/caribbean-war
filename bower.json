@@ -1,0 +1,23 @@
+{
+  "name": "caribbean-war",
+  "version": "0.0.1",
+  "homepage": "https://github.com/VladimirMilanovich/caribbean-war",
+  "description": "Online game",
+  "authors": [
+    "Vladimir Milanovich"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "angular": "~1.2.25",
+    "angular-ui-router": "~0.2.11",
+    "jsSHA": "~1.5.0"
+  }
+}

@@ -1,21 +1,24 @@
 {
-  "name": "utils",
-  "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
-  "dependencies": {
-    "grunt": "^0.4.5"
-  },
-  "devDependencies": {
-    "bower": "^1.3.12",
-    "grunt-contrib-less": "^0.11.3",
-    "grunt-contrib-uglify": "^0.5.1",
-    "grunt-contrib-watch": "^0.6.1",
-    "keyboardjs": "^0.4.2"
-  },
+  "name": "caribbean-war",
+  "version": "0.0.1",
+  "description": "Online game",
+  "main": "Gruntfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VladimirMilanovich/caribbean-war"
+  },
+  "author": "Vladimir Milanovich",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VladimirMilanovich/caribbean-war/issues"
+  },
+  "homepage": "https://github.com/VladimirMilanovich/caribbean-war",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-less": "^0.11.4",
+    "grunt-contrib-watch": "^0.6.1"
+  }
 }
