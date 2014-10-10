@@ -5,7 +5,7 @@
   <title></title>
   <link rel="stylesheet" href="./css/style.css">
 
-  <!--- JS libs files-->
+  <!-- JS libs files-->
   <script src="./js/libs/jquery/dist/jquery.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/libs/jsSHA/src/sha256.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/libs/angular/angular.min.js" type="text/javascript" charset="utf-8"></script>
@@ -14,15 +14,20 @@
 </head>
 <body ng-app="caribbean-war">
 
+  <!-- For purpose of saving user info betwen controllers -->
+  <section ng-controller="userCtrl"></section>
+
+  <!-- page-view with 3D scene on background -->
   <section ui-view></section>  
 
-  <!--- JS controllers files-->
+  <!-- JS controllers files-->
   <script src="./js/app.js" type="text/javascript" charset="utf-8"></script>
 
   <script src="./js/pages/login/loginCtrl.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/pages/harbor/harborCtrl.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/pages/world/worldCtrl.js" type="text/javascript" charset="utf-8"></script>
-
-  <script src="./js/common/connection.js" type="text/javascript" charset="utf-8"></script>
+  
+  <script src="./js/common/mainCtrl.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/common/connectCtrl.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>
