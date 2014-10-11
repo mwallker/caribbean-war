@@ -1,36 +1,44 @@
 caribbeanWarApp.service('connection', function ($q) {
 	var socketUrl = "ws://warm-crag-3328.herokuapp.com/ws";
 
-	var socket = null;
-
 	var result = {};
 
-	var deferred = $q.defer()
+	var socket = null;	
+
+	var deferred = null;
 
 	result.open = function(credits){
+
 		if(!connectionOpened()){
-			socket = new WebSocket(socketUrl);
 			
-			socket.onopen = function() {
-				console.log("Connection opened");
-				deferred.resolve();
-			};
+			deferred = $q.defer();
 
-			socket.onmessage = function(event){
-				console.log(event.data);
-			};
+			try{
+				socket = new WebSocket(socketUrl);
+				
+				socket.onopen = function() {
+					console.log("Connection opened");
+					deferred.resolve();
+				};
 
-			socket.onerror = function(e) {
+				socket.onmessage = function(event){
+					console.log(event.data);
+				};
+
+				socket.onerror = function(e) {
+					console.log(e);
+					deferred.reject();
+				};
+
+				socket.onclose = function(e) {
+					console.log(e);
+				};
+			}
+			catch(e){
 				console.log(e);
-				deferred.reject();
-			};
-
-			socket.onclose = function(e) {
-				console.log(e);
-			};
-
-			return deferred.promise;
+			}
 		}
+		return deferred.promise;
 	};
 
 	result.send = function(action, details){

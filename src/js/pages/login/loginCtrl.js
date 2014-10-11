@@ -27,8 +27,8 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $state
 			connection.open(credits).then(
 				function(){
 					connection.send("auth", credits);
-				},
-			);
+				}
+			);	
 		}
 	}
 });
