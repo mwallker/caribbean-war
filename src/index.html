@@ -14,9 +14,6 @@
 </head>
 <body ng-app="caribbean-war">
 
-  <!-- For purpose of saving user info betwen controllers -->
-  <section ng-controller="userCtrl"></section>
-
   <!-- page-view with 3D scene on background -->
   <section ui-view></section>  
 
@@ -27,7 +24,7 @@
   <script src="./js/pages/harbor/harborCtrl.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/pages/world/worldCtrl.js" type="text/javascript" charset="utf-8"></script>
   
-  <script src="./js/common/userCtrl.js" type="text/javascript" charset="utf-8"></script>
-  <script src="./js/common/connectService.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/services/userService.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/services/connectService.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>
