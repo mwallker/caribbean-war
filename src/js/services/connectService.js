@@ -46,6 +46,7 @@ caribbeanWarApp.service('connection', function ($q, events) {
 	result.send = function(action, details){
 		if (connectionOpened()) {
 			try{
+				console.log(envelopeMessage(action, details));
 				socket.send(envelopeMessage(action, details));
 			}
 			catch(e){

@@ -10,15 +10,17 @@
   <script src="./js/libs/jsSHA/src/sha256.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/libs/angular/angular.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/libs/angular-ui-router/release/angular-ui-router.min.js" type="text/javascript" charset="utf-8"></script>
-
+  <script src="./js/ui-handler.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body ng-app="caribbean-war">
+  <section id="pre-loading">ЛОАДИНГ... </section>
 
   <!-- page-view with 3D scene on background -->
   <section ui-view></section>  
 
   <!-- JS controllers files-->
   <script src="./js/app.js" type="text/javascript" charset="utf-8"></script>
+
 
   <script src="./js/services/userService.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/services/eventsService.js" type="text/javascript" charset="utf-8"></script>
