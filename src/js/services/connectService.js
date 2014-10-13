@@ -1,4 +1,4 @@
-caribbeanWarApp.service('connection', function ($q) {
+caribbeanWarApp.service('connection', function ($q, events) {
 	var socketUrl = "ws://warm-crag-3328.herokuapp.com/ws";
 
 	var result = {};
@@ -22,7 +22,9 @@ caribbeanWarApp.service('connection', function ($q) {
 				};
 
 				socket.onmessage = function(event){
-					console.log(event.data);
+					var data = angular.fromJson(event.data);
+					console.log(data);
+					events.emit(data.action, data.details);
 				};
 
 				socket.onerror = function(e) {

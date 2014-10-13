@@ -14,11 +14,11 @@ caribbeanWarApp.config(function($stateProvider, $urlRouterProvider){
 
         .state('harbor', {
      		url: '/harbor',
-            templateUrl: 'js/pages/harbor/harbor-layer.html'
-            //controller:"harborCtrl"
+            templateUrl: 'js/pages/harbor/harbor-layer.html',
+            controller:"harborCtrl"
         })
 
-         .state('world', {
+        .state('world', {
      		url: '/world',
             templateUrl: 'js/pages/harbor/world-layer.html'
             //controller:"harborCtrl"

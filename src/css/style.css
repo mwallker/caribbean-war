@@ -17,24 +17,27 @@ body {
   left: 25%;
   width: 200px;
 }
-#chat-layout {
+#harbor-layer {
+  background: #FF8000;
+}
+#chat-layer {
   position: absolute;
   width: 280px;
   height: 200px;
   background: #FF8000;
   z-index: 3;
 }
-#chat-layout div.chat-history {
+#chat-layer div.chat-history {
   background: #C0C0C0;
   height: 90%;
   width: 99%;
   margin: 1px auto;
   overflow-y: scroll;
 }
-#chat-layout form {
+#chat-layer form {
   position: relative;
 }
-#chat-layout form input {
+#chat-layer form input {
   width: 97%px;
   position-top: 100px;
 }
