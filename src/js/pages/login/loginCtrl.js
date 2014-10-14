@@ -2,10 +2,8 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $state
 
 	$scope.email = localStorage.email||"";
 
-	console.log(localStorage.remember);
-
 	userStorage.reset();
-	
+
 	$scope.connect = function(){
 		localStorage.email = $scope.email || "";
 
@@ -18,14 +16,22 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $state
 
 		connection.open(credits).then(
 			function(){
-				$scope.onResponse = events.subscribe("auth", function(data){
-					if(data){
-						userStorage.set(data);
-						$state.go('harbor');
-					}
-				});
 				connection.send("auth", credits);
 			}
 		);
 	}
+
+	$scope.auth = function(data){
+		if(data && data.authorize){
+			userStorage.set(data);
+			$state.go('harbor');
+		}
+	};
+
+	$scope.close = function(message){
+		$state.go('login');
+	};
+
+	events.subscribe("auth", $scope.auth, $scope);
+	events.subscribe("close", $scope.close, $scope);
 });

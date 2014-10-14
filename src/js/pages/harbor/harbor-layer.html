@@ -3,16 +3,5 @@
 	<span>Name : {{user.get().nickname}} </span>
 	<span>Current ship : {{[]}} </span>
 	<a ng-click="exit()">Exit</a>
-
-	<div id="chat-layer">
-		<ul ng-model="chatHistory">
-		{{chatHistory}}
-			<li ng-repeat="m in chatHistory">
-				<span>{{chatHistory}}</span><span>{{m.message}}</span>
-			</li>
-		</ul>
-		<form ng-submit="sendChatMessage()">
-			<input type="text" ng-model="message">
-		</form>
-	</div>
+	<chat></chat>
 </div>

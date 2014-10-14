@@ -13,10 +13,10 @@ caribbeanWarApp.service('userStorage',function(){
 		},
 		set:function(data){
 			user.authorized = true;
-			user.nickname = data["Nick"];
-			user.cash = data["Cash"];
-			user.id = data["ID"];
-			user.email = data["Email"];
+			user.nickname = data["nick"];
+			user.cash = data["cash"];
+			user.id = data["id"];
+			user.email = data["email"];
 		},
 		get:function(){
 			return user;

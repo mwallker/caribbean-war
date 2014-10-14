@@ -29,10 +29,12 @@ caribbeanWarApp.service('connection', function ($q, events) {
 
 				socket.onerror = function(e) {
 					console.log(e);
+					events.emit("close", e);
 					deferred.reject();
 				};
 
 				socket.onclose = function(e) {
+					events.emit("close", e);
 					console.log(e);
 				};
 			}

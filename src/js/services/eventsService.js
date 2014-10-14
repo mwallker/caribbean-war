@@ -1,13 +1,19 @@
 caribbeanWarApp.service('events', function (){
-	var subscribtions = {};
+	var eventsList = [];
 
 	return{
-		subscribe:function(listener, callback){
-			if(!subscribtions[listener]) subscribtions[listener] = callback;
-			return callback;
+		subscribe:function(listener, callback, context){
+			if(!eventsList[listener]) {
+				eventsList[listener] = {
+					context:context,
+					callback:callback
+				}
+			};
+			return eventsList[listener];
 		},
 		emit:function(listener, data){
-			if(subscribtions[listener]) subscribtions[listener](data);
+			var event = eventsList[listener];
+			if(event) event.callback.call(event.context, data)
 		}
 	}
 });
