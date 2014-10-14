@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
+
+	require('load-grunt-tasks')(grunt);
 	grunt.initConfig({
-  		// running `grunt less` will compile once
 		less: {
 			development: {
 				options: {
@@ -12,15 +13,35 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		// running `grunt watch` will watch for changes
 		watch: {
-			files: "./src/css/*.less",
-			tasks: ["less"]
+			less: {
+				files: "./src/css/*.less",
+				tasks: ["less"]
+			},
+			js: {
+				files: ['src/**/*.js', '!src/js/libs/**'],
+				tasks: ['jshint']
+			}
+		},
+		'http-server': {
+			dev: {
+				root: 'src',
+				port: 9000,
+				host: "127.0.0.1",
+				runInBackground: true
+			}
+		},
+		jshint: {
+			target: {
+				files: {
+					src: ['src/**/*.js', '!src/js/libs/**']
+				}
+			}
 		}
 	});
 
-	grunt.loadNpmTasks('grunt-contrib-less');
-	grunt.loadNpmTasks('grunt-contrib-watch');
-
-	
+	grunt.registerTask('default', [
+		'http-server',
+		'watch'
+	]);
 };
