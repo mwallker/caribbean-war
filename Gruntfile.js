@@ -1,26 +1,60 @@
 module.exports = function(grunt) {
+
+	require('load-grunt-tasks')(grunt);
 	grunt.initConfig({
-  		// running `grunt less` will compile once
 		less: {
 			development: {
 				options: {
-					paths: ["./scr/css"],
+					paths: ['./scr/css'],
 					yuicompress: true
 				},
 				files: {
-					"./src/css/style.css": "./src/css/style.less"
+					'./src/css/style.css': './src/css/style.less'
 				}
 			}
 		},
-		// running `grunt watch` will watch for changes
 		watch: {
-			files: "./src/css/*.less",
-			tasks: ["less"]
+			less: {
+				files: './src/css/*.less',
+				tasks: ['newer:less']
+			},
+			js: {
+				files: ['src/**/*.js', '!src/js/libs/**'],
+				tasks: ['newer:jshint']
+			}
+		},
+		'http-server': {
+			dev: {
+				root: 'src',
+				port: 9000,
+				host: '127.0.0.1',
+				runInBackground: true
+			}
+		},
+		jshint: {
+			target: {
+				files: {
+					src: ['src/**/*.js', '!src/js/libs/**']
+				}
+			}
+		},
+		nodewebkit: {
+			options: {
+				platforms: ['win'],
+				buildDir: 'bin'
+			},
+			src: ['src/**/*']
 		}
 	});
 
-	grunt.loadNpmTasks('grunt-contrib-less');
-	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.registerTask('default', [
+		'http-server',
+		'watch'
+	]);
 
-	
+	grunt.registerTask('build', [
+		'jshint',
+		'less',
+		'nodewebkit'
+	]);
 };
