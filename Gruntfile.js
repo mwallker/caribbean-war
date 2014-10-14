@@ -5,29 +5,29 @@ module.exports = function(grunt) {
 		less: {
 			development: {
 				options: {
-					paths: ["./scr/css"],
+					paths: ['./scr/css'],
 					yuicompress: true
 				},
 				files: {
-					"./src/css/style.css": "./src/css/style.less"
+					'./src/css/style.css': './src/css/style.less'
 				}
 			}
 		},
 		watch: {
 			less: {
-				files: "./src/css/*.less",
-				tasks: ["less"]
+				files: './src/css/*.less',
+				tasks: ['newer:less']
 			},
 			js: {
 				files: ['src/**/*.js', '!src/js/libs/**'],
-				tasks: ['jshint']
+				tasks: ['newer:jshint']
 			}
 		},
 		'http-server': {
 			dev: {
 				root: 'src',
 				port: 9000,
-				host: "127.0.0.1",
+				host: '127.0.0.1',
 				runInBackground: true
 			}
 		},
@@ -37,11 +37,24 @@ module.exports = function(grunt) {
 					src: ['src/**/*.js', '!src/js/libs/**']
 				}
 			}
+		},
+		nodewebkit: {
+			options: {
+				platforms: ['win'],
+				buildDir: 'bin'
+			},
+			src: ['src/**/*']
 		}
 	});
 
 	grunt.registerTask('default', [
 		'http-server',
 		'watch'
+	]);
+
+	grunt.registerTask('build', [
+		'jshint',
+		'less',
+		'nodewebkit'
 	]);
 };
