@@ -1,32 +1,18 @@
-caribbeanWarApp.service('userStorage',function(){
-	var user = {
-		authorized:false,
-		id:false,
-		nickname:false,
-		cash:false,
-		email:false
-	}
+caribbeanWarApp.service('userStorage', function () {
+	var user = null;
 
-	return{
-		status:function(){
-			return user.authorized;
+	return {
+		status: function () {
+			return !!user;
 		},
-		set:function(data){
-			user.authorized = true;
-			user.nickname = data["nick"];
-			user.cash = data["cash"];
-			user.id = data["id"];
-			user.email = data["email"];
+		set: function (data) {
+			user = data;
 		},
-		get:function(){
+		get: function () {
 			return user;
 		},
-		reset:function(){
-			user.authorized = false;
-			user.id = false;
-			user.nickname = false;
-			user.cash = false;
-			user.email = false;
+		reset: function () {
+			user = null;
 		}
-	}
+	};
 });

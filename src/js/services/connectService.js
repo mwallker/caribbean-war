@@ -7,7 +7,7 @@ caribbeanWarApp.service('connection', function ($q, events) {
 
 	var deferred = null;
 
-	result.open = function(credits){
+	result.open = function(){
 
 		if(!connectionOpened()){
 			
@@ -37,9 +37,9 @@ caribbeanWarApp.service('connection', function ($q, events) {
 					events.emit("close", e);
 					console.log(e);
 				};
-			}
-			catch(e){
+			} catch(e){
 				console.log(e);
+				deferred.reject();
 			}
 		}
 		return deferred.promise;
@@ -50,29 +50,28 @@ caribbeanWarApp.service('connection', function ($q, events) {
 			try{
 				console.log(envelopeMessage(action, details));
 				socket.send(envelopeMessage(action, details));
-			}
-			catch(e){
+			} catch(e){
 				console.log(e);
 			}			
 		}
-	}
+	};
 
 	result.close = function(){
 		if (connectionOpened()){
 			socket.close();
 		}
-	}
+	};
 
 	function connectionOpened() {
 		return socket && (socket.readyState === WebSocket.OPEN || socket.readyState === WebSocket.CONNECTING);
-	};
+	}
 
 	function envelopeMessage(header, body){
 		return angular.toJson({
 			action:header,
 			details:body
 		});
-	};
+	}
 
 	return result;
 });

@@ -3,13 +3,15 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $stat
 
 	$scope.user = userStorage;
 
-	if(!userStorage.status()){
-		userStorage.reset();
-		connection.close();
-		$state.go('login');	
+	if(!userStorage.status()) {
+		goToLogin();
 	}
 
 	$scope.exit = function(){
+		goToLogin();
+	};
+
+	function goToLogin () {
 		userStorage.reset();
 		connection.close();
 		$state.go('login');
