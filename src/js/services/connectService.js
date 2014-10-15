@@ -22,20 +22,15 @@ caribbeanWarApp.service('connection', function ($q, events) {
 				};
 
 				socket.onmessage = function(event){
+					console.log(event.data);
 					var data = angular.fromJson(event.data);
-					console.log(data);
 					events.emit(data.action, data.details);
 				};
 
-				socket.onerror = function(e) {
+				socket.onerror = socket.onclose = function(e) {
 					console.log(e);
-					events.emit("close", e);
 					deferred.reject();
-				};
-
-				socket.onclose = function(e) {
 					events.emit("close", e);
-					console.log(e);
 				};
 			}
 			catch(e){
@@ -55,13 +50,13 @@ caribbeanWarApp.service('connection', function ($q, events) {
 				console.log(e);
 			}			
 		}
-	}
+	};
 
 	result.close = function(){
 		if (connectionOpened()){
 			socket.close();
 		}
-	}
+	};
 
 	function connectionOpened() {
 		return socket && (socket.readyState === WebSocket.OPEN || socket.readyState === WebSocket.CONNECTING);

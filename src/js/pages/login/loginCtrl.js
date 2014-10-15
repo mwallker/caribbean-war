@@ -10,7 +10,7 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $state
 		var credits = {
 			login: $scope.email,
 			password: new jsSHA(($scope.password).toString(), 'TEXT').getHash('SHA-256', 'HEX')
-		}
+		};
 
 		console.log(credits);
 
@@ -19,9 +19,9 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $state
 				connection.send("auth", credits);
 			}
 		);
-	}
+	};
 
-	$scope.auth = function(data){
+	$scope.authorize = function(data){
 		if(data && data.authorize){
 			userStorage.set(data);
 			$state.go('harbor');
@@ -29,9 +29,11 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $state
 	};
 
 	$scope.close = function(message){
+		connection.close();
+		userStorage.reset();
 		$state.go('login');
 	};
 
-	events.subscribe("auth", $scope.auth, $scope);
+	events.subscribe("auth", $scope.authorize, $scope);
 	events.subscribe("close", $scope.close, $scope);
 });
