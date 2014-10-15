@@ -10,10 +10,15 @@ angular.module('caribbean-war')
                 $scope.recieveChatMessage = function(data){
                     if($scope.chatHistory.length >=10) $scope.chatHistory.shift();
 
+                    console.log(data);
+
                     $scope.chatHistory.push({
                         from:data.sender,
                         message:data.message
                     });
+
+                    console.log($scope.chatHistory);
+                    return $scope.chatHistory;
                 };
 
                 $scope.sendChatMessage = function(){

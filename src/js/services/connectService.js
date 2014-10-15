@@ -1,5 +1,6 @@
 caribbeanWarApp.service('connection', function ($q, events) {
 	var socketUrl = "ws://warm-crag-3328.herokuapp.com/ws";
+	var local = "ws://localhost:5000";
 
 	var result = {};
 
@@ -14,7 +15,7 @@ caribbeanWarApp.service('connection', function ($q, events) {
 			deferred = $q.defer();
 
 			try{
-				socket = new WebSocket(socketUrl);
+				socket = new WebSocket(local);
 				
 				socket.onopen = function() {
 					console.log("Connection opened");

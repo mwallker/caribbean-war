@@ -4,7 +4,9 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $stat
 	$scope.user = userStorage.get();
 
 	if(!userStorage.status()){
-		events.emit("close", "");
+		connection.close();
+		userStorage.reset();
+		$state.go('login');
 	}
 
 	$scope.exit = function(){

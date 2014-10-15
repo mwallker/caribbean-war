@@ -13,7 +13,7 @@ caribbeanWarApp.service('events', function (){
 		},
 		emit:function(listener, data){
 			var event = eventsList[listener];
-			if(event) event.callback.call(event.context, data)
+			if(event) event.callback.call(event.context, data);
 		}
 	}
 });

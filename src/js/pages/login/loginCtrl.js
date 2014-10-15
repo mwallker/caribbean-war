@@ -29,6 +29,7 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $state
 	};
 
 	$scope.close = function(message){
+		console.log("Closing...");
 		connection.close();
 		userStorage.reset();
 		$state.go('login');
