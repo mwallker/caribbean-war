@@ -1,0 +1,409 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"over",
+				"overflow-y"
+			],
+			[
+				"script",
+				"script	Tag"
+			],
+			[
+				"de",
+				"deltaTime"
+			],
+			[
+				"clo",
+				"clock"
+			],
+			[
+				"rot",
+				"rotation"
+			],
+			[
+				"add",
+				"addCube"
+			],
+			[
+				"s",
+				"sqrt  (function)"
+			],
+			[
+				"li",
+				"li	Tag"
+			],
+			[
+				"bor",
+				"border-radius"
+			],
+			[
+				"fa",
+				"fadeIn	.fadeIn()"
+			],
+			[
+				"z-",
+				"z-index"
+			],
+			[
+				"su",
+				"submit	submit"
+			],
+			[
+				"pos",
+				"position"
+			],
+			[
+				"border-col",
+				"border-right-color"
+			],
+			[
+				"bord",
+				"border-left"
+			],
+			[
+				"wid",
+				"width"
+			],
+			[
+				"form",
+				"form	Tag"
+			],
+			[
+				"a",
+				"a	<a>"
+			],
+			[
+				"div",
+				"div	Tag"
+			],
+			[
+				"inli",
+				"inline-block"
+			],
+			[
+				"pre",
+				"preventDefults"
+			],
+			[
+				"mar",
+				"margin"
+			],
+			[
+				"wi",
+				"width"
+			],
+			[
+				"font-",
+				"font-weight"
+			],
+			[
+				"in",
+				"input	input - submit"
+			],
+			[
+				"for",
+				"form	<form>"
+			],
+			[
+				"gr",
+				" green(color)"
+			],
+			[
+				"res",
+				"result"
+			],
+			[
+				"sc",
+				"script	Tag"
+			],
+			[
+				"di",
+				"div	Tag"
+			],
+			[
+				"b",
+				"background"
+			],
+			[
+				"sect",
+				"section	Tag"
+			],
+			[
+				"html",
+				"html5	Simple HTML5 Boilerplate"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "bower.json",
+			"settings":
+			{
+				"buffer_size": 452,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 335.0,
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Remove Package"
+			],
+			[
+				"git",
+				"Set Syntax: Git Commit Message"
+			]
+		],
+		"width": 585.0
+	},
+	"console":
+	{
+		"height": 128.0,
+		"history":
+		[
+			"o git init",
+			"git init",
+			"o git push",
+			"o gi push",
+			"o git init",
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/Documents/caribbean-war",
+		"/D/Documents/caribbean-war/src"
+	],
+	"file_history":
+	[
+		"/D/Prog-S/Sublime Text 3/Data/Packages/User/Package Control.sublime-settings",
+		"/D/Documents/caribbean-war/Gruntfile.js",
+		"/F/Javascript/caribbean-war/src/js/pages/login/loginCtrl.js",
+		"/F/Javascript/caribbean-war/src/js/common/handleService.js",
+		"/F/Javascript/caribbean-war/src/js/common/userCtrl.js",
+		"/F/Javascript/caribbean-war/src/index.html",
+		"/F/Javascript/caribbean-war/src/js/pages/login/login-layer.html",
+		"/F/Javascript/caribbean-war/src/js/common/connectCtrl.js",
+		"/D/Documents/caribbean-war/package.json",
+		"/D/Documents/caribbean-war/src/index.html",
+		"/D/Documents/caribbean-war/src/css/style.less",
+		"/D/Documents/caribbean-war/src/js/connection-controller.js",
+		"/D/Documents/caribbean-war/src/js/ui-controller.js",
+		"/D/Documents/caribbean-war/src/js/index.js",
+		"/D/Documents/caribbean-war/bower.json",
+		"/D/Documents/caribbean-war/src/js/gui-controller.js",
+		"/D/Documents/caribbean-war/src/css/style.css",
+		"/D/Prog-S/New Folder (2)/lab2.js",
+		"/D/Documents/index.html",
+		"/D/Documents/Exadel-Project/exadel-training-project/templates/common-page-template.html.tpl",
+		"/D/Documents/Exadel-Project/exadel-training-project/src/js/init.js",
+		"/D/Documents/Exadel-Project/exadel-training-project/Gruntfile.js",
+		"/D/Documents/Dnimreven/tower-defence/server/index.js",
+		"/D/Prog-S/Sublime Text 3/changelog.txt",
+		"/D/Documents/Dnimreven/temp-project/src/css/source/variables.less",
+		"/D/Documents/Dnimreven/temp-project/src/js/init.js",
+		"/D/Documents/Dnimreven/temp-project/utils/Gruntfile.js",
+		"/D/Documents/Dnimreven/temp-project/src/css/result/style.css",
+		"/D/Documents/Dnimreven/temp-project/docs/Readme.md",
+		"/D/Documents/Dnimreven/temp-project/src/index.html",
+		"/D/Documents/Dnimreven/temp-project/src/css/source/style.less",
+		"/D/Games/dnimreven-team/temp-project/src/css/source/style.less",
+		"/D/Games/dnimreven-team/temp-project/utils/Gruntfile.js",
+		"/D/Games/dnimreven-team/temp-project/src/css/result",
+		"/D/Games/dnimreven-team/temp-project/src/css/style.css",
+		"/D/Games/dnimreven-team/temp-project/index.html",
+		"/D/Games/dnimreven-team/temp-project/src/source/css/style.less",
+		"/D/Games/dnimreven-team/temp-project/src/source/index.html",
+		"/D/Games/dnimreven-team/temp-project/src/utils/Gruntfile.js",
+		"/D/Games/dnimreven-team/temp-project/src/source/css/style.css",
+		"/D/Games/dnimreven-team/temp-project/src/utils/bower.json",
+		"/D/Games/dnimreven-team/temp-project/src/utils/package.json",
+		"/D/Games/dnimreven-team/temp-project/.gitignore",
+		"/D/Programs/Sublime Text 3/Data/Packages/Git/Git.sublime-settings",
+		"/D/Programs/Sublime Text 3/Data/Packages/User/Git.sublime-settings",
+		"/D/Games/dnimreven-group/test-project/test-project.sublime-project",
+		"/D/Games/dnimreven-group/test-project/.gitignore",
+		"/F/Test Project/client-side/src/index.html",
+		"/D/Prog-S/Sublime Text 3/Data/Packages/User/SublimeOnSaveBuild.sublime-settings",
+		"/D/Prog-S/Sublime Text 3/Data/Packages/User/LESS.sublime-settings",
+		"/D/Prog-S/Sublime Text 3/Data/Packages/User/Preferences.sublime-settings",
+		"/D/Games/Test Project/client-side/src/css/sourse/style.less",
+		"/D/Games/Test Project/client-side/src/css/result/style.css",
+		"/D/Games/Test Project/client-side/sourse/index.html",
+		"/D/Games/Test Project/client-side/sourse/js/init.js",
+		"/D/Games/Test Project/client-side/sourse/css/style.css",
+		"/D/Programs/Sublime Text 3/Data/Packages/User/Preferences.sublime-settings"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"conn"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"Connector"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "bower.json",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 452,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								197,
+								197
+							]
+						],
+						"settings":
+						{
+							"color_scheme": "Packages/User/Color Highlighter/themes/Piatto Light (SL).tmTheme",
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.git":
+	{
+		"height": 142.0
+	},
+	"project": "caribbean-war.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 226.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

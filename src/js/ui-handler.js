@@ -1,3 +1,0 @@
-$(function(){
-	$("#pre-loading").hide();
-})
