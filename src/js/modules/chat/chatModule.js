@@ -17,6 +17,8 @@ angular.module('caribbean-war')
                         message:data.message
                     });
 
+                    $scope.$apply();
+
                     console.log($scope.chatHistory);
                     return $scope.chatHistory;
                 };
