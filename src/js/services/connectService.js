@@ -19,7 +19,7 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 			deferred = $q.defer();
 
 			try{
-				socket = new WebSocket(local);
+				socket = new WebSocket(socketUrl);
 				
 				socket.onopen = function() {
 					console.log("Connection opened");

@@ -28,7 +28,7 @@ angular.module('caribbean-war')
 
                     if(text){
                         connection.send("chat", {
-                            sender: userStorage.get().nickname,
+                            sender: userStorage.get().nick,
                             message: text
                         });
                         $scope.message = '';
