@@ -4,11 +4,11 @@ angular.module('caribbean-war')
             templateUrl: 'js/modules/chat/chat-template.html',
             restrict: 'E',
             scope:{},
-            controller: function ($scope, $element, $attrs, userStorage, connection, events) {
+            controller: function ($scope, $rootScope, $element, $attrs, userStorage, connection) {
                 $scope.chatHistory = [];
 
-                $scope.recieveChatMessage = function(data){
-                    if($scope.chatHistory.length >=10) $scope.chatHistory.shift();
+                $scope.recieveChatMessage = function(event, data){
+                    if($scope.chatHistory.length >= 50) $scope.chatHistory.shift();
 
                     console.log(data);
 
@@ -18,19 +18,21 @@ angular.module('caribbean-war')
                     });
 
                     $scope.$apply();
-
-                    console.log($scope.chatHistory);
-                    return $scope.chatHistory;
                 };
 
                 $scope.sendChatMessage = function(){
-                    connection.send("chat", {
-                        sender:userStorage.get().nickname,
-                        message:$scope.message
-                    });
+                    var text = $scope.message;
+
+                    if(text){
+                        connection.send("chat", {
+                            sender: userStorage.get().nickname,
+                            message: text
+                        });
+                        $scope.message = '';
+                    }
                 };
 
-                events.subscribe("chat", $scope.recieveChatMessage, $scope);
+                $rootScope.$on("chat", $scope.recieveChatMessage);
             }           
         }
     });

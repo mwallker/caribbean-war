@@ -1,7 +1,7 @@
 <div id="chat-layer">
 	<ul>
 		<li ng-repeat="m in chatHistory">
-			<span>{{m.from}}</span><span>{{m.message}}</span>
+			<span>{{m.from}}</span> : <span>{{m.message}}</span>
 		</li>
 	</ul>
 	<form ng-submit="sendChatMessage()">

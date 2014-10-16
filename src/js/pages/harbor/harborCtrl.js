@@ -1,4 +1,4 @@
-angular.module('caribbean-war').controller('harborCtrl', function ($scope, $state, connection, events, userStorage) {
+angular.module('caribbean-war').controller('harborCtrl', function ($scope, $rootScope, $state, connection, userStorage) {
 	console.log(userStorage.status());
 
 	$scope.user = userStorage.get();
@@ -10,6 +10,6 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $stat
 	}
 
 	$scope.exit = function(){
-		events.emit("close", "");
+		$rootScope.$emit("close", "Exit");
 	};
 });

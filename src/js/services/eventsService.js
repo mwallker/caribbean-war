@@ -3,11 +3,9 @@ caribbeanWarApp.service('events', function (){
 
 	return{
 		subscribe:function(listener, callback, context){
-			if(!eventsList[listener]) {
-				eventsList[listener] = {
-					context:context,
-					callback:callback
-				}
+			eventsList[listener] = {
+				context:context,
+				callback:callback
 			};
 			return eventsList[listener];
 		},
