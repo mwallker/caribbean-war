@@ -19,6 +19,13 @@
   padding: 0;
 }
 
+#harbor-layer {
+  border: solid 1px #0A151F;
+  margin: 10px;
+  padding: 10px;
+}
+
+
 /*common properties*/
 body {
   background-size: 100%;
@@ -37,7 +44,4 @@ body {
   top: 35%;
   left: 25%;
   width: 200px;
-}
-#harbor-layer {
-  background: #FF8000;
 }

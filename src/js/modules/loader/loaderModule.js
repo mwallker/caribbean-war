@@ -4,13 +4,8 @@ angular.module('caribbean-war')
             templateUrl: 'js/modules/loader/loader-template.html',
             restrict: 'E',
             scope:{},
-            controller: function ($scope, $element, $attrs, events) {
+            controller: function ($scope, $element, $attrs) {
 
-            	$scope.loading = function(condition){
-
-            	};
-
-                events.subscribe('loading', $scope.loading, $scope);
             }           
         }
     });

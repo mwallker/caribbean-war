@@ -8,9 +8,13 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 
 	var deferred = null;
 
+	result.status = function(){
+		return socket && (socket.readyState === WebSocket.OPEN || socket.readyState === WebSocket.CONNECTING);
+	};
+
 	result.open = function(credits){
 
-		if(!connectionOpened()){
+		if(!this.status()){
 			
 			deferred = $q.defer();
 
@@ -42,7 +46,7 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 	};
 
 	result.send = function(action, details){
-		if (connectionOpened()) {
+		if (this.status()) {
 			try{
 				socket.send(envelopeMessage(action, details));
 			}
@@ -53,13 +57,9 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 	};
 
 	result.close = function(){
-		if (connectionOpened()){
+		if (this.status()){
 			socket.close();
 		}
-	};
-
-	function connectionOpened() {
-		return socket && (socket.readyState === WebSocket.OPEN || socket.readyState === WebSocket.CONNECTING);
 	};
 
 	function envelopeMessage(header, body){

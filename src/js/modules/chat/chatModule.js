@@ -5,8 +5,12 @@ angular.module('caribbean-war')
             restrict: 'E',
             scope:{},
             controller: function ($scope, $rootScope, $element, userStorage, connection) {
-
                 $scope.chatHistory = [];
+
+                $scope.clearChatHistory = function(){
+                    $scope.chatHistory = [];
+                    $scope.$apply();
+                };
 
                 $scope.recieveChatMessage = function(event, data){
                     if($scope.chatHistory.length >= 50) $scope.chatHistory.shift();
