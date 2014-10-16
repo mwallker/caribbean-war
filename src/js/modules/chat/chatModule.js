@@ -4,13 +4,12 @@ angular.module('caribbean-war')
             templateUrl: 'js/modules/chat/chat-template.html',
             restrict: 'E',
             scope:{},
-            controller: function ($scope, $rootScope, $element, $attrs, userStorage, connection) {
+            controller: function ($scope, $rootScope, $element, userStorage, connection) {
+
                 $scope.chatHistory = [];
 
                 $scope.recieveChatMessage = function(event, data){
                     if($scope.chatHistory.length >= 50) $scope.chatHistory.shift();
-
-                    console.log(data);
 
                     $scope.chatHistory.push({
                         from:data.sender,
