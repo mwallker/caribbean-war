@@ -12,4 +12,8 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $root
 	$scope.exit = function(){
 		$rootScope.$emit("close", "Exit");
 	};
+
+	$scope.toWorld = function(){
+		$state.go('world');
+	};
 });

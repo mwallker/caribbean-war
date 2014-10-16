@@ -1,5 +1,6 @@
 <div id="harbor-layer">
-	<span>Cash: {{user.cash}} </span>
+	<span>Cash: {{user.cash || "-"}} </span>
 	<span>Name : {{user.nickname}} </span>
 	<a class="button" ng-click="exit()">Exit</a>
+	<a class="button" ng-click="toWorld()">Sail</a>
 </div>

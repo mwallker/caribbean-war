@@ -5,7 +5,7 @@ caribbeanWarApp.service('userStorage',function(){
 
 	return{
 		status:function(){
-			return user.authorize||false;
+			return user.authorize || false;
 		},
 
 		set:function(data){
