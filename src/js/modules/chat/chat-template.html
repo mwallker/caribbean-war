@@ -1,4 +1,4 @@
-<div id="chat-layer">
+<div id="chat-layer" ng-show="displayChat">
 	<ul>
 		<li ng-repeat="m in chatHistory">
 			<span>{{m.from}}</span> : <span>{{m.message}}</span>

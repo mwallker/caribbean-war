@@ -1,16 +1,24 @@
 angular.module('caribbean-war')
-    .directive('chat', function () {
+    .directive('chat', ['userStorage', 'connection', function (userStorage, connection) {
         return { 
             templateUrl: 'js/modules/chat/chat-template.html',
             restrict: 'E',
             scope:{},
-            controller: function ($scope, $rootScope, $element, userStorage, connection) {
+            link:function($scope){
+                $scope.displayChat = false;
+            },
+            controller: function ($scope, $rootScope) {
                 $scope.chatHistory = [];
 
                 $scope.clearChatHistory = function(){
                     $scope.chatHistory = [];
-                    $scope.$apply();
                 };
+
+                $scope.toggleChat = function(event, flag){
+                    if(!flag) $scope.clearChatHistory();
+                    $scope.displayChat = !!flag;
+                    console.log($scope.displayChat);
+                }
 
                 $scope.recieveChatMessage = function(event, data){
                     if($scope.chatHistory.length >= 50) $scope.chatHistory.shift();
@@ -36,6 +44,7 @@ angular.module('caribbean-war')
                 };
 
                 $rootScope.$on("chat", $scope.recieveChatMessage);
+                $rootScope.$on("toggleChat", $scope.toggleChat);
             }           
         }
-    });
+    }]);

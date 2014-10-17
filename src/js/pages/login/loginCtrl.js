@@ -1,6 +1,7 @@
 angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootScope, $state, connection, userStorage) {
-
 	$scope.email = localStorage.email || "";
+
+	$rootScope.authorized = false;
 
 	userStorage.reset();
 
@@ -20,6 +21,8 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 	$scope.authorize = function(event, data){
 		if(data && data.authorize){
 			userStorage.set(data);
+			$rootScope.displayChat = true;
+			$rootScope.$broadcast('toggleChat', true);
 			$state.go('harbor');
 		}
 	};
@@ -28,6 +31,7 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 		console.log("Closing...");
 		connection.close();
 		userStorage.reset();
+		$rootScope.$broadcast('toggleChat', false);
 		$state.go('login');
 	};
 

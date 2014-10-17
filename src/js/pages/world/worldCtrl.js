@@ -3,6 +3,10 @@ angular.module('caribbean-war').controller('worldCtrl', function ($scope, $rootS
 
 	$scope.user = userStorage.get();
 
+	$scope.ship = {
+		speed:0
+	}
+
 	if(!userStorage.status()){
 		connection.close();
 		userStorage.reset();
