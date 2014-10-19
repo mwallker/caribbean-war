@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 			},
 			js: {
 				files: ["src/**/*.js", "!src/js/libs/**/*"],
-				tasks: ["newer:jshint"]
+				tasks: ["jshint"]
 			}
 		},
 		jshint: {
