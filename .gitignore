@@ -3,3 +3,5 @@ src/js/libs
 src/css/style.css
 .sublime-workspace
 .sublime-project
+bin/
+cache/
