@@ -1,4 +1,4 @@
-caribbeanWarApp.service('userStorage',function(){
+caribbeanWarApp.service('userStorage', function(){
 	var user = {
 		authorize:false
 	};

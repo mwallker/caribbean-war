@@ -1,15 +1,13 @@
-angular.module('caribbean-war').controller('worldCtrl', function ($scope, $rootScope, $state, connection, userStorage) {
-	console.log("World CTRL");
+caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'connection', 'userStorage', 'shipControl', 
+	function ($scope, $state, $rootScope, connection, userStorage, shipControl) {
+		console.log("World CTRL");
 
-	$scope.user = userStorage.get();
+		$scope.user = userStorage.get();
 
-	$scope.ship = {
-		speed:0
+		if(!userStorage.status()){
+			connection.close();
+			userStorage.reset();
+			$state.go('login');
+		}
 	}
-
-	if(!userStorage.status()){
-		connection.close();
-		userStorage.reset();
-		$state.go('login');
-	}
-});
+]);
