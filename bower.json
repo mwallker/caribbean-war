@@ -20,6 +20,7 @@
     "angular-ui-router": "~0.2.11",
     "jsSHA": "~1.5.0",
     "bootstrap": "~3.2.0",
-    "KeyboardJS": "~0.4.2"
+    "KeyboardJS": "~0.4.2",
+    "babylonjs":"~1.10.0"
   }
 }

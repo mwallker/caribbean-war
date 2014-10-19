@@ -47,4 +47,5 @@ angular.module('caribbean-war')
                 $rootScope.$on("toggleChat", $scope.toggleChat);
             }           
         }
-    }]);
+    }
+]);
