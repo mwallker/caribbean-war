@@ -1,0 +1,3 @@
+caribbeanWarApp.service('audioControl', function () {
+
+});

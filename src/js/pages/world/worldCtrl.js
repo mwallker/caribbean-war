@@ -16,7 +16,7 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 		});
 
 		KeyboardJS.on('m', function(){
-			console.log('map');
+			$rootScope.$emit('toogleMap');
 		});
 	}
 ]);

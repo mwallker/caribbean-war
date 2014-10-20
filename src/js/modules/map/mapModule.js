@@ -8,7 +8,18 @@ caribbeanWarApp
             	$scope.position = {
             		x:0,
             		y:0
-            	}
+            	};
+            },
+            controller:function($scope, $rootScope){
+                $scope.showChat = false;
+
+                $scope.toogleMap = function(event){
+                    console.log('map');
+                    $scope.showChat = !$scope.showChat;
+                    $scope.$apply();
+                };
+
+                $rootScope.$on('toogleMap', $scope.toogleMap);
             }    
         };
     });
