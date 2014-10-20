@@ -20,7 +20,7 @@ caribbeanWarApp.service('userStorage', function(){
 		reset:function(){
 			user = {
 				authorize:false
-			}
+			};
 		}
-	}
+	};
 });

@@ -1,9 +1,10 @@
 angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootScope, $state, connection, userStorage) {
 	$scope.email = localStorage.email || "";
-
 	$rootScope.authorized = false;
 
-	userStorage.reset();
+	if(connection.status()){
+		$rootScope.$broadcast("close", "");
+	}
 
 	$scope.connect = function(){
 		localStorage.email = $scope.email || "";
@@ -31,7 +32,6 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 		console.log("Closing...");
 		connection.close();
 		userStorage.reset();
-		$rootScope.$broadcast('toggleChat', false);
 		$state.go('login');
 	};
 

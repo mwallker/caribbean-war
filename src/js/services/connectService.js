@@ -67,7 +67,7 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 			action:header,
 			details:body
 		});
-	};
+	}
 
 	return result;
 });

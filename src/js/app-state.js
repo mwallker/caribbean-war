@@ -22,5 +22,5 @@ caribbeanWarApp.config(function($stateProvider, $urlRouterProvider){
      		url: '/world',
             templateUrl: 'js/pages/world/world-layer.html',
             controller:"worldCtrl"
-        })
+        });
 });

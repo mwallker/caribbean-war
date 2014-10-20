@@ -7,5 +7,5 @@ angular.module('caribbean-war')
             controller: function ($scope, $element, $attrs) {
 
             }           
-        }
+        };
     });
