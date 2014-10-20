@@ -44,10 +44,26 @@
   width: 200px;
 }
 
-world-map {
+#worldMap {
   position: fixed;
   z-index: 5;
   top: 0;
+  width: 500px;
+  height: 300px;
+  margin: 0 auto;
+  background: #C0C0C0;
+  border: solid 1px #009B00;
+}
+#worldMap div {
+  background: #009B00;
+  position: absolute;
+  width: 100%;
+  height: 20px;
+}
+#worldMap div a {
+  position: absolute;
+  right: 0;
+  color: #FFFFFF;
 }
 
 
@@ -69,8 +85,3 @@ body {
   overflow: hidden;
 }
 
-#world-layer {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
