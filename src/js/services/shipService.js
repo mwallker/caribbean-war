@@ -1,7 +1,14 @@
 caribbeanWarApp.service('shipControl', function () {
 
 	var ship = {
-		speed:0
+		speed:0,
+		maxSpeed:0,
+		weight:0,
+		rotation:0,
+		position:{
+			x:0,
+			y:0
+		}
 	};
 	
 	//REPLACE IT LATER

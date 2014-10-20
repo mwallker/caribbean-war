@@ -9,5 +9,14 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 			userStorage.reset();
 			$state.go('login');
 		}
+
+		//Keyboard events
+		KeyboardJS.on('esc', function(){
+			console.log('esc');
+		});
+
+		KeyboardJS.on('m', function(){
+			console.log('map');
+		});
 	}
 ]);
