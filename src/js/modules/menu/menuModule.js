@@ -1,13 +1,23 @@
 caribbeanWarApp
-	.directive('gameMenu', function () {
+	.directive('gameMenu', ['$state', function ($state) {
         return { 
             templateUrl: 'js/modules/menu/menu-template.html',
             restrict: 'E',
             scope:{},
             link:function($scope){
 				$scope.options = [
-					"Settings",
-					"Exit"
+					{
+                        name:"Settings",
+                        action:function(){
+
+                        }
+                    },
+					{
+                        name:"Exit",
+                        action:function(){
+                            $state.go('harbor');
+                        }
+                    }
 				];
             },
             controller:function($scope, $rootScope){
@@ -21,4 +31,4 @@ caribbeanWarApp
                 $rootScope.$on('toogleMenu', $scope.toogleMenu);
             }    
         };
-    });
+    }]);

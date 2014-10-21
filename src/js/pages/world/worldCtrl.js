@@ -16,7 +16,9 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 		});
 
 		KeyboardJS.on('m', function(){
-			$rootScope.$emit('toogleMap');
+			if(!$("input").is(':focus')){
+				$rootScope.$emit('toogleMap');	
+			}
 		});
 	}
 ]);
