@@ -9,7 +9,7 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $root
 		$scope.user = userStorage.get();
 		$scope.selectedShip = localStorage.selectedShip || (($scope.user.Ships && $scope.user.Ships.length) ? $scope.user.Ships[0].ID : 0);
 		if($scope.selectedShip){
-			connection.send("shipSelect", {shipId:$scope.selectedShip});
+			connection.send("shipSelect", {shipId:+$scope.selectedShip});
 		}
 	}
 
@@ -17,7 +17,7 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $root
 		if($scope.selectedShip != id){
 			localStorage.selectedShip = id;
 			$scope.selectedShip = id;
-			connection.send("shipSelect", {shipId:$scope.selectedShip});
+			connection.send("shipSelect", {shipId:+$scope.selectedShip});
 		}
 	};
 
