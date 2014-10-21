@@ -9,7 +9,7 @@ caribbeanWarApp.service('userStorage', function(){
 		},
 
 		set:function(data){
-			user = data;
+			user = data.userInfo;
 			user.authorize = true;
 		},
 

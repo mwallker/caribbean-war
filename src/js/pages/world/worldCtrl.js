@@ -12,7 +12,7 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 
 		//Keyboard events
 		KeyboardJS.on('esc', function(){
-			console.log('esc');
+			$rootScope.$emit('toogleMenu');
 		});
 
 		KeyboardJS.on('m', function(){

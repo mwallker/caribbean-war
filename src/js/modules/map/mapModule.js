@@ -14,7 +14,6 @@ caribbeanWarApp
                 $scope.showChat = false;
 
                 $scope.toogleMap = function(event){
-                    console.log('map');
                     $scope.showChat = !$scope.showChat;
                     $scope.$apply();
                 };

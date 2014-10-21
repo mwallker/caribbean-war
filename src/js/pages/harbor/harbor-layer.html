@@ -1,6 +1,14 @@
 <div id="harbor-layer">
-	<span>Cash: {{user.cash || "-"}} </span>
-	<span>Name : {{user.nick}} </span>
+	<span>Cash: {{user.Cash}} </span>
+	<span>Name : {{user.Nick}} </span>
+
 	<a class="button" ng-click="exit()">Exit</a>
 	<a class="button" ng-click="toWorld()">Sail</a>
+</div>
+
+<div class="shipsList">
+<span>{{selectedShip}}</span>
+	<ul>
+		<li ng-repeat="ship in user.Ships" ng-click="pickShip(ship.ID)">{{ship.Name}}</li>
+	</ul>
 </div>

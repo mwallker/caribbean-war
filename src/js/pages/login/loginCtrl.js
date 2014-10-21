@@ -22,8 +22,6 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 	$scope.authorize = function(event, data){
 		if(data && data.authorize){
 			userStorage.set(data);
-			$rootScope.displayChat = true;
-			$rootScope.$broadcast('toggleChat', true);
 			$state.go('harbor');
 		}
 	};
