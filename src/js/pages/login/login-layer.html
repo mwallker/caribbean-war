@@ -1,11 +1,23 @@
 <div id="login-layer">
 	<form ng-submit="connect()">
-		<span>Email: </span><input type="text" ng-model="email" required/>
-		<span>Password: </span><input type="password" ng-model="password" required/>
-		<input type="checkbox"/>
-		<input ng-disabled="form.$invalid" type="submit" value="Enter" />
-
+	<div>
+		<label>Email: </label>
+		<input type="text" ng-model="email" required/>
+	</div>
+	<div>
+		<label>Password: </label>
+		<input type="password" ng-model="password" required/>
+	</div>
+	<div>
+		<label>Remember me</label>
+		<input type="checkbox" class="RememberMe"/>
+	</div>
+	<div>
+		<input ng-disabled="form.$invalid" type="submit" value="Enter" class="Enter"/>
+	</div>
+	<div>
 		<a>Forgot password?</a>
 		<a>Register now</a>
+	</div>
 	</form>
 </div>

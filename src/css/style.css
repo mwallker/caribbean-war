@@ -80,7 +80,46 @@
   position: absolute;
   top: 35%;
   left: 25%;
-  width: 200px;
+  width: 250px;
+}
+#login-layer form div {
+  margin-bottom: 5px;
+}
+#login-layer form div input {
+  width: 80%;
+}
+#login-layer form div input.RememberMe {
+  margin: 0px;
+  vertical-align: middle;
+}
+#login-layer form div input.Enter {
+  margin-left: 5px;
+  border-color: transparent;
+  border-radius: 5px;
+  background-color: #005959;
+  color: #ddd;
+}
+#login-layer form div input.Enter:hover {
+  opacity: 0.85;
+}
+#login-layer form div input.RememberMe,
+#login-layer form div input.Enter {
+  width: auto;
+}
+#login-layer form a {
+  margin-right: 20px;
+}
+#login-layer form a:hover {
+  color: #005959;
+}
+#login-layer form a,
+#login-layer form label {
+  margin: 3px;
+}
+#login-layer form a,
+#login-layer form input.Enter,
+#login-layer form input.RememberMe {
+  cursor: pointer;
 }
 
 #worldMap {

@@ -1,4 +1,4 @@
-#login-layer{
+#login-layer {
 	position: fixed;
 	top: 20%;
 	left: 40%;
@@ -7,10 +7,58 @@
 	//background: url('../images/popupBg.png') no-repeat center center;
 	background-size: 100%;
 	z-index:2;
+
 	form {
 		position: absolute;
 		top: 35%;
 		left: 25%;
-		width: 200px;
+		width: 250px;
+
+		div {
+			margin-bottom: 5px;
+
+			input {
+				width: 80%
+			}
+
+			input.RememberMe {
+				margin: 0px;
+				vertical-align: middle;
+			}
+
+			input.Enter {
+				margin-left: 5px;
+				border-color: transparent;
+				border-radius: 5px;
+				background-color: #005959;
+				color: #ddd;
+
+				&:hover {
+					opacity: 0.85;
+				}
+			}
+
+			input.RememberMe,
+			input.Enter {
+				width: auto;
+			}
+		}
+
+		a {
+			margin-right: 20px;
+
+			&:hover {
+				color: #005959;
+			}
+		}
+
+		a, label {
+			margin: 3px;
+		}
+
+		a, input.Enter,
+		input.RememberMe {
+			cursor: pointer;
+		}
 	}
 }
