@@ -1,5 +1,5 @@
 caribbeanWarApp
-	.directive('viewer', function () {
+	.directive('viewer', ['shipControl', function (shipControl) {
         return { 
             templateUrl: 'js/modules/viewer/viewer-template.html',
             restrict: 'E',
@@ -9,20 +9,35 @@ caribbeanWarApp
 
 				    var canvas = $('#renderCanvas')[0];
 				    var engine = new BABYLON.Engine(canvas, true);
+				    var delay = 0;
 
 					BABYLON.SceneLoader.Load('js/modules/viewer/', "login.babylon", engine, function (newScene) {
-			            // Wait for textures and shaders to be ready
+
 			            newScene.executeWhenReady(function () {
-			                // Attach camera to canvas inputs
+			            	var deltaTime = +Date.now();
+
 			                newScene.activeCamera.attachControl(canvas);
 
-			                var ground = BABYLON.Mesh.CreateGround("ground", 1000, 1000, 2, newScene);
+			                var ground = BABYLON.Mesh.CreateGround("ground", 10000, 10001, 2, newScene);
+			                var ship = newScene.meshes[0];
 
+			                console.log(newScene.activeCamera);
 
-			                console.log(newScene);
-			                // Once the scene is loaded, just register a render loop to render it
 			                engine.runRenderLoop(function() {
+			                	delay = Math.abs(deltaTime - +Date.now())*0.001;
+
+			                	console.log(delay);
+			                	
+			                	var r = shipControl.rotateShip(delay);
+								var t = shipControl.moveShip(delay);
+
+			                	ship.position.x = t.x;
+								ship.position.z = t.y;
+
+			                	ship.rotation.y = -r.angle;
+
 			                    newScene.render();
+			                    deltaTime = +Date.now();
 			                });
 			            });
 			        }, function (progress) {
@@ -35,4 +50,4 @@ caribbeanWarApp
 				}
             }    
         };
-    });
+    }]);
