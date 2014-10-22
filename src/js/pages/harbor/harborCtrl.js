@@ -7,17 +7,28 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $root
 		$state.go('login');
 	}else{
 		$scope.user = userStorage.get();
-		$scope.selectedShip = localStorage.selectedShip || (($scope.user.Ships && $scope.user.Ships.length) ? $scope.user.Ships[0].ID : 0);
+		$scope.ships = userStorage.get().Ships;
+		console.log($scope.ships);
+		$scope.selectedShip = (($scope.ships && $scope.ships.length) ? $scope.ships[0] : {ID:0});
+		for(ship in $scope.ships){
+			ship.selected = false;
+			if($scope.ships[ship].ID == $scope.selectedShip.ID){
+  				$scope.ships[ship].selected = true;
+  			}
+		}
 		if($scope.selectedShip){
-			connection.send("shipSelect", {shipId:+$scope.selectedShip});
+			connection.send("shipSelect", {shipId:+$scope.selectedShip.ID});
 		}
 	}
 
-	$scope.pickShip = function(id){
-		if($scope.selectedShip != id){
-			localStorage.selectedShip = id;
-			$scope.selectedShip = id;
-			connection.send("shipSelect", {shipId:+$scope.selectedShip});
+	$scope.pickShip = function(index){
+		if($scope.selectedShip.ID != $scope.ships[index].ID){
+			angular.forEach($scope.ships, function(value, key) {
+  				value.selected = false;
+			});
+			$scope.ships[index].selected = true;
+			$scope.selectedShip = $scope.ships[index];
+			connection.send("shipSelect", {shipId:+$scope.selectedShip.ID});
 		}
 	};
 
@@ -26,7 +37,7 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $root
 	};
 
 	$scope.toWorld = function(){
-		if($scope.selectedShip){
+		if($scope.selectedShip.ID){
 			$state.go('world');
 		}
 		else{

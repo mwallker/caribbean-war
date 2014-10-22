@@ -26,7 +26,7 @@ caribbeanWarApp
 			                engine.runRenderLoop(function() {
 			                	delay = Math.abs(deltaTime - +Date.now())*0.001;
 
-			                	console.log(delay);
+			                	//console.log(delay);
 			                	
 			                	var r = shipControl.rotateShip(delay);
 								var t = shipControl.moveShip(delay);
