@@ -5,6 +5,7 @@
 	position: fixed;
 	z-index: 2;
 	background-color: #005959;
+	color: #ddd;
 }
 
 .shipsList {
@@ -12,21 +13,24 @@
 	z-index:9;
 	bottom:0;
 	width:100%;
-	border: solid 1px #008000;
-
+	border: solid 5px #005959;
 	ul {
 		margin: 10px;
 		padding: 10px;
-
+		color: #ddd;
 		li {
 			display: inline-block;
 			width: 100px;
 			height: 100px;
 			vertical-align: middle;
 			margin-right: 20px;
-			border: solid 1px #008000;
+			background: #005959;
+			color: #bbb;
+			border: solid 5px #bbb;
 			&.active{
-				border: solid 1px #FF8040;
+				color: #fff;
+				border: solid 5px #fff;
+				background: #046c6c;
 			}
 		}
 	}

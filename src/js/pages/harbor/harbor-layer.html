@@ -7,8 +7,9 @@
 </div>
 
 <div class="shipsList">
-	<span>{{selectedShip.ID}}</span>
 	<ul>
-		<li ng-repeat="ship in ships" ng-class="{active:ship.selected}" ng-click="pickShip($index)">{{ship.Name}}</li>
+		<li ng-repeat="ship in ships" ng-class="{active:ship.selected}" ng-click="pickShip($index)">
+			<span>{{ship.Name}}</span>
+		</li>
 	</ul>
 </div>
