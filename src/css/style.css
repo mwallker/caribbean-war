@@ -10,6 +10,10 @@
   padding: 0;
   height: 200px;
   border-bottom: solid 1px #1D1D1D;
+  background-color: #005959;
+}
+#chat-layer ul li {
+  color: #ddd;
 }
 #chat-layer form {
   position: relative;
@@ -47,6 +51,7 @@
   padding: 10px;
   position: fixed;
   z-index: 2;
+  background-color: #005959;
 }
 .shipsList {
   position: fixed;
