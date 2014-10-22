@@ -10,26 +10,24 @@ caribbeanWarApp
 				    var canvas = $('#renderCanvas')[0];
 				    var engine = new BABYLON.Engine(canvas, true);
 
-					var createScene = function () {
-					    var scene = new BABYLON.Scene(engine);
+					BABYLON.SceneLoader.Load('js/modules/viewer/', "login.babylon", engine, function (newScene) {
+			            // Wait for textures and shaders to be ready
+			            newScene.executeWhenReady(function () {
+			                // Attach camera to canvas inputs
+			                newScene.activeCamera.attachControl(canvas);
 
-					    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
-					    camera.setTarget(new BABYLON.Vector3.Zero());
-					    camera.attachControl(canvas, false);
+			                var ground = BABYLON.Mesh.CreateGround("ground", 1000, 1000, 2, newScene);
 
-					    var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
-					    light.intensity = 0.6;
-					    
-					    var ground = BABYLON.Mesh.CreateGround("ground1", 500, 500, 2, scene);
 
-					    return scene;
-					};
-
-					var scene = createScene();
-
-					engine.runRenderLoop(function () {
-						scene.render();
-					});
+			                console.log(newScene);
+			                // Once the scene is loaded, just register a render loop to render it
+			                engine.runRenderLoop(function() {
+			                    newScene.render();
+			                });
+			            });
+			        }, function (progress) {
+			            // To do: give progress feedback to user
+			        });
 
 					window.addEventListener("resize", function () {
 						engine.resize();
