@@ -36,13 +36,13 @@ caribbeanWarApp.service('shipControl', function () {
 		function(){
 			if(checkFocus()){
 				ship.wheelMode = -1;
-				console.log(ship.rotating);
+				console.log(ship.wheelMode);
 			}
 		},
 		function(){
 			if(checkFocus()){
 				ship.wheelMode = 0;
-				console.log(ship.rotating);
+				console.log(ship.wheelMode);
 			}
 		});
 
@@ -66,6 +66,7 @@ caribbeanWarApp.service('shipControl', function () {
 		},
 		moveShip: function(delay){
 			if(ship.initiated){
+				var velocity = 
 				ship.speed = ship.sailsMode*ship.maxSpeed/3;
 
 				ship.position.x = ship.position.x + Math.cos(ship.position.angle)*ship.speed*delay;
@@ -78,7 +79,7 @@ caribbeanWarApp.service('shipControl', function () {
 		},
 		rotateShip: function(delay){
 			if(ship.initiated){
-				ship.position.angle = ship.position.angle + (ship.wheelMode*ship.speed*delay)/2;
+				ship.position.angle = ship.position.angle + (ship.wheelMode*ship.speed*delay)/(ship.sailsMode+1);
 			}
 			return {
 				angle: ship.position.angle

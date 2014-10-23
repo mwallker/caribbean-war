@@ -6,6 +6,12 @@ caribbeanWarApp
             scope:{},
             link:function($scope){
 				$scope.options = [
+                    {
+                        name:"Resume",
+                        action:function(){
+                            $scope.showMenu = true;
+                        }
+                    },
 					{
                         name:"Settings",
                         action:function(){
