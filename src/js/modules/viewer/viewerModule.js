@@ -21,31 +21,43 @@ caribbeanWarApp
 			                var ship = newScene.meshes[0];
 
 							camera.target = ship.position || BABYLON.Vector3.Zero();
-							camera.alpha = Math.PI + (ship.rotation.y || 0);
-							camera.beta = 0.8;
+							camera.alpha = -(Math.PI + (ship.rotation.y || 0));
+							camera.beta = 1.2;
 							camera.attachControl(canvas);
 
 							newScene.activeCamera = camera;	
-
-			                console.log(newScene.activeCamera);
 
 			                var lockCamera = false;
 
 			                $document.on('mouseup', function(event) {
 			                	lockCamera = false;
-								console.log(lockCamera);
 					        });
 
 					        element.on('mousedown', function(event) {
 					        	lockCamera = true;
-								console.log(lockCamera);
 					        });
 
+					        var lerp = function(start, end){
+					        	var delta = 0.2;
+					        	return (start + delta*(end - start));
+					        };
 
 			                var beforeRenderFunction = function () {
-					            // CAMERA
+					            //MOTOR
+					            delay = Math.abs(deltaTime - +Date.now())*0.001;
+
+			                	var r = shipControl.rotateShip(delay);
+								var t = shipControl.moveShip(delay);
+
+			                	ship.position.x = t.x;
+								ship.position.z = t.y;
+
+			                	ship.rotation.y = -r.angle;
+
+			                    // CAMERA
 					            if(!lockCamera){
-					            	camera.alpha = -(Math.PI + ship.rotation.y);
+					            	camera.alpha = lerp(camera.alpha, -(Math.PI + ship.rotation.y));
+					            	camera.beta = lerp(camera.beta, 1.2);
 					            }
 					            if (camera.beta < 0.1)
 					                camera.beta = 0.1;
@@ -58,18 +70,7 @@ caribbeanWarApp
 					            if (camera.radius < 5)
 					                camera.radius = 5;
 
-					            //MOTOR
-					            delay = Math.abs(deltaTime - +Date.now())*0.001;
-
-			                	var r = shipControl.rotateShip(delay);
-								var t = shipControl.moveShip(delay);
-
-			                	ship.position.x = t.x;
-								ship.position.z = t.y;
-
-			                	ship.rotation.y = -r.angle;
-			                    
-			                    deltaTime = +Date.now();
+					            deltaTime = +Date.now();
 					        };
 
         					newScene.registerBeforeRender(beforeRenderFunction);
