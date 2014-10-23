@@ -37,11 +37,6 @@ caribbeanWarApp
 					        	lockCamera = true;
 					        });
 
-					        var lerp = function(start, end){
-					        	var delta = 0.2;
-					        	return (start + delta*(end - start));
-					        };
-
 			                var beforeRenderFunction = function () {
 					            //MOTOR
 					            delay = Math.abs(deltaTime - +Date.now())*0.001;
@@ -52,12 +47,14 @@ caribbeanWarApp
 			                	ship.position.x = t.x;
 								ship.position.z = t.y;
 
-			                	ship.rotation.y = -r.angle;
+			                	ship.rotation.y = - r.angle;
+			                	ship.rotation.x = - r.slope;
+								console.log(r.slope);
 
 			                    // CAMERA
 					            if(!lockCamera){
-					            	camera.alpha = lerp(camera.alpha, -(Math.PI + ship.rotation.y));
-					            	camera.beta = lerp(camera.beta, 1.2);
+					            	camera.alpha = shipControl.lerp(camera.alpha, -(Math.PI + ship.rotation.y), 0.1);
+					            	camera.beta = shipControl.lerp(camera.beta, 1.2, 0.1);
 					            }
 					            if (camera.beta < 0.1)
 					                camera.beta = 0.1;

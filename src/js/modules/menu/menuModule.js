@@ -1,10 +1,10 @@
 caribbeanWarApp
-	.directive('gameMenu', ['$state', function ($state) {
+	.directive('gameMenu', ['$state', 'connection', function ($state, connection) {
         return { 
             templateUrl: 'js/modules/menu/menu-template.html',
             restrict: 'E',
             scope:{},
-            link:function($scope){
+            link:function($scope, $rootScope){
 				$scope.options = [
                     {
                         name:"Resume",
@@ -21,6 +21,7 @@ caribbeanWarApp
 					{
                         name:"Exit",
                         action:function(){
+                            connection.send("exitWorld", {});
                             $state.go('harbor');
                         }
                     }

@@ -35,7 +35,7 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $root
 
 	$scope.toWorld = function(){
 		if($scope.selectedShip.ID){
-			connection.send("shipSelect", {shipId:+$scope.selectedShip.ID});		
+			connection.send("enterWorld", {shipId:+$scope.selectedShip.ID});		
 		}
 		else{
 			$rootScope.$emit("error", "No ships avaible");
@@ -47,6 +47,6 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $root
 			$state.go('world');
 		}
 	};
-
-	$rootScope.$on("shipSelect", $scope.enterWorld);
+	
+	$rootScope.$on("enterWorld", $scope.enterWorld);
 });
