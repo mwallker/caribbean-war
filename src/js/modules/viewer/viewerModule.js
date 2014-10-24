@@ -31,6 +31,7 @@ caribbeanWarApp
 
 			                $document.on('mouseup', function(event) {
 			                	lockCamera = false;
+			                	console.log(ship.position);
 					        });
 
 					        element.on('mousedown', function(event) {
@@ -41,15 +42,15 @@ caribbeanWarApp
 					            //MOTOR
 					            delay = Math.abs(deltaTime - +Date.now())*0.001;
 
-			                	var r = shipControl.rotateShip(delay);
 								var t = shipControl.moveShip(delay);
 
 			                	ship.position.x = t.x;
 								ship.position.z = t.y;
+								ship.position.y = t.z;
 
-			                	ship.rotation.y = - r.angle;
-			                	ship.rotation.x = - r.slope;
-								console.log(r.slope);
+			                	ship.rotation.y = - t.angle;
+			                	ship.rotation.x = - t.vSlope;
+			                	ship.rotation.z = t.hSlope;
 
 			                    // CAMERA
 					            if(!lockCamera){
