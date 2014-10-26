@@ -8,17 +8,15 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $root
 	}else{
 		$scope.user = userStorage.get();
 		$scope.ships = userStorage.get().Ships;
-		console.log($scope.ships);
+
 		$scope.selectedShip = (($scope.ships && $scope.ships.length) ? $scope.ships[0] : {ID:0});
-		for(ship in $scope.ships){
-			ship.selected = false;
-			if($scope.ships[ship].ID == $scope.selectedShip.ID){
-  				$scope.ships[ship].selected = true;
+
+		angular.forEach($scope.ships, function(value, key) {
+  			value.selected = false;
+  			if(value.ID == $scope.selectedShip.ID){
+  				value.selected = true;
   			}
-		}
-		if($scope.selectedShip){
-			connection.send("shipSelect", {shipId:+$scope.selectedShip.ID});
-		}
+		});
 	}
 
 	$scope.pickShip = function(index){
@@ -28,7 +26,6 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $root
 			});
 			$scope.ships[index].selected = true;
 			$scope.selectedShip = $scope.ships[index];
-			connection.send("shipSelect", {shipId:+$scope.selectedShip.ID});
 		}
 	};
 
@@ -38,10 +35,18 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $root
 
 	$scope.toWorld = function(){
 		if($scope.selectedShip.ID){
-			$state.go('world');
+			connection.send("enterWorld", {shipId:+$scope.selectedShip.ID});		
 		}
 		else{
 			$rootScope.$emit("error", "No ships avaible");
 		}
 	};
+
+	$scope.enterWorld = function(event, details){
+		if(details.success === true){
+			$state.go('world');
+		}
+	};
+	
+	$rootScope.$on("enterWorld", $scope.enterWorld);
 });

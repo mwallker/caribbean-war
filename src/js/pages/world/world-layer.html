@@ -1,5 +1,18 @@
 <div id="world-layer">
-	  <chat></chat>
-	  <game-menu></game-menu>
-	  <world-map></world-map>
+	<chat></chat>
+	<game-menu></game-menu>
+
+	<div id="worldMap" ng-show="showMap">
+		<div>
+			<span>This is a map</span>
+			<a ng-click="showMap=false">x</a>
+		</div>
+	</div>
+
+	<div id="gameMenu" ng-show="showMenu">
+		<ul>
+			<li ng-repeat="item in options" ng-click="item.action()">{{item.name}}</li>
+		</ul>
+	</div>
+
 </div>
