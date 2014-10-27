@@ -20,9 +20,9 @@ caribbeanWarApp
 			                var ship = scene.meshes[0];
 
 			                var shipMaterial = new BABYLON.StandardMaterial("shipMaterial", scene);
-			                ship.ambienrColor = new BABYLON.Color3(0, 0, 0);
+			                //ship.ambienrColor = new BABYLON.Color3(0, 0, 0);
 							ship.specularColor = new BABYLON.Color3(1, 1, 1);
-							ship.diffuseColor = new BABYLON.Color3(1, 1, 1);
+							ship.diffuseColor = new BABYLON.Color3(0.3, 0.6, 1);
 							ship.material = shipMaterial;
 
 			                var cameraTarget = {};
@@ -35,14 +35,15 @@ caribbeanWarApp
 			                cameraSetup.initCamera(camera, cameraTarget, canvas);
 							camera.attachControl(canvas);
 
-							(function(){
-								//Light
+							//Light
+							(function(){		
 								var light = new BABYLON.DirectionalLight("Dir", new BABYLON.Vector3(0, -100, 0), scene);
 								light.diffuse = new BABYLON.Color3(1, 1, 1);
 								light.specular = new BABYLON.Color3(1, 1, 1);
 								light.intensity = 1;
 							})();
 
+							//Water
 							(function(){
 								var ground = BABYLON.Mesh.CreateGround("ground", 10000, 10001, 2, scene);
 								var water = new BABYLON.StandardMaterial("water", scene);
@@ -52,11 +53,11 @@ caribbeanWarApp
 								ground.material = water;
 							})();
 
+							// Skybox
 							(function(){
-								// Skybox
+
 								var skybox = BABYLON.Mesh.CreateBox("skyBox", -1000, scene);
 								var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
-
 								//skyboxMaterial.backFaceCulling = false;
 								//skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("skybox/skybox", scene);
 								//skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
@@ -87,8 +88,8 @@ caribbeanWarApp
 								element.on('mousedown', function(event) {
 									cameraSetup.lockCamera(true);
 								});
+
 								cameraSetup.correctCamera(cameraTarget);
-			                    // CAMERA
 
 					            deltaTime = +Date.now();
 					        };

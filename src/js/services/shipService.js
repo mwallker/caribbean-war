@@ -18,7 +18,8 @@ caribbeanWarApp.service('shipControl', function () {
 	};
 
 	var timer = 0;
-	
+	var obs = 0;
+
 	var checkFocus = function(){
 		return !$("input").is(':focus');
 	};
@@ -66,6 +67,8 @@ caribbeanWarApp.service('shipControl', function () {
 		moveShip: function(delay){
 			if(ship.initiated){
 				timer = lerp(timer, timer + delay%(2*Math.PI), 0.5);
+				obs = lerp(obs, Math.random()*0.4 - 0.2, 0.03);
+
 				ship.speed = lerp(ship.speed, ship.sailsMode*ship.maxSpeed*delay/4, 0.01);
 
 				ship.position.x = ship.position.x + Math.cos(ship.position.angle)*ship.speed;
@@ -73,13 +76,14 @@ caribbeanWarApp.service('shipControl', function () {
 				ship.position.z = ship.position.z + Math.sin(timer*1.4)/(ship.weight*0.25);
 
 				ship.position.angle = ship.position.angle + (ship.wheelMode*ship.speed*0.25)/(ship.sailsMode+1);
-				ship.position.verticalSlope = lerp(ship.position.verticalSlope, ship.wheelMode*ship.speed*0.7, 0.02);
+				ship.position.verticalSlope = lerp(ship.position.verticalSlope, ship.wheelMode*ship.speed*0.7 + obs, 0.02);
 				ship.position.horizontalSlope = ship.speed*0.4 + Math.sin(timer*1.4)*0.06;
 			}
 			return {
 				x: ship.position.x,
 				y: ship.position.y,
 				z: ship.position.z,
+
 				angle: ship.position.angle,
 				vSlope: ship.position.verticalSlope,
 				hSlope: ship.position.horizontalSlope

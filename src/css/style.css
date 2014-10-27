@@ -1,6 +1,7 @@
 #chat-layer {
   position: fixed;
-  top: 50%;
+  bottom: 25px;
+  left: 5px;
   width: 300px;
   height: 200px;
   border: solid 1px #1D1D1D;
@@ -62,6 +63,7 @@
   bottom: 0;
   width: 100%;
   border: solid 5px #005959;
+  background: #005959;
 }
 .shipsList ul {
   margin: 10px;
@@ -92,6 +94,7 @@
   height: 100%;
   width: 300px;
   background-color: #005959;
+  background-opacity: 0.7;
   z-index: 2;
 }
 #login-layer form {
