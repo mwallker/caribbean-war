@@ -1,5 +1,5 @@
 caribbeanWarApp
-	.directive('viewer', ['shipControl', '$document', function (shipControl, $document) {
+	.directive('viewer', ['shipControl', 'cameraSetup', '$document', function (shipControl, cameraSetup, $document) {
         return { 
             templateUrl: 'js/modules/viewer/viewer-template.html',
             restrict: 'E',
@@ -11,32 +11,60 @@ caribbeanWarApp
 				    var engine = new BABYLON.Engine(canvas, true);
 				    var delay = 0;
 
-					BABYLON.SceneLoader.Load('js/modules/viewer/', "login.babylon", engine, function (newScene) {
+					BABYLON.SceneLoader.Load('js/modules/viewer/', "login.babylon", engine, function (scene) {
 
-			            newScene.executeWhenReady(function () {
+			            scene.executeWhenReady(function () {
 			            	var deltaTime = +Date.now();
 
-			                var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, BABYLON.Vector3.Zero(), newScene);
-			                var ground = BABYLON.Mesh.CreateGround("ground", 10000, 10001, 2, newScene);
-			                var ship = newScene.meshes[0];
+			                var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, BABYLON.Vector3.Zero(), scene);       
+			                var ship = scene.meshes[0];
 
-							camera.target = ship.position || BABYLON.Vector3.Zero();
-							camera.alpha = -(Math.PI + (ship.rotation.y || 0));
-							camera.beta = 1.2;
+			                var shipMaterial = new BABYLON.StandardMaterial("shipMaterial", scene);
+			                ship.ambienrColor = new BABYLON.Color3(0, 0, 0);
+							ship.specularColor = new BABYLON.Color3(1, 1, 1);
+							ship.diffuseColor = new BABYLON.Color3(1, 1, 1);
+							ship.material = shipMaterial;
+
+			                var cameraTarget = {};
+			                cameraTarget.position = BABYLON.Vector3.Zero();
+			                cameraTarget.rotation = {y: 0};
+
+			                console.log(camera);
+
+							scene.activeCamera = camera;	
+			                cameraSetup.initCamera(camera, cameraTarget, canvas);
 							camera.attachControl(canvas);
 
-							newScene.activeCamera = camera;	
+							(function(){
+								//Light
+								var light = new BABYLON.DirectionalLight("Dir", new BABYLON.Vector3(0, -100, 0), scene);
+								light.diffuse = new BABYLON.Color3(1, 1, 1);
+								light.specular = new BABYLON.Color3(1, 1, 1);
+								light.intensity = 1;
+							})();
 
-			                var lockCamera = false;
+							(function(){
+								var ground = BABYLON.Mesh.CreateGround("ground", 10000, 10001, 2, scene);
+								var water = new BABYLON.StandardMaterial("water", scene);
+								water.specularColor = new BABYLON.Color3(0.653, 0.780, 0.954);
+								water.diffuseColor = new BABYLON.Color3(0.653, 0.780, 0.954);
+								water.alpha = 0.62;
+								ground.material = water;
+							})();
 
-			                $document.on('mouseup', function(event) {
-			                	lockCamera = false;
-			                	console.log(ship.position);
-					        });
+							(function(){
+								// Skybox
+								var skybox = BABYLON.Mesh.CreateBox("skyBox", -1000, scene);
+								var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
 
-					        element.on('mousedown', function(event) {
-					        	lockCamera = true;
-					        });
+								//skyboxMaterial.backFaceCulling = false;
+								//skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("skybox/skybox", scene);
+								//skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+								skyboxMaterial.diffuseColor = new BABYLON.Color3(0.1, 0.8, 1);
+								skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+								skyboxMaterial.specularPower = 21;
+								skybox.material = skyboxMaterial;
+							})();
 
 			                var beforeRenderFunction = function () {
 					            //MOTOR
@@ -44,37 +72,31 @@ caribbeanWarApp
 
 								var t = shipControl.moveShip(delay);
 
-			                	ship.position.x = t.x;
-								ship.position.z = t.y;
+			                	ship.position.x = cameraTarget.position.x = t.x;
+								ship.position.z = cameraTarget.position.z = t.y;
 								ship.position.y = t.z;
 
-			                	ship.rotation.y = - t.angle;
+			                	ship.rotation.y = cameraTarget.rotation.y = - t.angle;
 			                	ship.rotation.x = - t.vSlope;
-			                	ship.rotation.z = t.hSlope;
+			  		            ship.rotation.z = t.hSlope;
 
+		  		            	$document.on('mouseup', function(event) {
+									cameraSetup.lockCamera(false);
+								});
+
+								element.on('mousedown', function(event) {
+									cameraSetup.lockCamera(true);
+								});
+								cameraSetup.correctCamera(cameraTarget);
 			                    // CAMERA
-					            if(!lockCamera){
-					            	camera.alpha = shipControl.lerp(camera.alpha, -(Math.PI + ship.rotation.y), 0.1);
-					            	camera.beta = shipControl.lerp(camera.beta, 1.2, 0.1);
-					            }
-					            if (camera.beta < 0.1)
-					                camera.beta = 0.1;
-					            else if (camera.beta > (Math.PI / 2) * 0.9)
-					                camera.beta = (Math.PI / 2) * 0.9;
-
-					            if (camera.radius > 50)
-					                camera.radius = 50;
-
-					            if (camera.radius < 5)
-					                camera.radius = 5;
 
 					            deltaTime = +Date.now();
 					        };
 
-        					newScene.registerBeforeRender(beforeRenderFunction);
+        					scene.registerBeforeRender(beforeRenderFunction);
 
 			                engine.runRenderLoop(function() {
-			                    newScene.render();
+			                    scene.render();
 			                });
 			            });
 			        }, function (progress) {

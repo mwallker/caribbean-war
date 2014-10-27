@@ -16,6 +16,7 @@ caribbeanWarApp.service('shipControl', function () {
 			horizontalSlope: 0
 		}
 	};
+
 	var timer = 0;
 	
 	var checkFocus = function(){
@@ -58,27 +59,22 @@ caribbeanWarApp.service('shipControl', function () {
 			}
 		});
 
-	var linearExtrapolation = function(start, end, delta){
-		return (start + (delta || 0.01)*(end - start));
-	};
-
 	return {
 		initShip: function(ship){
 
 		},
 		moveShip: function(delay){
 			if(ship.initiated){
-				timer = linearExtrapolation(timer, timer + delay%(2*Math.PI), 0.5);
-				ship.speed = linearExtrapolation(ship.speed, ship.sailsMode*ship.maxSpeed*delay/4, 0.01);
+				timer = lerp(timer, timer + delay%(2*Math.PI), 0.5);
+				ship.speed = lerp(ship.speed, ship.sailsMode*ship.maxSpeed*delay/4, 0.01);
 
 				ship.position.x = ship.position.x + Math.cos(ship.position.angle)*ship.speed;
 				ship.position.y = ship.position.y + Math.sin(ship.position.angle)*ship.speed;
 				ship.position.z = ship.position.z + Math.sin(timer*1.4)/(ship.weight*0.25);
-				console.log(timer);
 
 				ship.position.angle = ship.position.angle + (ship.wheelMode*ship.speed*0.25)/(ship.sailsMode+1);
-				ship.position.verticalSlope = linearExtrapolation(ship.position.verticalSlope, ship.wheelMode*ship.speed*0.7, 0.02);
-				ship.position.horizontalSlope = ship.speed*0.6 + Math.sin(timer*1.4)*0.06;
+				ship.position.verticalSlope = lerp(ship.position.verticalSlope, ship.wheelMode*ship.speed*0.7, 0.02);
+				ship.position.horizontalSlope = ship.speed*0.4 + Math.sin(timer*1.4)*0.06;
 			}
 			return {
 				x: ship.position.x,
@@ -88,7 +84,6 @@ caribbeanWarApp.service('shipControl', function () {
 				vSlope: ship.position.verticalSlope,
 				hSlope: ship.position.horizontalSlope
 			};
-		},
-		lerp: linearExtrapolation
+		}
 	};
 });
