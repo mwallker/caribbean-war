@@ -73,9 +73,9 @@ caribbeanWarApp.service('shipControl', function () {
 
 				ship.position.x = ship.position.x + Math.cos(ship.position.angle)*ship.speed;
 				ship.position.y = ship.position.y + Math.sin(ship.position.angle)*ship.speed;
-				ship.position.z = ship.position.z + Math.sin(timer*1.4)/(ship.weight*0.25);
+				ship.position.z = ship.position.z + Math.sin(timer*1.4)/(ship.weight*0.3);
 
-				ship.position.angle = ship.position.angle + (ship.wheelMode*ship.speed*0.25)/(ship.sailsMode+1);
+				ship.position.angle = ship.position.angle + (ship.wheelMode*ship.speed*0.075)/(ship.sailsMode+1);
 				ship.position.verticalSlope = lerp(ship.position.verticalSlope, ship.wheelMode*ship.speed*0.7 + obs, 0.02);
 				ship.position.horizontalSlope = ship.speed*0.4 + Math.sin(timer*1.4)*0.06;
 			}

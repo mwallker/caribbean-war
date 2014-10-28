@@ -6,106 +6,115 @@ caribbeanWarApp
             scope:{},
             link:function(scope, element, attr){
 				if (BABYLON.Engine.isSupported()) {
-
 				    var canvas = $('#renderCanvas')[0];
 				    var engine = new BABYLON.Engine(canvas, true);
 				    var delay = 0;
+				    var scene = new BABYLON.Scene(engine);
 
-					BABYLON.SceneLoader.Load('js/modules/viewer/', "login.babylon", engine, function (scene) {
+				    var deltaTime = +Date.now();
 
-			            scene.executeWhenReady(function () {
-			            	var deltaTime = +Date.now();
+			        var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, BABYLON.Vector3.Zero(), scene);       
+			        var ship = BABYLON.Mesh.CreateBox("ship", 1, scene);
 
-			                var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, BABYLON.Vector3.Zero(), scene);       
-			                var ship = scene.meshes[0];
+	        		var shipMaterial = new BABYLON.StandardMaterial("shipMaterial", scene);
+					ship.specularColor = new BABYLON.Color3(1, 1, 1);
+					ship.diffuseColor = new BABYLON.Color3(0.3, 0.6, 1);
+					ship.material = shipMaterial;
 
-			                var shipMaterial = new BABYLON.StandardMaterial("shipMaterial", scene);
-			                //ship.ambienrColor = new BABYLON.Color3(0, 0, 0);
-							ship.specularColor = new BABYLON.Color3(1, 1, 1);
-							ship.diffuseColor = new BABYLON.Color3(0.3, 0.6, 1);
-							ship.material = shipMaterial;
+	                var cameraTarget = {};
+	                cameraTarget.position = BABYLON.Vector3.Zero();
+	                cameraTarget.rotation = {y: 0};
 
-			                var cameraTarget = {};
-			                cameraTarget.position = BABYLON.Vector3.Zero();
-			                cameraTarget.rotation = {y: 0};
+	                console.log(scene);
 
-			                console.log(camera);
+					scene.activeCamera = camera;	
+	                cameraSetup.initCamera(camera, cameraTarget, canvas);
+					camera.attachControl(canvas);
 
-							scene.activeCamera = camera;	
-			                cameraSetup.initCamera(camera, cameraTarget, canvas);
-							camera.attachControl(canvas);
+					//Light
+					var light = null;
+					(function(){		
+						light = new BABYLON.DirectionalLight("Dir", new BABYLON.Vector3(0, -100, 0), scene);
+						light.diffuse = new BABYLON.Color3(1, 1, 1);
+						light.specular = new BABYLON.Color3(1, 1, 1);
+						light.intensity = 1;
+					})();
 
-							//Light
-							(function(){		
-								var light = new BABYLON.DirectionalLight("Dir", new BABYLON.Vector3(0, -100, 0), scene);
-								light.diffuse = new BABYLON.Color3(1, 1, 1);
-								light.specular = new BABYLON.Color3(1, 1, 1);
-								light.intensity = 1;
-							})();
+					// Skybox
+					var skybox = null;
+					(function(){
+						skybox = BABYLON.Mesh.CreateBox("skyBox", 1000.0, scene);
+						var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+						skyboxMaterial.backFaceCulling = false;
+						skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("images/TropicalSunnyDay", scene);
+						skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+						skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+						skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+						skybox.material = skyboxMaterial;
+					})();
 
-							//Water
-							(function(){
-								var ground = BABYLON.Mesh.CreateGround("ground", 10000, 10001, 2, scene);
-								var water = new BABYLON.StandardMaterial("water", scene);
-								water.specularColor = new BABYLON.Color3(0.653, 0.780, 0.954);
-								water.diffuseColor = new BABYLON.Color3(0.653, 0.780, 0.954);
-								water.alpha = 0.62;
-								ground.material = water;
-							})();
+					//Water
+					(function(){
+						var ground = BABYLON.Mesh.CreateGround("ground", 1000, 1000, 2, scene);
+						var water = new BABYLON.StandardMaterial("water", scene);
+						water.bumpTexture = new BABYLON.Texture("images/water.png", scene);
+						water.bumpTexture.uOffset = 100;
+						water.bumpTexture.vOffset = 100;
+						water.bumpTexture.uScale = 100;
+						water.bumpTexture.vScale = 100;
+						water.specularColor = new BABYLON.Color3(0, 0, 0);
+						water.diffuseColor = new BABYLON.Color3(0.653, 0.780, 0.954);
+						water.alpha = 0.62;
+						ground.material = water;
+					})();
 
-							// Skybox
-							(function(){
+	                var beforeRenderFunction = function () {
+			            //MOTOR
+			            delay = Math.abs(deltaTime - +Date.now())*0.001;
 
-								var skybox = BABYLON.Mesh.CreateBox("skyBox", -1000, scene);
-								var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
-								//skyboxMaterial.backFaceCulling = false;
-								//skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("skybox/skybox", scene);
-								//skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
-								skyboxMaterial.diffuseColor = new BABYLON.Color3(0.1, 0.8, 1);
-								skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-								skyboxMaterial.specularPower = 21;
-								skybox.material = skyboxMaterial;
-							})();
+						var t = shipControl.moveShip(delay);
 
-			                var beforeRenderFunction = function () {
-					            //MOTOR
-					            delay = Math.abs(deltaTime - +Date.now())*0.001;
+	                	ship.position.x = cameraTarget.position.x = skybox.position.x = t.x;
+						ship.position.z = cameraTarget.position.z = skybox.position.z = t.y;
+						ship.position.y = t.z;
+						cameraTarget.position.y = skybox.position.y = 0;
 
-								var t = shipControl.moveShip(delay);
+	                	ship.rotation.y = cameraTarget.rotation.y = - t.angle;
+	                	ship.rotation.x = - t.vSlope;
+	  		            ship.rotation.z = t.hSlope;
 
-			                	ship.position.x = cameraTarget.position.x = t.x;
-								ship.position.z = cameraTarget.position.z = t.y;
-								ship.position.y = t.z;
+  		            	$document.on('mouseup', function(event) {
+							cameraSetup.lockCamera(false);
+						});
 
-			                	ship.rotation.y = cameraTarget.rotation.y = - t.angle;
-			                	ship.rotation.x = - t.vSlope;
-			  		            ship.rotation.z = t.hSlope;
+						element.on('mousedown', function(event) {
+							cameraSetup.lockCamera(true);
+						});
 
-		  		            	$document.on('mouseup', function(event) {
-									cameraSetup.lockCamera(false);
-								});
+						cameraSetup.correctCamera(cameraTarget);
 
-								element.on('mousedown', function(event) {
-									cameraSetup.lockCamera(true);
-								});
+			            deltaTime = +Date.now();
+			        };
 
-								cameraSetup.correctCamera(cameraTarget);
+					scene.registerBeforeRender(beforeRenderFunction);
 
-					            deltaTime = +Date.now();
-					        };
-
-        					scene.registerBeforeRender(beforeRenderFunction);
-
-			                engine.runRenderLoop(function() {
-			                    scene.render();
-			                });
-			            });
-			        }, function (progress) {
-			            // To do: give progress feedback to user
-			        });
+	                engine.runRenderLoop(function() {
+	                    scene.render();
+	                });
 
 					window.addEventListener("resize", function () {
 						engine.resize();
+					});
+
+					window.addEventListener("click", function (evt) {
+						var pickResult = scene.pick(evt.clientX, evt.clientY);
+					   	var box = new BABYLON.Mesh.CreateBox("s", 1, scene);
+						box.position = new BABYLON.Vector3(
+							Math.round(pickResult.pickedPoint.x),
+							Math.round(pickResult.pickedPoint.y) + 0.5,
+							Math.round(pickResult.pickedPoint.z)
+						);
+					   	console.log(pickResult.pickedPoint);	
 					});
 				}
             }    
