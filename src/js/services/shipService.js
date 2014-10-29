@@ -60,9 +60,50 @@ caribbeanWarApp.service('shipControl', function () {
 			}
 		});
 
+	//Shooting
+	var holdenE = false;
+	var holdenQ = false;
+
+	var targeting = function(){
+
+		return [];
+	};
+
+	KeyboardJS.on('q', 
+		function(){
+			if(!holdenQ){
+				holdenQ = true;
+			} 
+		},
+		function(){
+			if(holdenQ){
+				holdenQ = false;
+			}
+		});
+
+	KeyboardJS.on('e', 
+		function(){
+			if(!holdenE) {
+				console.log("E+");
+				holdenE = true;
+			}
+		},
+		function(){
+			if(holdenE) {
+				holdenE = false;
+				console.log("E-");
+			}	
+		});
+
 	return {
 		initShip: function(ship){
 
+		},
+		targeting: function(){
+			return {
+				e: holdenE,
+				q: holdenQ
+			};
 		},
 		moveShip: function(delay){
 			if(ship.initiated){
