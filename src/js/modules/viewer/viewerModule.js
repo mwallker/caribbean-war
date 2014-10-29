@@ -91,12 +91,13 @@ caribbeanWarApp
 	  		            ship.rotation.z = t.hSlope;
 
 						//Targeting
-						if(shipControl.targeting().e || shipControl.targeting().q){
+						if(shipControl.targeting() !== 0){
 							var pickResult = scene.pick(scene.pointerX, scene.pointerY);
 							if(lines){
 								lines.dispose();
 							}
 							cameraSetup.lockCamera(true);
+							camera.alpha = ship.rotation.y - Math.PI/2;
 							lines = BABYLON.Mesh.CreateLines("lines", calculateCurve(ship.position, pickResult.pickedPoint), scene);
 						    console.log();
 						}else{
@@ -116,7 +117,7 @@ caribbeanWarApp
 							cameraSetup.lockCamera(true);
 						});
 
-						cameraSetup.correctCamera(cameraTarget);
+						cameraSetup.correctCamera(shipControl.targeting());
 
 			            deltaTime = +Date.now();
 			        };

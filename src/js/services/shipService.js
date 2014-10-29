@@ -63,6 +63,7 @@ caribbeanWarApp.service('shipControl', function () {
 	//Shooting
 	var holdenE = false;
 	var holdenQ = false;
+	var direction = 0;
 
 	var targeting = function(){
 
@@ -72,12 +73,12 @@ caribbeanWarApp.service('shipControl', function () {
 	KeyboardJS.on('q', 
 		function(){
 			if(!holdenQ){
-				holdenQ = true;
+				direction = -1;
 			} 
 		},
 		function(){
 			if(holdenQ){
-				holdenQ = false;
+				direction = 0;
 			}
 		});
 
@@ -85,12 +86,12 @@ caribbeanWarApp.service('shipControl', function () {
 		function(){
 			if(!holdenE) {
 				console.log("E+");
-				holdenE = true;
+				direction = 1;
 			}
 		},
 		function(){
 			if(holdenE) {
-				holdenE = false;
+				direction = 0;
 				console.log("E-");
 			}	
 		});
@@ -100,10 +101,7 @@ caribbeanWarApp.service('shipControl', function () {
 
 		},
 		targeting: function(){
-			return {
-				e: holdenE,
-				q: holdenQ
-			};
+			return direction;
 		},
 		moveShip: function(delay){
 			if(ship.initiated){
