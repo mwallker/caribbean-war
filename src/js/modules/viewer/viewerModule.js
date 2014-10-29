@@ -96,8 +96,7 @@ caribbeanWarApp
 							if(lines){
 								lines.dispose();
 							}
-							cameraSetup.lockCamera(true);
-							camera.alpha = ship.rotation.y - Math.PI/2;
+							//cameraSetup.lockCamera(true);
 							lines = BABYLON.Mesh.CreateLines("lines", calculateCurve(ship.position, pickResult.pickedPoint), scene);
 						    console.log();
 						}else{

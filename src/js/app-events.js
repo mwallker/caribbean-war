@@ -4,7 +4,6 @@ var lerp = function(start, end, delta){
 
 var calculateCurve = function(start, end){
 	var curve = [];
-	console.log(start);
 	var mid1 = new BABYLON.Vector3(start.x + (end.x - start.x)/4,
 							1,
 							start.z + (end.z - start.z)/4);
