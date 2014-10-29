@@ -58,7 +58,7 @@ caribbeanWarApp
 
 					//Water
 					(function(){
-						var water = BABYLON.Mesh.CreateGround("water", 1000, 1000, 2, scene);
+						var water = BABYLON.Mesh.CreateGround("water", 10000, 10000, 2, scene);
 
 						var waterMaterial = new BABYLON.StandardMaterial("water", scene);
 						waterMaterial.bumpTexture = new BABYLON.Texture("images/water.png", scene);
@@ -68,7 +68,7 @@ caribbeanWarApp
 						waterMaterial.bumpTexture.vScale = 100;
 						waterMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
 						waterMaterial.diffuseColor = new BABYLON.Color3(0.653, 0.780, 0.954);
-						//waterMaterial.alpha = 0.62;
+						waterMaterial.alpha = 0.62;
 
 						water.material = waterMaterial;
 					})();
@@ -91,19 +91,21 @@ caribbeanWarApp
 	  		            ship.rotation.z = t.hSlope;
 
 						//Targeting
-						if(shipControl.targeting() !== 0){
+						if(shipControl.targeting().direction !== 0){
 							var pickResult = scene.pick(scene.pointerX, scene.pointerY);
 							if(lines){
 								lines.dispose();
 							}
-							//cameraSetup.lockCamera(true);
-							lines = BABYLON.Mesh.CreateLines("lines", calculateCurve(ship.position, pickResult.pickedPoint), scene);
-						    console.log();
+							if(shipControl.targeting().both){
+								lines = BABYLON.Mesh.CreateLines("lines", doubleCurve(ship.position, ship.rotation.y, pickResult.pickedPoint), scene);
+							}else{
+								lines = BABYLON.Mesh.CreateLines("lines", calculateCurve(ship.position, ship.rotation.y, shipControl.targeting().direction, pickResult.pickedPoint), scene);
+							}
+							
 						}else{
 							if(lines){
 								lines.dispose();
 								lines = null;
-								console.log(0);
 								cameraSetup.lockCamera(false);
 							}
 						}

@@ -5,13 +5,15 @@ caribbeanWarApp.service('cameraSetup', function(){
 
 	var settings = {
 		//Distance
+		alpha: 0,
 		radius: 23,
 		minDist: 5,
 		maxDist: 50,
 		//Rotation
 		beta: 1.2,
-		minBeta: 0.1,
-		maxBeta: 0.9,
+		normalBeta: 1.2,
+		minBeta: 0.03,
+		maxBeta: (Math.PI/2) * 0.8,
 		factor: 0.1
 	};
 
@@ -21,16 +23,23 @@ caribbeanWarApp.service('cameraSetup', function(){
 		settings: settings,
 		correctCamera: function(targeting){
 			if(camera && target && canvas){
-				var targerDirection = targeting;
-				var alpha = -(Math.PI + target.rotation.y) - targeting*Math.PI/2;
+				var targetDirection = targeting.direction;
+				if(targeting.both){
+					settings.alpha = -(Math.PI + target.rotation.y);
+					settings.beta = - settings.maxBeta;
+				}else{
+					settings.alpha = -(Math.PI + target.rotation.y) - targetDirection*Math.PI/2;
+					settings.beta = settings.normalBeta;
+				}
+
 				if(!lockCamera){
-	            	camera.alpha = lerp(camera.alpha, alpha, settings.factor);
+	            	camera.alpha = lerp(camera.alpha, settings.alpha, settings.factor);
 	            	camera.beta = lerp(camera.beta, settings.beta, settings.factor);
 	            }
 				if (camera.beta < settings.minBeta)
 					camera.beta = settings.minBeta;
-	            else if (camera.beta > (Math.PI / 2) * settings.maxBeta)
-	                camera.beta = (Math.PI / 2) * settings.maxBeta;
+	            else if (camera.beta > settings.maxBeta)
+	                camera.beta = settings.maxBeta;
 
 	            if (camera.radius > settings.maxDist)
 	                camera.radius = settings.maxDist;

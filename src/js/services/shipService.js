@@ -80,14 +80,13 @@ caribbeanWarApp.service('shipControl', function () {
 		function(){
 			if(holdenQ){
 				holdenQ = false;
-				direction = 0;
+				if(!holdenE) direction = 0;
 			}
 		});
 
 	KeyboardJS.on('e', 
 		function(){
 			if(!holdenE) {
-				console.log("E+");
 				holdenE = true;
 				direction = 1;
 			}
@@ -95,8 +94,7 @@ caribbeanWarApp.service('shipControl', function () {
 		function(){
 			if(holdenE) {
 				holdenE = false;
-				console.log("E-");
-				direction = 0;
+				if(!holdenQ) direction = 0;
 			}	
 		});
 
@@ -105,7 +103,10 @@ caribbeanWarApp.service('shipControl', function () {
 
 		},
 		targeting: function(){
-			return direction;
+			return {
+				direction: direction,
+				both: holdenE && holdenQ
+			};
 		},
 		moveShip: function(delay){
 			if(ship.initiated){
