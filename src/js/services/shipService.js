@@ -73,11 +73,13 @@ caribbeanWarApp.service('shipControl', function () {
 	KeyboardJS.on('q', 
 		function(){
 			if(!holdenQ){
+				holdenQ = true;
 				direction = -1;
 			} 
 		},
 		function(){
 			if(holdenQ){
+				holdenQ = false;
 				direction = 0;
 			}
 		});
@@ -86,13 +88,15 @@ caribbeanWarApp.service('shipControl', function () {
 		function(){
 			if(!holdenE) {
 				console.log("E+");
+				holdenE = true;
 				direction = 1;
 			}
 		},
 		function(){
 			if(holdenE) {
-				direction = 0;
+				holdenE = false;
 				console.log("E-");
+				direction = 0;
 			}	
 		});
 

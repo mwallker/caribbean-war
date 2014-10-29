@@ -22,9 +22,9 @@ caribbeanWarApp.service('cameraSetup', function(){
 		correctCamera: function(targeting){
 			if(camera && target && canvas){
 				var targerDirection = targeting;
-				var alpha = targeting ? - Math.PI/2 + targeting*target.rotation.y : -(Math.PI + target.rotation.y);
+				var alpha = targeting ?  targeting*(Math.PI/2 +target.rotation.y) : -(Math.PI + target.rotation.y);
 				if(!lockCamera){
-	            	camera.alpha = lerp(camera.alpha, -(Math.PI + target.rotation.y), settings.factor);
+	            	camera.alpha = lerp(camera.alpha, alpha, settings.factor);
 	            	camera.beta = lerp(camera.beta, settings.beta, settings.factor);
 	            }
 				if (camera.beta < settings.minBeta)
