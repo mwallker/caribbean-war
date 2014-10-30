@@ -74,7 +74,6 @@ caribbeanWarApp
 					})();
 
 					var lines = null;
-
 	                var beforeRenderFunction = function () {
 			            //MOTOR
 			            delay = Math.abs(deltaTime - +Date.now())*0.001;
@@ -90,6 +89,7 @@ caribbeanWarApp
 	                	ship.rotation.x = - t.vSlope;
 	  		            ship.rotation.z = t.hSlope;
 
+	  		            
 						//Targeting
 						if(shipControl.targeting().direction !== 0){
 							var pickResult = scene.pick(scene.pointerX, scene.pointerY);
@@ -97,11 +97,10 @@ caribbeanWarApp
 								lines.dispose();
 							}
 							if(shipControl.targeting().both){
-								lines = BABYLON.Mesh.CreateLines("lines", doubleCurve(ship.position, ship.rotation.y, pickResult.pickedPoint), scene);
+								lines = BABYLON.Mesh.CreateLines("lines", doubleCurve(ship.position, ship.rotation.y, pickResult.pickedPoint, shipControl.focussing(delay)), scene);
 							}else{
-								lines = BABYLON.Mesh.CreateLines("lines", calculateCurve(ship.position, ship.rotation.y, shipControl.targeting().direction, pickResult.pickedPoint), scene);
+								lines = BABYLON.Mesh.CreateLines("lines", calculateCurve(ship.position, ship.rotation.y, shipControl.targeting().direction, pickResult.pickedPoint, shipControl.focussing(delay)), scene);
 							}
-							
 						}else{
 							if(lines){
 								lines.dispose();

@@ -7,6 +7,14 @@ caribbeanWarApp.service('shipControl', function () {
 		wheelMode: 0,
 		maxSpeed: 15,
 		weight: 1000,
+		cannon:{
+			scatter:{
+				time: 2,
+				value: 0.35
+			},
+			speed: 100,
+			coldDown:2
+		},
 		position:{
 			x: 0,
 			y: 0,
@@ -60,40 +68,54 @@ caribbeanWarApp.service('shipControl', function () {
 			}
 		});
 
-	//Shooting
+	//Shoting
+	var holdenSpace = false;
+	var focusTimer = 0;
+	KeyboardJS.on('space', 
+		function(){
+			if(checkFocus() && ((holdenE || holdenQ) && !holdenSpace)){
+				holdenSpace = true;
+				console.log("Hit the");
+			}
+		},
+		function(){
+			if(holdenSpace){
+				holdenSpace = false;
+				focusTimer = 0;
+				console.log("road Jack");
+			}
+		});
+
+	//Targeting
 	var holdenE = false;
 	var holdenQ = false;
 	var direction = 0;
-
-	var targeting = function(){
-
-		return [];
-	};
-
 	KeyboardJS.on('q', 
 		function(){
-			if(!holdenQ){
+			if(!holdenQ && checkFocus()){
 				holdenQ = true;
 				direction = -1;
 			} 
 		},
 		function(){
-			if(holdenQ){
+			if(holdenQ && checkFocus()){
 				holdenQ = false;
+				focusTimer = 0;
 				if(!holdenE) direction = 0;
 			}
 		});
 
 	KeyboardJS.on('e', 
 		function(){
-			if(!holdenE) {
+			if(!holdenE && checkFocus()) {
 				holdenE = true;
 				direction = 1;
 			}
 		},
 		function(){
-			if(holdenE) {
+			if(holdenE && checkFocus()) {
 				holdenE = false;
+				focusTimer = 0;
 				if(!holdenQ) direction = 0;
 			}	
 		});
@@ -101,6 +123,17 @@ caribbeanWarApp.service('shipControl', function () {
 	return {
 		initShip: function(ship){
 
+		},
+		focussing:function(delay){
+			if(holdenSpace){
+				if(focusTimer < ship.scatter.time){
+					focusTimer+=delay;
+					console.log(focusTimer);
+					return ship.scatter.value - ship.scatter.value*(focusTimer/ship.scatter.time);
+				}
+				return 0;
+			}
+			return ship.scatter.value;
 		},
 		targeting: function(){
 			return {
@@ -115,10 +148,12 @@ caribbeanWarApp.service('shipControl', function () {
 
 				ship.speed = lerp(ship.speed, ship.sailsMode*ship.maxSpeed*delay/4, 0.01);
 
+				//Movement
 				ship.position.x = ship.position.x + Math.cos(ship.position.angle)*ship.speed;
 				ship.position.y = ship.position.y + Math.sin(ship.position.angle)*ship.speed;
 				ship.position.z = ship.position.z + Math.sin(timer*1.4)/(ship.weight*0.3);
 
+				//Rotation
 				ship.position.angle = ship.position.angle + (ship.wheelMode*ship.speed*0.075)/(ship.sailsMode+1);
 				ship.position.verticalSlope = lerp(ship.position.verticalSlope, ship.wheelMode*ship.speed*0.7 + obs, 0.02);
 				ship.position.horizontalSlope = ship.speed*0.4 + Math.sin(timer*1.4)*0.06;

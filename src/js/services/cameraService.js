@@ -1,7 +1,6 @@
 caribbeanWarApp.service('cameraSetup', function(){
 	var camera = null;
 	var target = null;
-	var canvas = null;
 
 	var settings = {
 		//Distance
@@ -13,7 +12,7 @@ caribbeanWarApp.service('cameraSetup', function(){
 		beta: 1.2,
 		normalBeta: 1.2,
 		minBeta: 0.03,
-		maxBeta: (Math.PI/2) * 0.8,
+		maxBeta: (Math.PI/2) * 0.9,
 		factor: 0.1
 	};
 
@@ -22,11 +21,11 @@ caribbeanWarApp.service('cameraSetup', function(){
 	return {
 		settings: settings,
 		correctCamera: function(targeting){
-			if(camera && target && canvas){
+			if(camera && target){
 				var targetDirection = targeting.direction;
 				if(targeting.both){
 					settings.alpha = -(Math.PI + target.rotation.y);
-					settings.beta = - settings.maxBeta;
+					settings.beta = settings.maxBeta - 0.9;
 				}else{
 					settings.alpha = -(Math.PI + target.rotation.y) - targetDirection*Math.PI/2;
 					settings.beta = settings.normalBeta;
@@ -51,10 +50,9 @@ caribbeanWarApp.service('cameraSetup', function(){
 		lockCamera: function(status){
 			lockCamera = status;
 		},
-		initCamera: function(cam, tar, can){
+		initCamera: function(cam, tar){
 			camera = cam;
 			target = tar;
-			canvas = can;
 
 			camera.target = target.position || BABYLON.Vector3.Zero();
 			camera.alpha = -(Math.PI + (target.rotation.y || 0));
