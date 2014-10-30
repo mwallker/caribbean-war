@@ -126,14 +126,13 @@ caribbeanWarApp.service('shipControl', function () {
 		},
 		focussing:function(delay){
 			if(holdenSpace){
-				if(focusTimer < ship.scatter.time){
+				if(focusTimer < ship.cannon.scatter.time){
 					focusTimer+=delay;
-					console.log(focusTimer);
-					return ship.scatter.value - ship.scatter.value*(focusTimer/ship.scatter.time);
+					return ship.cannon.scatter.value - ship.cannon.scatter.value*(focusTimer/ship.cannon.scatter.time);
 				}
 				return 0;
 			}
-			return ship.scatter.value;
+			return ship.cannon.scatter.value;
 		},
 		targeting: function(){
 			return {
