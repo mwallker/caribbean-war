@@ -14,7 +14,7 @@ caribbeanWarApp
 				    var deltaTime = +Date.now();
 
 			        var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, BABYLON.Vector3.Zero(), scene);       
-			        var ship = BABYLON.Mesh.CreateBox("ship", 5, scene);
+			        var ship = BABYLON.Mesh.CreateBox("ship", 4, scene);
 
 	        		var shipMaterial = new BABYLON.StandardMaterial("shipMaterial", scene);
 					ship.specularColor = new BABYLON.Color3(1, 1, 1);
@@ -101,7 +101,8 @@ caribbeanWarApp
 							}else{
 								lines = BABYLON.Mesh.CreateLines("lines", calculateCurve(ship.position, ship.rotation.y, shipControl.targeting().direction, pickResult.pickedPoint, shipControl.focussing(delay)), scene);
 							}
-						}else{
+						}
+						else{
 							if(lines){
 								lines.dispose();
 								lines = null;
@@ -130,22 +131,6 @@ caribbeanWarApp
 
 					window.addEventListener("resize", function () {
 						engine.resize();
-					});
-
-
-					window.addEventListener("click", function (evt) {
-						var pickResult = scene.pick(evt.clientX, evt.clientY);
-					   	var box = new BABYLON.Mesh.CreateBox("s", 1, scene);
-
-						box.position = new BABYLON.Vector3(
-							Math.round(pickResult.pickedPoint.x),
-							Math.round(pickResult.pickedPoint.y) + 0.5,
-							Math.round(pickResult.pickedPoint.z)
-						);
-						setTimeout(function(){
-							box.dispose();
-						}, 5000);
-					   	console.log(scene);	
 					});
 				}
             }    
