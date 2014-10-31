@@ -14,7 +14,7 @@ caribbeanWarApp
 				    var deltaTime = +Date.now();
 
 			        var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, BABYLON.Vector3.Zero(), scene);       
-			        var ship = BABYLON.Mesh.CreateBox("ship", 4, scene);
+			        var ship = BABYLON.Mesh.CreateBox("ship", 5, scene);
 
 	        		var shipMaterial = new BABYLON.StandardMaterial("shipMaterial", scene);
 					ship.specularColor = new BABYLON.Color3(1, 1, 1);
@@ -58,7 +58,7 @@ caribbeanWarApp
 
 					//Water
 					(function(){
-						var water = BABYLON.Mesh.CreateGround("water", 10000, 10000, 2, scene);
+						var water = BABYLON.Mesh.CreateGround("water", 5000, 5000, 2, scene);
 
 						var waterMaterial = new BABYLON.StandardMaterial("water", scene);
 						waterMaterial.bumpTexture = new BABYLON.Texture("images/water.png", scene);
@@ -91,7 +91,7 @@ caribbeanWarApp
 
 	  		            
 						//Targeting
-						if(shipControl.targeting().direction !== 0){
+						if(shipControl.targeting.direction !== 0){
 							var pickResult = scene.pick(scene.pointerX, scene.pointerY);
 							if(lines){
 								lines.dispose();
@@ -118,7 +118,7 @@ caribbeanWarApp
 							cameraSetup.lockCamera(true);
 						});
 
-						cameraSetup.correctCamera(shipControl.targeting());
+						cameraSetup.correctCamera(shipControl.targeting);
 
 			            deltaTime = +Date.now();
 			        };

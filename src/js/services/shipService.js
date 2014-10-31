@@ -1,4 +1,4 @@
-caribbeanWarApp.service('shipControl', function () {
+caribbeanWarApp.service('shipControl', ['$rootScope', function ($rootScope) {
 
 	var ship = {
 		initiated: true,
@@ -9,11 +9,12 @@ caribbeanWarApp.service('shipControl', function () {
 		weight: 1000,
 		cannon:{
 			scatter:{
-				time: 2,
-				value: 0.35
+				time: 5,
+				value: 0.3
 			},
 			speed: 100,
-			coldDown:2
+			damage: 10,
+			coldDown: 4
 		},
 		position:{
 			x: 0,
@@ -71,18 +72,28 @@ caribbeanWarApp.service('shipControl', function () {
 	//Shoting
 	var holdenSpace = false;
 	var focusTimer = 0;
+	var onColdDown = false;
 	KeyboardJS.on('space', 
 		function(){
 			if(checkFocus() && ((holdenE || holdenQ) && !holdenSpace)){
-				holdenSpace = true;
-				console.log("Hit the");
+				if(!onColdDown){
+					holdenSpace = true;
+				}
 			}
 		},
 		function(){
 			if(holdenSpace){
 				holdenSpace = false;
 				focusTimer = 0;
-				console.log("road Jack");
+				if(holdenE || holdenQ){
+					console.log("Caramba! Piy piy piy!");
+					onColdDown = true;
+					console.log(onColdDown);
+					setTimeout(function(){
+						onColdDown = false;
+						console.log(onColdDown);
+					}, ship.cannon.coldDown*1000);
+				}
 			}
 		});
 
@@ -95,6 +106,7 @@ caribbeanWarApp.service('shipControl', function () {
 			if(!holdenQ && checkFocus()){
 				holdenQ = true;
 				direction = -1;
+				focusTimer = 0;
 			} 
 		},
 		function(){
@@ -110,6 +122,7 @@ caribbeanWarApp.service('shipControl', function () {
 			if(!holdenE && checkFocus()) {
 				holdenE = true;
 				direction = 1;
+				focusTimer = 0;
 			}
 		},
 		function(){
@@ -120,42 +133,84 @@ caribbeanWarApp.service('shipControl', function () {
 			}	
 		});
 
+	var calculateDistance = function(target){
+		var distance = Math.hypot(target.x - ship.position.x, target.z - ship.position.z);
+		if(distance > 100) distance = 100;
+		else if(distance < 20) distance = 20;
+	};
+
+	var calculateScatter = function(){
+		if(holdenSpace){
+			if(focusTimer < ship.cannon.scatter.time){
+				return ship.cannon.scatter.value - ship.cannon.scatter.value*(focusTimer/ship.cannon.scatter.time);
+			}
+			return 0;
+		}
+		return ship.cannon.scatter.value;
+	};
+
+	var calculatePath = function(){
+		var path = [];
+		var distance = calculateDistance(target);
+		var scatter = calculateScatter(delay);
+		var angle = -(Math.PI + ship.position.angle) + direction*Math.PI/2;
+		focusTimer+=delay;
+
+		var dxU = distance*Math.cos(angle + scatter);
+		var dxD = distance*Math.cos(angle - scatter);
+		var dzU = distance*Math.sin(angle + scatter);
+		var dzD = distance*Math.sin(angle - scatter);
+
+		var n = 9;
+		var cosA = Math.cos(angle);
+		var sinA = Math.sin(angle);
+
+		for(var i = 0; i <= n; i++){
+			path.push(new BABYLON.Vector3(ship.position.x + dxU*i/n - sinA*2, 
+					Math.sin(Math.PI*i/n)*distance*0.03, 
+					ship.position.z + dzU*i/n + cosA));
+		}
+		for(var k = n; k >= 0; k--){
+			path.push(new BABYLON.Vector3(ship.position.x + dxD*k/n + sinA*2, 
+					Math.sin(Math.PI*k/n)*distance*0.03, 
+					ship.position.z + dzD*k/n - cosA));
+		}
+		return path;
+	};
+
 	return {
 		initShip: function(ship){
 
 		},
-		focussing:function(delay){
-			if(holdenSpace){
-				if(focusTimer < ship.cannon.scatter.time){
-					focusTimer+=delay;
-					return ship.cannon.scatter.value - ship.cannon.scatter.value*(focusTimer/ship.cannon.scatter.time);
-				}
-				return 0;
-			}
-			return ship.cannon.scatter.value;
+		targeting: {
+			direction: direction,
+			both: holdenQ && holdenE
 		},
-		targeting: function(){
-			return {
-				direction: direction,
-				both: holdenE && holdenQ
-			};
+		getPath: function(target, delay){
+			
+		},
+		//THE ONE WILL STAND
+		update: function(delay){
+			if(ship.initiated){
+
+			}
 		},
 		moveShip: function(delay){
 			if(ship.initiated){
 				timer = lerp(timer, timer + delay%(2*Math.PI), 0.5);
-				obs = lerp(obs, Math.random()*0.4 - 0.2, 0.03);
+				obs = lerp(obs, rand(- 0.3, 0.3), 0.03);
 
 				ship.speed = lerp(ship.speed, ship.sailsMode*ship.maxSpeed*delay/4, 0.01);
 
 				//Movement
 				ship.position.x = ship.position.x + Math.cos(ship.position.angle)*ship.speed;
 				ship.position.y = ship.position.y + Math.sin(ship.position.angle)*ship.speed;
-				ship.position.z = ship.position.z + Math.sin(timer*1.4)/(ship.weight*0.3);
+				ship.position.z = ship.position.z + Math.sin(timer*1.2)/(ship.weight*0.3);
 
 				//Rotation
 				ship.position.angle = ship.position.angle + (ship.wheelMode*ship.speed*0.075)/(ship.sailsMode+1);
 				ship.position.verticalSlope = lerp(ship.position.verticalSlope, ship.wheelMode*ship.speed*0.7 + obs, 0.02);
-				ship.position.horizontalSlope = ship.speed*0.4 + Math.sin(timer*1.4)*0.06;
+				ship.position.horizontalSlope = ship.speed*0.4 + Math.sin(timer*1.2)*0.06;
 			}
 			return {
 				x: ship.position.x,
@@ -168,4 +223,4 @@ caribbeanWarApp.service('shipControl', function () {
 			};
 		}
 	};
-});
+}]);
