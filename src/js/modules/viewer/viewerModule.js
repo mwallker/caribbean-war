@@ -74,41 +74,21 @@ caribbeanWarApp
 					})();
 
 					var lines = null;
+					shipControl.initShip(scene, ship);
+					
 	                var beforeRenderFunction = function () {
 			            //MOTOR
 			            delay = Math.abs(deltaTime - +Date.now())*0.001;
 
-						var t = shipControl.moveShip(delay);
+						
+						shipControl.update(delay);
 
-	                	ship.position.x = cameraTarget.position.x = skybox.position.x = t.x;
-						ship.position.z = cameraTarget.position.z = skybox.position.z = t.y;
-						ship.position.y = t.z;
+	                	cameraTarget.position.x = skybox.position.x = ship.position.x;
+						cameraTarget.position.z = skybox.position.z = ship.position.z;
+
 						cameraTarget.position.y = skybox.position.y = 0;
+	                	cameraTarget.rotation.y = ship.rotation.y;
 
-	                	ship.rotation.y = cameraTarget.rotation.y = - t.angle;
-	                	ship.rotation.x = - t.vSlope;
-	  		            ship.rotation.z = t.hSlope;
-
-	  		            
-						//Targeting
-						if(shipControl.targeting.direction !== 0){
-							var pickResult = scene.pick(scene.pointerX, scene.pointerY);
-							if(lines){
-								lines.dispose();
-							}
-							if(shipControl.targeting().both){
-								lines = BABYLON.Mesh.CreateLines("lines", doubleCurve(ship.position, ship.rotation.y, pickResult.pickedPoint, shipControl.focussing(delay)), scene);
-							}else{
-								lines = BABYLON.Mesh.CreateLines("lines", calculateCurve(ship.position, ship.rotation.y, shipControl.targeting().direction, pickResult.pickedPoint, shipControl.focussing(delay)), scene);
-							}
-						}
-						else{
-							if(lines){
-								lines.dispose();
-								lines = null;
-								cameraSetup.lockCamera(false);
-							}
-						}
 
   		            	$document.on('mouseup', function(event) {
 							cameraSetup.lockCamera(false);

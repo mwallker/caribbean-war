@@ -1,11 +1,11 @@
-caribbeanWarApp.service('shipControl', ['$rootScope', function ($rootScope) {
+caribbeanWarApp.service('shipControl', function () {
 
 	var ship = {
-		initiated: true,
+		initiated: false,
 		speed: 0,
 		sailsMode: 0,
 		wheelMode: 0,
-		maxSpeed: 15,
+		maxSpeed: 10,
 		weight: 1000,
 		cannon:{
 			scatter:{
@@ -16,14 +16,8 @@ caribbeanWarApp.service('shipControl', ['$rootScope', function ($rootScope) {
 			damage: 10,
 			coldDown: 4
 		},
-		position:{
-			x: 0,
-			y: 0,
-			z: 0,
-			angle: 0,
-			verticalSlope: 0,
-			horizontalSlope: 0
-		}
+		mesh: null,
+		environment: null
 	};
 
 	var timer = 0;
@@ -134,7 +128,7 @@ caribbeanWarApp.service('shipControl', ['$rootScope', function ($rootScope) {
 		});
 
 	var calculateDistance = function(target){
-		var distance = Math.hypot(target.x - ship.position.x, target.z - ship.position.z);
+		var distance = Math.hypot(target.x - ship.mesh.position.x, target.z - ship.mesh.position.z);
 		if(distance > 100) distance = 100;
 		else if(distance < 20) distance = 20;
 	};
@@ -149,11 +143,11 @@ caribbeanWarApp.service('shipControl', ['$rootScope', function ($rootScope) {
 		return ship.cannon.scatter.value;
 	};
 
-	var calculatePath = function(){
+	var calculatePath = function(dir){
 		var path = [];
 		var distance = calculateDistance(target);
 		var scatter = calculateScatter(delay);
-		var angle = -(Math.PI + ship.position.angle) + direction*Math.PI/2;
+		var angle = -(Math.PI + ship.position.angle) + dir*Math.PI/2;
 		focusTimer+=delay;
 
 		var dxU = distance*Math.cos(angle + scatter);
@@ -179,48 +173,46 @@ caribbeanWarApp.service('shipControl', ['$rootScope', function ($rootScope) {
 	};
 
 	return {
-		initShip: function(ship){
-
-		},
-		targeting: {
-			direction: direction,
-			both: holdenQ && holdenE
-		},
-		getPath: function(target, delay){
-			
-		},
-		//THE ONE WILL STAND
-		update: function(delay){
-			if(ship.initiated){
-
+		initShip: function(scene, ship){
+			if(!ship.initiated){
+				ship.mesh = ship;
+				ship.environment = scene;
+				ship.initiated = true;
 			}
 		},
-		moveShip: function(delay){
+		disposeShip: function(){
+			if(ship.initiated){
+				ship.mesh.dispose();
+				ship.environment = null;
+				ship.initiated = false;
+			}
+		},
+		update: function(delay){
 			if(ship.initiated){
 				timer = lerp(timer, timer + delay%(2*Math.PI), 0.5);
 				obs = lerp(obs, rand(- 0.3, 0.3), 0.03);
-
+				console.log(timer);
 				ship.speed = lerp(ship.speed, ship.sailsMode*ship.maxSpeed*delay/4, 0.01);
 
 				//Movement
-				ship.position.x = ship.position.x + Math.cos(ship.position.angle)*ship.speed;
-				ship.position.y = ship.position.y + Math.sin(ship.position.angle)*ship.speed;
-				ship.position.z = ship.position.z + Math.sin(timer*1.2)/(ship.weight*0.3);
+				ship.mesh.position.x = ship.mesh.position.x + Math.cos(ship.mesh.rotation.y)*ship.speed;
+				ship.mesh.position.z = ship.mesh.position.z + Math.sin(ship.mesh.rotation.y)*ship.speed;
+				ship.mesh.position.y = ship.mesh.position.y + Math.sin(timer*1.2)/(ship.weight*0.3);
 
 				//Rotation
-				ship.position.angle = ship.position.angle + (ship.wheelMode*ship.speed*0.075)/(ship.sailsMode+1);
-				ship.position.verticalSlope = lerp(ship.position.verticalSlope, ship.wheelMode*ship.speed*0.7 + obs, 0.02);
-				ship.position.horizontalSlope = ship.speed*0.4 + Math.sin(timer*1.2)*0.06;
-			}
-			return {
-				x: ship.position.x,
-				y: ship.position.y,
-				z: ship.position.z,
+				ship.mesh.rotation.y = ship.mesh.rotation.y + (ship.wheelMode*ship.speed*0.075)/(ship.sailsMode+1);
+				ship.mesh.rotation.x = lerp(ship.mesh.rotation.x, ship.wheelMode*ship.speed*0.7 + obs, 0.02);
+				ship.mesh.rotation.z = ship.speed*0.4 + Math.sin(timer*1.2)*0.06;
 
-				angle: ship.position.angle,
-				vSlope: ship.position.verticalSlope,
-				hSlope: ship.position.horizontalSlope
-			};
+				if(holdenQ || holdenE){
+					if(holdenQ && holdenE){
+
+					}
+					else{
+
+					}
+				}
+			}
 		}
 	};
-}]);
+});
