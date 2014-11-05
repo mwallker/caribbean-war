@@ -19,7 +19,7 @@ caribbeanWarApp.service('shipControl', function () {
 		mesh: null,
 		environment: null
 	};
-
+	console.log(ship);
 	var timer = 0;
 	var obs = 0;
 
@@ -147,7 +147,7 @@ caribbeanWarApp.service('shipControl', function () {
 		var path = [];
 		var distance = calculateDistance(target);
 		var scatter = calculateScatter(delay);
-		var angle = -(Math.PI + ship.position.angle) + dir*Math.PI/2;
+		var angle = -(Math.PI + ship.mesh.rotation.y) + dir*Math.PI/2;
 		focusTimer+=delay;
 
 		var dxU = distance*Math.cos(angle + scatter);
@@ -160,14 +160,14 @@ caribbeanWarApp.service('shipControl', function () {
 		var sinA = Math.sin(angle);
 
 		for(var i = 0; i <= n; i++){
-			path.push(new BABYLON.Vector3(ship.position.x + dxU*i/n - sinA*2, 
+			path.push(new BABYLON.Vector3(ship.mesh.position.x + dxU*i/n - sinA*2, 
 					Math.sin(Math.PI*i/n)*distance*0.03, 
-					ship.position.z + dzU*i/n + cosA));
+					ship.mesh.position.z + dzU*i/n + cosA));
 		}
 		for(var k = n; k >= 0; k--){
-			path.push(new BABYLON.Vector3(ship.position.x + dxD*k/n + sinA*2, 
+			path.push(new BABYLON.Vector3(ship.mesh.position.x + dxD*k/n + sinA*2, 
 					Math.sin(Math.PI*k/n)*distance*0.03, 
-					ship.position.z + dzD*k/n - cosA));
+					ship.mesh.position.z + dzD*k/n - cosA));
 		}
 		return path;
 	};
@@ -189,7 +189,7 @@ caribbeanWarApp.service('shipControl', function () {
 		},
 		update: function(delay){
 			if(ship.initiated){
-				timer = lerp(timer, timer + delay%(2*Math.PI), 0.5);
+				timer = timer + delay%(2*Math.PI);
 				obs = lerp(obs, rand(- 0.3, 0.3), 0.03);
 				console.log(timer);
 				ship.speed = lerp(ship.speed, ship.sailsMode*ship.maxSpeed*delay/4, 0.01);

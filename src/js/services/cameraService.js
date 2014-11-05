@@ -18,17 +18,26 @@ caribbeanWarApp.service('cameraSetup', function(){
 
 	var lockCamera = false;
 
+	$('body').on('mouseup', function(event) {
+		lockCamera = false;
+	});
+
+	$('#renderCanvas').on('mousedown', function(event) {
+		lockCamera = true;
+	});
+
 	return {
 		settings: settings,
 		correctCamera: function(targeting){
 			if(camera && target){
-				var targetDirection = targeting.direction;
-				if(targeting.both){
-					settings.alpha = -(Math.PI + target.rotation.y);
-					settings.beta = settings.maxBeta - 0.9;
-				}else{
-					settings.alpha = -(Math.PI + target.rotation.y) - targetDirection*Math.PI/2;
-					settings.beta = settings.normalBeta;
+				if(targeting <= 2 && targeting >= -1){ 
+					if(targeting !== 2){
+						settings.alpha = -(Math.PI + target.rotation.y);
+						settings.beta = settings.maxBeta - 0.9;
+					}else{
+						settings.alpha = -(Math.PI + target.rotation.y) - targeting*Math.PI/2;
+						settings.beta = settings.normalBeta;
+					}
 				}
 
 				if(!lockCamera){
@@ -46,9 +55,6 @@ caribbeanWarApp.service('cameraSetup', function(){
 	            if (camera.radius < settings.minDist)
 	                camera.radius = settings.minDist;
 			}
-		},
-		lockCamera: function(status){
-			lockCamera = status;
 		},
 		initCamera: function(cam, tar){
 			camera = cam;

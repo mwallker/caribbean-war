@@ -80,7 +80,6 @@ caribbeanWarApp
 			            //MOTOR
 			            delay = Math.abs(deltaTime - +Date.now())*0.001;
 
-						
 						shipControl.update(delay);
 
 	                	cameraTarget.position.x = skybox.position.x = ship.position.x;
@@ -89,16 +88,7 @@ caribbeanWarApp
 						cameraTarget.position.y = skybox.position.y = 0;
 	                	cameraTarget.rotation.y = ship.rotation.y;
 
-
-  		            	$document.on('mouseup', function(event) {
-							cameraSetup.lockCamera(false);
-						});
-
-						element.on('mousedown', function(event) {
-							cameraSetup.lockCamera(true);
-						});
-
-						cameraSetup.correctCamera(shipControl.targeting);
+						cameraSetup.correctCamera(0);
 
 			            deltaTime = +Date.now();
 			        };
