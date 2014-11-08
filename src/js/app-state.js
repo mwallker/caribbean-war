@@ -3,11 +3,11 @@ var caribbeanWarApp = angular.module('caribbean-war', [
 ]);
 
 caribbeanWarApp.config(function($stateProvider, $urlRouterProvider){
-	$urlRouterProvider.otherwise('/');
+	$urlRouterProvider.otherwise('/login');
     
     $stateProvider
         .state('login', {
-            url: '/',
+            url: '/login',
             templateUrl: 'js/pages/login/login-layer.html',
             controller:"loginCtrl"
         })

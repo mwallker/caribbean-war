@@ -11,10 +11,12 @@ caribbeanWarApp
 				    var delay = 0;
 				    var scene = new BABYLON.Scene(engine);
 
-				    var deltaTime = +Date.now();
+				    var deltaTime = Date.now();
 
 			        var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, BABYLON.Vector3.Zero(), scene);       
 			        var ship = BABYLON.Mesh.CreateBox("ship", 5, scene);
+
+					shipControl.initShip(scene, ship);
 
 	        		var shipMaterial = new BABYLON.StandardMaterial("shipMaterial", scene);
 					ship.specularColor = new BABYLON.Color3(1, 1, 1);
@@ -74,11 +76,10 @@ caribbeanWarApp
 					})();
 
 					var lines = null;
-					shipControl.initShip(scene, ship);
-					
+
 	                var beforeRenderFunction = function () {
 			            //MOTOR
-			            delay = Math.abs(deltaTime - +Date.now())*0.001;
+			            delay = Math.abs(deltaTime - Date.now())*0.001;
 
 						shipControl.update(delay);
 
@@ -88,9 +89,9 @@ caribbeanWarApp
 						cameraTarget.position.y = skybox.position.y = 0;
 	                	cameraTarget.rotation.y = ship.rotation.y;
 
-						cameraSetup.correctCamera(0);
+						cameraSetup.correctCamera(-2);
 
-			            deltaTime = +Date.now();
+			            deltaTime = Date.now();
 			        };
 
 					scene.registerBeforeRender(beforeRenderFunction);

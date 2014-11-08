@@ -18,16 +18,17 @@ caribbeanWarApp.service('cameraSetup', function(){
 
 	var lockCamera = false;
 
-	$('body').on('mouseup', function(event) {
+	$(document).on('mouseup', function(event) {
 		lockCamera = false;
+		console.log(lockCamera);
 	});
 
 	$('#renderCanvas').on('mousedown', function(event) {
 		lockCamera = true;
+		console.log('mousedown');
 	});
 
 	return {
-		settings: settings,
 		correctCamera: function(targeting){
 			if(camera && target){
 				if(targeting <= 2 && targeting >= -1){ 

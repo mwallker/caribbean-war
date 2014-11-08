@@ -15,29 +15,21 @@
 
 </head>
 <body ng-app="caribbean-war">
-  <viewer></viewer>
-  <!-- view with 3D scene on background -->
-  <section ui-view></section>
+
+  <div ng-controller="appCtrl">
+    <canvas id='renderCanvas'></canvas>
+    <section ui-view></section>
+  </div>  
   
   <!-- JS controllers files-->
-  <script src="js/app-events.js"></script>
   <script src="js/app-state.js"></script>
+  <script src="js/app-controller.js"></script>
 
-
-  <script src="js/modules/chat/chatModule.js"></script>
-  <script src="js/modules/errors/errorModule.js"></script>
-  <script src="js/modules/viewer/viewerModule.js"></script>
-  <script src="js/modules/loader/loaderModule.js"></script>
-
-  <script src="js/services/shipService.js"></script>
-  <script src="js/services/userService.js"></script>
-  <script src="js/services/cameraService.js"></script>
   <script src="js/services/connectService.js"></script>
 
   <script src="js/pages/login/loginCtrl.js"></script>
   <script src="js/pages/harbor/harborCtrl.js"></script>
   <script src="js/pages/world/worldCtrl.js"></script>
-  <script src="js/pages/world/shaders/water/waterMaterial.js"></script>
  
 </body>
 </html>

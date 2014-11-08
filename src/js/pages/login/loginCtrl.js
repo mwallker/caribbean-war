@@ -1,4 +1,4 @@
-angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootScope, $state, connection, userStorage) {
+angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootScope, $state, connection) {
 	$scope.email = localStorage.email || "";
 	$rootScope.authorized = false;
 

@@ -173,9 +173,9 @@ caribbeanWarApp.service('shipControl', function () {
 	};
 
 	return {
-		initShip: function(scene, ship){
+		initShip: function(scene, init_ship){
 			if(!ship.initiated){
-				ship.mesh = ship;
+				ship.mesh = init_ship;
 				ship.environment = scene;
 				ship.initiated = true;
 			}
@@ -191,7 +191,7 @@ caribbeanWarApp.service('shipControl', function () {
 			if(ship.initiated){
 				timer = timer + delay%(2*Math.PI);
 				obs = lerp(obs, rand(- 0.3, 0.3), 0.03);
-				console.log(timer);
+				
 				ship.speed = lerp(ship.speed, ship.sailsMode*ship.maxSpeed*delay/4, 0.01);
 
 				//Movement
@@ -206,7 +206,7 @@ caribbeanWarApp.service('shipControl', function () {
 
 				if(holdenQ || holdenE){
 					if(holdenQ && holdenE){
-
+						
 					}
 					else{
 
