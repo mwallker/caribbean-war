@@ -14,30 +14,20 @@ caribbeanWarApp.service('audioControl', function () {
 		// Decode asynchronously
 		request.onload = function() {
 			context.decodeAudioData(request.response, function(buffer) {
-				console.log(typeof buffer);
 				audioBuffer = buffer;
+				// создаем источник
+				source = context.createBufferSource();
+				// подключаем буфер к источнику
+				source.buffer = audioBuffer;
+				// дефолтный получатель звука
+				destination = context.destination;
+				// подключаем источник к получателю
+				source.connect(destination);
+				// воспроизводим
+				source.start(0);
 			});
 		};
 		request.send();
-	};
-
-	// функция начала воспроизведения
-	audioApi.play = function(){
-		// создаем источник
-		source = context.createBufferSource();
-		// подключаем буфер к источнику
-		source.buffer = audioBuffer;
-		// дефолтный получатель звука
-		destination = context.destination;
-		// подключаем источник к получателю
-		source.connect(destination);
-		// воспроизводим
-		source.start(0);
-	};
-
-	// функция остановки воспроизведения
-	audioApi.stop = function(){
-		source.stop(0);
 	};
 
 	return audioApi;
