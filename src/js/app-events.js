@@ -1,5 +1,3 @@
-
-
 var calculateCurve = function(start, angle, direction, end, scatter){
 	var curve = [];
 	var distance = Math.hypot(end.x - start.x, end.z - start.z);

@@ -1,18 +1,14 @@
-angular.module('caribbean-war').controller('appCtrl', function($rootScope, $state){
+angular.module('caribbean-war').controller('appCtrl', ['audioControl', '$scope', '$rootScope', '$state', function($scope, $rootScope, $state, audioControl){
+	console.log(audioControl);
+	audioControl.loadSoundFile('js/sound/ocean.mp3');
+
+	$scope.play = function(){
+		audioControl.play();
+	};
 
 	$rootScope.$on('$stateChangeStart', 
 		function(event, toState, toParams, fromState, fromParams){
-			switch (toState.name){
-				case 'login':
-					console.log(toState.name);
-					break;
-				case 'harbor':
-					console.log(toState.name);
-					break;
-				case 'world':
-					console.log(toState.name);
-					break;
-			}
+			//load scene
 		}
 	);	
-});
+}]);
