@@ -4,7 +4,10 @@ angular.module('caribbean-war')
 			//audio
 			audioControl.loadSoundFile('js/sound/ocean.mp3');
 			$scope.volume = 100;
-			
+
+			$scope.methods = function(){
+				console.log($scope.enableSounds);
+			}
 			//localization
 			$scope.languages = [
 				{label:'English', code:'en-EN'},
