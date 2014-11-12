@@ -1,3 +1,0 @@
-caribbeanWarApp.service('locale', function(){
-
-});

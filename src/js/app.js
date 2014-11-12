@@ -1,5 +1,6 @@
 var caribbeanWarApp = angular.module('caribbean-war', [
-	'ui.router'
+	'ui.router',
+    'ngResource'
 ]);
 
 caribbeanWarApp.config(function($stateProvider, $urlRouterProvider){

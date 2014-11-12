@@ -176,4 +176,20 @@ body {
 li {
   list-style: none;
 }
+.splash-screen {
+  position: fixed;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  font-size: 60px;
+  text-align: center;
+  color: #ddd;
+  background-color: #046c6c;
+}
+.settings {
+  position: fixed;
+  z-index: 20;
+  color: #ddd;
+  background-color: #046c6c;
+}
 

@@ -1,0 +1,18 @@
+{
+	"pages":{
+		"login":{
+			"email":"Почтовый адрессссссс",
+			"password":"Пароль",
+			"rememberUser":"Запомнить меня",
+			"recoverPassword":"Забыли пароль?",
+			"registLink":"Регистрация",
+			"enter":"Войти"
+		},
+		"harbor":{
+
+		}
+	},
+	"setings":{
+		
+	}	
+}

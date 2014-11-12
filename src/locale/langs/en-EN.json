@@ -1,0 +1,18 @@
+{
+	"pages":{
+		"login":{
+			"email":"Email",
+			"password":"Password",
+			"rememberUser":"Remember me",
+			"recoverPassword":"Forgot password?",
+			"registLink":"Register now",
+			"enter":"Enter"
+		},
+		"harbor":{
+
+		}
+	},
+	"setings":{
+		
+	}	
+}
