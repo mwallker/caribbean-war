@@ -1,6 +1,7 @@
 caribbeanWarApp.service('audioControl', function () {
 	window.AudioContext = window.AudioContext || window.webkitAudioContext;
 	var context = new AudioContext();
+    var gainNode = context.createGain();
 	var audioBuffer, source, destination;
 
 	var audioApi = {}; 
@@ -22,13 +23,21 @@ caribbeanWarApp.service('audioControl', function () {
 				// дефолтный получатель звука
 				destination = context.destination;
 				// подключаем источник к получателю
-				source.connect(destination);
+                source.connect(gainNode);
+                // Connect the gain node to the destination.
+                gainNode.connect(context.destination);
+
 				// воспроизводим
 				source.start(0);
 			});
 		};
 		request.send();
 	};
+
+    audioApi.changeVolume = function(value){
+        if(gainNode) gainNode.gain.value = value;
+        console.log(value);
+    };
 
 	return audioApi;
 });

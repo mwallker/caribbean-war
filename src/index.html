@@ -19,7 +19,6 @@
 
   <div ng-controller="appCtrl">
     <div class='splash-screen' ng-show='false'>
-      <!-- TODO load here picture with tips -->
       Loading ...
     </div>
 
@@ -27,7 +26,7 @@
       Enable sounds: 
       <input type="checkbox" ng-model="enableSounds" ng-change="methods()">
       Gain:
-      <input type="range" ng-model="volume"> {{volume}}
+      <input type="range" ng-model="volume" ng-change="changeVolume()"> {{volume}}
     </div>
 
     <canvas id='renderCanvas'></canvas>
