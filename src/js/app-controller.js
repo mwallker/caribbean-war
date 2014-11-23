@@ -1,8 +1,13 @@
 angular.module('caribbean-war')
-	.controller('appCtrl', ['$scope', '$rootScope', '$state', 'audioControl', 'locale',
-		function($scope, $rootScope, $state, audioControl, locale){
+	.controller('appCtrl', ['$scope', '$rootScope', '$q', '$state', 'audioControl', 'locale',
+		function($scope, $rootScope, $q, $state, audioControl, locale){
+
+            $scope.appLoading = true;
+
+            var promises = [];
+
 			//audio
-			audioControl.loadSoundFile('js/sound/ocean.mp3');
+			promises.push(audioControl.loadSoundFile('js/sound/ocean.mp3'));
 			$scope.volume = 100;
 
 			$scope.changeVolume = function(value){
@@ -25,8 +30,21 @@ angular.module('caribbean-war')
 			$scope.changeLocate($scope.languages[0].code);
 
 			$rootScope.$on('$stateChangeStart', 
-				function(event, toState, toParams, fromState, fromParams){
-					//load scene
+				function(event){
+					console.log('state-start');
 				}
-			);	
+			);
+
+            $rootScope.$on('$stateChangeSuccess',
+				function(event){
+					console.log('state-success');
+				}
+			);
+
+            //Resolving promises will hide splash screen
+            $q.all(promises).then(function(){
+                $scope.appLoading = false;
+            }, function(){
+                console.log('fail');
+            });
 }]);

@@ -18,15 +18,17 @@
 <body ng-app="caribbean-war">
 
   <div ng-controller="appCtrl">
-    <div class='splash-screen' ng-show='false'>
+    <div class="splash-screen" ng-show="appLoading">
       Loading ...
     </div>
 
     <div class="settings">
-      Enable sounds: 
-      <input type="checkbox" ng-model="enableSounds" ng-change="methods()">
-      Gain:
-      <input type="range" ng-model="volume" ng-change="changeVolume()"> {{volume}}
+        Enable music:
+        <input type="checkbox" ng-model="enableMusic" ng-change="methods()">
+        Enable effects
+        <input type="checkbox" ng-model="enableSounds" ng-change="methods()">
+        Gain:
+        <input type="range" ng-model="volume" ng-change="changeVolume()"> {{volume}}
     </div>
 
     <canvas id='renderCanvas'></canvas>
