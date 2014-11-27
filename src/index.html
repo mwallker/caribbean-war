@@ -22,13 +22,15 @@
       Loading ...
     </div>
 
-    <div class="settings">
-        Enable music:
-        <input type="checkbox" ng-model="enableMusic" ng-change="methods()">
-        Enable effects
-        <input type="checkbox" ng-model="enableSounds" ng-change="methods()">
-        Gain:
-        <input type="range" ng-model="volume" ng-change="changeVolume()"> {{volume}}
+    <div class="settings" ng-controller="settingsCtrl" ng-show="true">
+        <p>
+            Music:
+            <input type="range" ng-model="musicVolume" ng-change="changeMusicVolume()"> {{musicVolume}}
+        </p>
+        <p>
+            Effects:
+            <input type="range" ng-model="musicVolume" ng-change="changeMusicVolume()"> {{musicVolume}}
+        </p>
     </div>
 
     <canvas id='renderCanvas'></canvas>
@@ -39,9 +41,10 @@
   <!-- JS controllers files-->
   <script src="js/app.js"></script>
   <script src="js/app-controller.js"></script>
-
+  
   <script src="js/services/connectService.js"></script>
   <script src="js/services/audioService.js"></script>
+  <script src="js/settings/settings-controller.js"></script>
 
   <!-- Sound -->
 

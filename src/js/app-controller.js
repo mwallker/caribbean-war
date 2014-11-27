@@ -8,11 +8,7 @@ angular.module('caribbean-war')
 
 			//audio
 			promises.push(audioControl.loadSoundFile('js/sound/ocean.mp3'));
-			$scope.volume = 100;
-
-			$scope.changeVolume = function(value){
-				audioControl.changeVolume($scope.volume/100);
-			};
+			
 
 			//localization
 			$scope.languages = [
