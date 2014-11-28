@@ -4,7 +4,13 @@ angular.module('caribbean-war')
 
             $scope.appLoading = true;
 
-            var promises = [];
+            $scope.localeData = {};
+
+            $scope.setLocaleData = function(data){
+                $scope.localeData = data;
+            }
+
+            $scope.promises = [];
 
 			//audio
 			promises.push(audioControl.loadSoundFile('js/sound/ocean.mp3'));
@@ -12,8 +18,8 @@ angular.module('caribbean-war')
 
 			//localization
 			$scope.languages = [
-				{label:'English', code:'en-EN'},
-				{label:'Русский', code:'ru-RU'}
+				{id: 0, label:'English', code:'en-EN'},
+				{id: 1, label:'Русский', code:'ru-RU'}
 			];
 
 			$scope.changeLocate = function(code){

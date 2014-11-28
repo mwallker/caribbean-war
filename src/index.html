@@ -22,15 +22,21 @@
       Loading ...
     </div>
 
-    <div class="settings" ng-controller="settingsCtrl" ng-show="true">
-        <p>
-            Music:
-            <input type="range" ng-model="musicVolume" ng-change="changeMusicVolume()"> {{musicVolume}}
-        </p>
-        <p>
-            Effects:
-            <input type="range" ng-model="musicVolume" ng-change="changeMusicVolume()"> {{musicVolume}}
-        </p>
+    <div class="settings" ng-controller="settingsCtrl" ng-show="false">
+        <div>
+            <label class="">Music:</label>
+            <input type="range" ng-model="musicVolume" ng-change="changeVolume(0)"> {{musicVolume}}
+        </div>
+        <div>
+            <label class="">Effects:</label>
+            <input type="range" ng-model="musicVolume" ng-change="changeVolume(1)"> {{musicVolume}}
+        </div>
+        <div>
+            <label class="">Languege:</label>
+            <select ng-model="lang"
+                    ng-options="item.id as item.label for item in languages"
+            </select>
+        </div>
     </div>
 
     <canvas id='renderCanvas'></canvas>
@@ -43,7 +49,8 @@
   <script src="js/app-controller.js"></script>
   
   <script src="js/services/connectService.js"></script>
-  <script src="js/services/audioService.js"></script>
+  <script src="js/sound/audioService.js"></script>
+
   <script src="js/settings/settings-controller.js"></script>
 
   <!-- Sound -->

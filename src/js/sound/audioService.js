@@ -1,46 +1,38 @@
-caribbeanWarApp.service('audioControl', function () {
-	// создаем аудио контекст
-	var context = new window.AudioContext(); //
-	// переменные для буфера, источника и получателя
-	var buffer, source, destination; 
+caribbeanWarApp.service('audioControl', function ($q) {
+	window.AudioContext = window.AudioContext || window.webkitAudioContext;
+	var context = new AudioContext();
+    var gainNode = context.createGain();
+	var audioBuffer, source, destination;
+	var audioApi = {};
 
 	// функция для подгрузки файла в буфер
-	var loadSoundFile = function(url) {
-		  // делаем XMLHttpRequest (AJAX) на сервер
-		  var xhr = new XMLHttpRequest();
-		  xhr.open('GET', url, true);
-		  xhr.responseType = 'arraybuffer'; // важно
-		  xhr.onload = function(e) {
-			    // декодируем бинарный ответ
-			    context.decodeAudioData(this.response,
-			    function(decodedArrayBuffer) {
-					// получаем декодированный буфер
-					buffer = decodedArrayBuffer;
-			    }, function(e) {
-					console.log('Error decoding file', e);
-			    });
-		  };
-		  xhr.send();
+	audioApi.loadSoundFile = function(url) {
+        var deffered = $q.defer();
+		var request = new XMLHttpRequest();
+		request.open('GET', url, true);
+		request.responseType = 'arraybuffer';
+
+		// Decode asynchronously
+		request.onload = function() {
+			context.decodeAudioData(request.response, function(buffer) {
+				audioBuffer = buffer;
+				source = context.createBufferSource();
+				source.buffer = audioBuffer;
+				destination = context.destination;
+                source.connect(gainNode);
+                gainNode.connect(context.destination);
+				source.start(0);
+                deffered.resolve();
+			});
+		};
+		request.send();
+        return deffered.promise;
 	};
 
-	// функция начала воспроизведения
-	var play = function(){
-		// создаем источник
-		source = context.createBufferSource();
-		// подключаем буфер к источнику
-		source.buffer = buffer;
-		// дефолтный получатель звука
-		destination = context.destination;
-		// подключаем источник к получателю
-		source.connect(destination);
-		// воспроизводим
-		source.start(0);
-	};
+    audioApi.changeVolume = function(value){
+        if(gainNode) gainNode.gain.value = value;
+        console.log(value);
+    };
 
-	// функция остановки воспроизведения
-	var stop = function(){
-		source.stop(0);
-	};
-
-	loadSoundFile('example.mp3');
+	return audioApi;
 });
