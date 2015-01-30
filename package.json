@@ -24,5 +24,8 @@
     "grunt-http-server": "^1.0.0",
     "grunt-node-webkit-builder": "^0.2.3",
     "load-grunt-tasks": "^0.6.0"
+  },
+  "dependencies": {
+    "grunt-template": "^0.2.3"
   }
 }

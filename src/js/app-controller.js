@@ -8,7 +8,7 @@ angular.module('caribbean-war')
 
             $scope.setLocaleData = function(data){
                 $scope.localeData = data;
-            }
+            };
 
             var promises = [];
 
