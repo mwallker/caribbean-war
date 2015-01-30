@@ -22,7 +22,7 @@
       Loading ...
     </div>
 
-    <div class="settings" ng-controller="settingsCtrl" ng-show="false">
+    <div class="settings" ng-controller="settingsCtrl" ng-show="true">
         <div>
             <label class="">Music:</label>
             <input type="range" ng-model="musicVolume" ng-change="changeVolume(0)"> {{musicVolume}}
@@ -57,7 +57,6 @@
 
   <!-- Locale -->
   <script src="locale/locale-service.js"></script>
-  <script src="locale/locale-controller.js"></script>
 
   <script src="js/pages/login/loginCtrl.js"></script>
   <script src="js/pages/harbor/harborCtrl.js"></script>

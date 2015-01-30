@@ -10,7 +10,7 @@ angular.module('caribbean-war')
                 $scope.localeData = data;
             }
 
-            $scope.promises = [];
+            var promises = [];
 
 			//audio
 			promises.push(audioControl.loadSoundFile('js/sound/ocean.mp3'));
