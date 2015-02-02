@@ -8,7 +8,6 @@ angular.module('caribbean-war')
 
             //locale
             $scope.$watch('locale', function(newVal, oldVal){
-                console.log(newVal);
                 if(newVal != oldVal){
                     $translate.use(newVal);
                 }

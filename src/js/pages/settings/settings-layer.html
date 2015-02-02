@@ -1,4 +1,7 @@
-<div id="settings-layer" ng-controller="settingsCtrl" class="settings" ng-show="true">
+<div style="position: absolute; z-index:100">
+    Settings <input type="checkbox" ng-model="showSettings">
+</div>
+<div id="settings-layer" ng-controller="settingsCtrl" class="settings" ng-show="showSettings">
     <div>
         <label class="" translate>{{:: 'SETTINGS_MUSIC' }}:</label>
         <input type="range" ng-model="musicVolume" ng-change="changeVolume(0)">

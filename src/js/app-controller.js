@@ -2,28 +2,29 @@ angular.module('caribbean-war')
 	.controller('appCtrl', ['$scope', '$rootScope', '$q', '$state', 'audioControl',
 		function($scope, $rootScope, $q, $state, audioControl){
 
-            $scope.appLoading = true;
+            //$scope.appLoading = true;
             var promises = [];
 
-			//audio
-			promises.push(audioControl.loadSoundFile('js/sound/ocean.mp3'));
+            //$scope.taskManager = [];
+
+            $scope.registrateTasks = function (tasks) {
+                $scope.appLoading = true;
+                $q.all(tasks).then(function(){
+                    $scope.appLoading = false;
+                }, function(){
+                    console.log('fail');
+                });
+            };
 
 			$rootScope.$on('$stateChangeStart', 
 				function(event){
-					console.log('state-start');
+					//console.log('state-start');
 				}
 			);
 
             $rootScope.$on('$stateChangeSuccess',
 				function(event){
-					console.log('state-success');
+					//console.log('state-success');
 				}
 			);
-
-            //Resolving promises will hide splash screen
-            $q.all(promises).then(function(){
-                $scope.appLoading = false;
-            }, function(){
-                console.log('fail');
-            });
 }]);

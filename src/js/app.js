@@ -8,7 +8,8 @@ caribbeanWarApp.constant('appConfig', {
     languages: [
         {id: 0, label:'English', code:'en-EN'},
         {id: 1, label:'Русский', code:'ru-RU'},
-        {id: 2, label:'Zulu', code:'zu-ZU'}
+        {id: 2, label:'Zulu', code:'zu-ZU'}/*,
+        {id: '', label:'', code: ''}*/
     ]
 });
 
@@ -21,8 +22,6 @@ caribbeanWarApp.config(['$translateProvider', 'appConfig', function($translatePr
 }]);
 
 caribbeanWarApp.config(function($stateProvider, $urlRouterProvider){
-
-    console.log('router');
 
 	$urlRouterProvider.otherwise('login');
     

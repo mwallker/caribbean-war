@@ -1,10 +1,12 @@
-angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootScope, $state, connection) {
+angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootScope, $state, connection, audioControl, userStorage) {
 	$scope.email = localStorage.email || "";
 	$rootScope.authorized = false;
 
 	if(connection.status()){
 		$rootScope.$broadcast("close", "");
 	}
+
+    //$scope.registrateTasks([audioControl.loadSoundFile('js/sound/ocean.mp3')]);
 
 	$scope.connect = function(){
 		localStorage.email = $scope.email || "";
@@ -20,10 +22,14 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 	};
 
 	$scope.authorize = function(event, data){
-		if(data && data.authorize){
-			userStorage.set(data);
-			$state.go('harbor');
-		}
+        try{
+            if(data && data.authorize){
+                userStorage.set(data);
+                $state.go('harbor');
+            }
+        }catch(e){
+            console.log(e);
+        }
 	};
 
 	$scope.close = function(event, message){
