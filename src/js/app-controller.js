@@ -1,11 +1,15 @@
 angular.module('caribbean-war')
-	.controller('appCtrl', ['$scope', '$rootScope', '$q', '$state', 'audioControl',
-		function($scope, $rootScope, $q, $state, audioControl){
+	.controller('appCtrl', ['$scope', '$rootScope', '$q', '$state', 'audioControl', 'graphicService',
+		function($scope, $rootScope, $q, $state, audioControl, graphicService){
 
-            //$scope.appLoading = true;
-            var promises = [];
+            $scope.appLoading = true;
 
-            //$scope.taskManager = [];
+            graphicService.create();
+
+            setTimeout(function () {
+                graphicService.dispose();
+                console.log('end');
+            }, 5000);
 
             $scope.registrateTasks = function (tasks) {
                 $scope.appLoading = true;
@@ -27,4 +31,5 @@ angular.module('caribbean-war')
 					//console.log('state-success');
 				}
 			);
-}]);
+        }
+    ]);

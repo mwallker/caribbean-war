@@ -4,9 +4,6 @@ angular.module('caribbean-war')
             templateUrl: 'js/modules/chat/chat-template.html',
             restrict: 'E',
             scope:{},
-            link:function(){
-
-            },
             controller: function ($scope, $rootScope) {
                 $scope.chatHistory = [];
 

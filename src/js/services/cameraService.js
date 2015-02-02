@@ -45,16 +45,13 @@ caribbeanWarApp.service('cameraSetup', function(){
 	            	camera.alpha = lerp(camera.alpha, settings.alpha, settings.factor);
 	            	camera.beta = lerp(camera.beta, settings.beta, settings.factor);
 	            }
-				if (camera.beta < settings.minBeta)
-					camera.beta = settings.minBeta;
-	            else if (camera.beta > settings.maxBeta)
-	                camera.beta = settings.maxBeta;
 
-	            if (camera.radius > settings.maxDist)
-	                camera.radius = settings.maxDist;
+				if (camera.beta < settings.minBeta)	camera.beta = settings.minBeta;
+	            else if (camera.beta > settings.maxBeta) camera.beta = settings.maxBeta;
 
-	            if (camera.radius < settings.minDist)
-	                camera.radius = settings.minDist;
+	            if (camera.radius > settings.maxDist) camera.radius = settings.maxDist;
+
+	            if (camera.radius < settings.minDist) camera.radius = settings.minDist;
 			}
 		},
 		initCamera: function(cam, tar){
