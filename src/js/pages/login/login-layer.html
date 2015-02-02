@@ -1,23 +1,23 @@
 <div id="login-layer">
 	<form ng-submit="connect()">
 	<div>
-		<label>{{'EMAIL' | translate}}: </label>
+		<label>{{'LOGIN_EMAIL' | translate}}: </label>
 		<input type="text" ng-model="email" required/>
 	</div>
 	<div>
-		<label>{{'PASSWORD' | translate}}: </label>
+		<label>{{'LOGIN_PASSWORD' | translate}}: </label>
 		<input type="password" ng-model="password" required/>
 	</div>
 	<div>
-		<label>{{'REMEMBER_USER' | translate}}</label>
+		<label>{{'LOGIN_REMEMBER_USER' | translate}}</label>
 		<input type="checkbox" class="RememberMe"/>
 	</div>
 	<div>
-		<input ng-disabled="form.$invalid" type="submit" value="{{localeData.pages.login.enter}}" class="Enter"/>
+		<input ng-disabled="form.$invalid" type="submit" value="{{ 'LOGIN_ENTER' | translate }}" class="Enter"/>
 	</div>
 	<div>
-		<a>{{localeData.pages.login.recoverPassword}}</a>
-		<a>{{localeData.pages.login.registLink}}</a>
+		<a>{{LOGIN_FORGOT_PASSWORD | translate}}</a>
+		<a>{{LOGIN_REGISTRATION | translate}}</a>
 	</div>
 	</form>
 </div>

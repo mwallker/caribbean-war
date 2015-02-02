@@ -21,6 +21,9 @@ caribbeanWarApp.config(['$translateProvider', 'appConfig', function($translatePr
 }]);
 
 caribbeanWarApp.config(function($stateProvider, $urlRouterProvider){
+
+    console.log('router');
+
 	$urlRouterProvider.otherwise('login');
     
     $stateProvider

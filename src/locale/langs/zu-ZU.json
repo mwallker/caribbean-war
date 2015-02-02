@@ -1,7 +1,15 @@
 {
     "LOADING": "Gnidaol",
-    "HELLO": "Olleh" ,
-    "EMAIL": "Liame",
-    "PASSWORD": "Drowssap",
-    "REMEMBER_USER": "Em rebmemer"
+
+    "LOGIN_EMAIL": "Liame",
+    "LOGIN_PASSWORD": "Drowssap",
+    "LOGIN_REMEMBER_USER": "Em rebmemer",
+    "LOGIN_FORGOT_PASSWORD": "Drowssap togrof",
+    "LOGIN_REGISTRATION": "Knil noitartsiger",
+    "LOGIN_ENTER": "Retne",
+
+    "SETTINGS_MUSIC": "Cisum",
+    "SETTINGS_EFFECTS": "Stceffe",
+    "SETTINGS_LANGUAGE": "Egaugnal",
+    "SETTINGS_SAVE": "Evas"
 }

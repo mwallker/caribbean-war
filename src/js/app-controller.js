@@ -1,27 +1,12 @@
 angular.module('caribbean-war')
-	.controller('appCtrl', ['$scope', '$rootScope', '$q', '$state', '$translate', 'audioControl', 'appConfig',
-		function($scope, $rootScope, $q, $state, $translate, audioControl, appConfig){
+	.controller('appCtrl', ['$scope', '$rootScope', '$q', '$state', 'audioControl',
+		function($scope, $rootScope, $q, $state, audioControl){
 
             $scope.appLoading = true;
-            $scope.languages = appConfig.languages;
-            $scope.locale= localStorage.locale || appConfig.languages[0].code;
-
             var promises = [];
 
 			//audio
 			promises.push(audioControl.loadSoundFile('js/sound/ocean.mp3'));
-
-            //locale
-            $scope.$watch('locale', function(newVal, oldVal){
-                console.log(newVal);
-                if(newVal != oldVal){
-                    $translate.use(newVal);
-                }
-            });
-
-            $scope.saveConfigurations = function () {
-                localStorage.locale = $scope.locale;
-            };
 
 			$rootScope.$on('$stateChangeStart', 
 				function(event){

@@ -1,0 +1,19 @@
+<div id="settings-layer" ng-controller="settingsCtrl" class="settings" ng-show="true">
+    <div>
+        <label class="" translate>{{:: 'SETTINGS_MUSIC' }}:</label>
+        <input type="range" ng-model="musicVolume" ng-change="changeVolume(0)">
+    </div>
+    <div>
+        <label class="" translate>{{:: 'SETTINGS_EFFECTS' }}:</label>
+        <input type="range" ng-model="musicVolume" ng-change="changeVolume(1)">
+    </div>
+    <div>
+        <label class="" translate>{{:: 'SETTINGS_LANGUAGE' }}:</label>
+        <select ng-model="locale"
+                ng-options="item.code as item.label for item in languages"
+        </select>
+    </div>
+    <div>
+        <input type="button" ng-click="saveConfigurations()" value="{{ 'SETTINGS_SAVE' | translate }}">
+    </div>
+</div>

@@ -1,19 +1,22 @@
 angular.module('caribbean-war')
-	.controller('settingsCtrl', ['$scope', '$rootScope', 'audioControl',
-		function($scope, $rootScope, audioControl){
+	.controller('settingsCtrl', ['$scope', '$rootScope', '$translate', 'audioControl', 'appConfig',
+		function($scope, $rootScope, $translate, audioControl, appConfig){
 
-/*
-            $scope.$watch('langId', function(nVal, oVal){
-                if(nVal !== oVal){
-                    console.log("DA");
-                    localStorage.lang = $scope.lang;
-                    locale.get({languageCode:code}, function(data){
-                        $scope.localeData = data;
-				    });
+            $scope.musicVolume = 100;
+            $scope.languages = appConfig.languages;
+            $scope.locale= localStorage.locale || appConfig.languages[0].code;
+
+            //locale
+            $scope.$watch('locale', function(newVal, oldVal){
+                console.log(newVal);
+                if(newVal != oldVal){
+                    $translate.use(newVal);
                 }
             });
-*/
-            $scope.musicVolume = 100;
+
+            $scope.saveConfigurations = function () {
+                localStorage.locale = $scope.locale;
+            };
 
             $scope.changeVolume = function(target){
                 audioControl.changeVolume($scope.musicVolume/100, target);
