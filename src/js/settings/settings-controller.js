@@ -1,14 +1,8 @@
 angular.module('caribbean-war')
-	.controller('settingsCtrl', ['$scope', '$rootScope', 'audioControl', 'locale',
-		function($scope, $rootScope, audioControl, locale){
-            console.log("-");
-            //Localization
-            $scope.languages = [
-				{id: 0, label:'English', code:'en-EN'},
-				{id: 1, label:'Русский', code:'ru-RU'}
-			];
+	.controller('settingsCtrl', ['$scope', '$rootScope', 'audioControl',
+		function($scope, $rootScope, audioControl){
 
-
+/*
             $scope.$watch('langId', function(nVal, oVal){
                 if(nVal !== oVal){
                     console.log("DA");
@@ -18,7 +12,7 @@ angular.module('caribbean-war')
 				    });
                 }
             });
-
+*/
             $scope.musicVolume = 100;
 
             $scope.changeVolume = function(target){

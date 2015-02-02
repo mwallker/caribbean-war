@@ -1,10 +1,27 @@
 var caribbeanWarApp = angular.module('caribbean-war', [
 	'ui.router',
-    'ngResource'
+    'ngResource',
+    'pascalprecht.translate'
 ]);
 
+caribbeanWarApp.constant('appConfig', {
+    languages: [
+        {id: 0, label:'English', code:'en-EN'},
+        {id: 1, label:'Русский', code:'ru-RU'},
+        {id: 2, label:'Zulu', code:'zu-ZU'}
+    ]
+});
+
+caribbeanWarApp.config(['$translateProvider', 'appConfig', function($translateProvider, appConfig) {
+    $translateProvider.useStaticFilesLoader({
+        prefix: 'locale/langs/',
+        suffix: '.json'
+    });
+    $translateProvider.preferredLanguage(localStorage.locale || appConfig.languages[0].code);
+}]);
+
 caribbeanWarApp.config(function($stateProvider, $urlRouterProvider){
-	$urlRouterProvider.otherwise('/login');
+	$urlRouterProvider.otherwise('login');
     
     $stateProvider
         .state('login', {

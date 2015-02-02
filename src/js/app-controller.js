@@ -1,35 +1,27 @@
 angular.module('caribbean-war')
-	.controller('appCtrl', ['$scope', '$rootScope', '$q', '$state', 'audioControl', 'locale',
-		function($scope, $rootScope, $q, $state, audioControl, locale){
+	.controller('appCtrl', ['$scope', '$rootScope', '$q', '$state', '$translate', 'audioControl', 'appConfig',
+		function($scope, $rootScope, $q, $state, $translate, audioControl, appConfig){
 
             $scope.appLoading = true;
-
-            $scope.localeData = {};
-
-            $scope.setLocaleData = function(data){
-                $scope.localeData = data;
-            };
+            $scope.languages = appConfig.languages;
+            $scope.locale= localStorage.locale || appConfig.languages[0].code;
 
             var promises = [];
 
 			//audio
 			promises.push(audioControl.loadSoundFile('js/sound/ocean.mp3'));
-			
 
-			//localization
-			$scope.languages = [
-				{id: 0, label:'English', code:'en-EN'},
-				{id: 1, label:'Русский', code:'ru-RU'}
-			];
+            //locale
+            $scope.$watch('locale', function(newVal, oldVal){
+                console.log(newVal);
+                if(newVal != oldVal){
+                    $translate.use(newVal);
+                }
+            });
 
-			$scope.changeLocate = function(code){
-				localStorage.locale = code;
-				locale.get({languageCode:code}, function(data){
-					$scope.localeData = data;
-				});
-			};
-			
-			$scope.changeLocate($scope.languages[0].code);
+            $scope.saveConfigurations = function () {
+                localStorage.locale = $scope.locale;
+            };
 
 			$rootScope.$on('$stateChangeStart', 
 				function(event){

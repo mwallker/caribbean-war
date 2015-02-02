@@ -1,15 +1,15 @@
 <div id="login-layer">
 	<form ng-submit="connect()">
 	<div>
-		<label>{{localeData.pages.login.email}}: </label>
+		<label>{{'EMAIL' | translate}}: </label>
 		<input type="text" ng-model="email" required/>
 	</div>
 	<div>
-		<label>{{localeData.pages.login.password}}: </label>
+		<label>{{'PASSWORD' | translate}}: </label>
 		<input type="password" ng-model="password" required/>
 	</div>
 	<div>
-		<label>{{localeData.pages.login.rememberUser}}</label>
+		<label>{{'REMEMBER_USER' | translate}}</label>
 		<input type="checkbox" class="RememberMe"/>
 	</div>
 	<div>

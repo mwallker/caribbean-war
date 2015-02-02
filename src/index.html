@@ -9,6 +9,8 @@
   <script src="js/libs/jquery/dist/jquery.min.js"></script>
   <script src="js/libs/jsSHA/src/sha256.js"></script>
   <script src="js/libs/angular/angular.min.js"></script>
+  <script src="js/libs/angular-translate/angular-translate.min.js"></script>
+  <script src="js/libs/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
   <script src="js/libs/angular-resource/angular-resource.min.js"></script>
   <script src="js/libs/angular-ui-router/release/angular-ui-router.min.js"></script>
   <script src="js/libs/keyboardjs/keyboard.js"></script>
@@ -22,26 +24,29 @@
       Loading ...
     </div>
 
-    <div class="settings" ng-controller="settingsCtrl" ng-show="true">
+    <div class="settings" ng-show="true">
         <div>
-            <label class="">Music:</label>
-            <input type="range" ng-model="musicVolume" ng-change="changeVolume(0)"> {{musicVolume}}
+            <label class="" translate>{{:: 'MUSIC' }}:</label>
+            <input type="range" ng-model="musicVolume" ng-change="changeVolume(0)">
         </div>
         <div>
-            <label class="">Effects:</label>
-            <input type="range" ng-model="musicVolume" ng-change="changeVolume(1)"> {{musicVolume}}
+            <label class="" translate>{{:: 'EFFECTS' }}:</label>
+            <input type="range" ng-model="musicVolume" ng-change="changeVolume(1)">
         </div>
         <div>
             <label class="">Languege:</label>
-            <select ng-model="lang"
-                    ng-options="item.id as item.label for item in languages"
+            <select ng-model="locale"
+                    ng-options="item.code as item.label for item in languages"
             </select>
+        </div>
+        <div>
+            <input type="button" ng-click="saveConfigurations()" value="Save">
         </div>
     </div>
 
     <canvas id='renderCanvas'></canvas>
 
-    <section ui-view></section>
+    <div ui-view></div>
   </div>  
   
   <!-- JS controllers files-->
@@ -55,8 +60,6 @@
 
   <!-- Sound -->
 
-  <!-- Locale -->
-  <script src="locale/locale-service.js"></script>
 
   <script src="js/pages/login/loginCtrl.js"></script>
   <script src="js/pages/harbor/harborCtrl.js"></script>
