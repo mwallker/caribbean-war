@@ -1,3 +1,5 @@
+var states = {stoped:'S', preparing: 'P', running: 'R'};
+
 //FPS Monitoring
 var count = 0;
 setInterval(function(){
@@ -7,6 +9,7 @@ setInterval(function(){
 function fps(value) {
     count = (1/value).toFixed();
 }
+
 
 var lerp = function(start, end, delta){
 	return (start + (delta || 0.01)*(end - start));

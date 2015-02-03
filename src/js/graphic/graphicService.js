@@ -9,42 +9,51 @@ caribbeanWarApp.service('graphicService', function () {
 
     //Create scene
     var engine, scene, camera;
+    var sceneState = states.;
 
     var createScene = function () {
-        engine = new BABYLON.Engine(canvas, true);
-        scene = new BABYLON.Scene(engine);
-        camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, BABYLON.Vector3.Zero(), scene);
+        if(sceneState == 0){
+            sceneState = 1;
 
-        var cameraTarget = {};
-        cameraTarget.position = BABYLON.Vector3.Zero();
-        cameraTarget.rotation = {y: 0};
+            engine = new BABYLON.Engine(canvas, true);
+            scene = new BABYLON.Scene(engine);
+            camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, BABYLON.Vector3.Zero(), scene);
 
-        scene.activeCamera = camera;
-        //cameraSetup.initCamera(camera, cameraTarget, canvas);
-        camera.attachControl(canvas);
+            var cameraTarget = {};
+            cameraTarget.position = BABYLON.Vector3.Zero();
+            cameraTarget.rotation = {y: 0};
 
-        var beforeRenderFunction = function () {
-            //MOTOR
-            delay = Math.abs(deltaTime - Date.now())*0.001;
+            scene.activeCamera = camera;
+            camera.attachControl(canvas);
 
-            fps(delay);
+            var beforeRenderFunction = function () {
+                delay = Math.abs(deltaTime - Date.now())*0.001;
 
-            deltaTime = Date.now();
-        };
+                fps(delay);
 
-        scene.registerBeforeRender(beforeRenderFunction);
+                deltaTime = Date.now();
+            };
 
-        engine.runRenderLoop(function() {
-            scene.render();
-        });
+            sceneState = 2;
+
+            scene.registerBeforeRender(beforeRenderFunction);
+
+            engine.runRenderLoop(function() {
+                scene.render();
+            });
+        }
+
     }
 
     var disposeScene = function () {
-        engine.stopRenderLoop();
+        if(sceneState == 2){
+            sceneState = ;
+            engine.stopRenderLoop();
 
-        camera.dispose();
-        scene.dispose();
-        engine.dispose();
+            camera.dispose();
+            scene.dispose();
+            engine.dispose();
+        }
     }
 
 
