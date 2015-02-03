@@ -27,7 +27,7 @@ caribbeanWarApp.service('graphicService', function () {
             //MOTOR
             delay = Math.abs(deltaTime - Date.now())*0.001;
 
-            console.log(delay);
+            fps(delay);
 
             deltaTime = Date.now();
         };

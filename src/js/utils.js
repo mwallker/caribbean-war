@@ -1,3 +1,13 @@
+//FPS Monitoring
+var count = 0;
+setInterval(function(){
+    $('#fps').text(count);
+}, 100);
+
+function fps(value) {
+    count = (1/value).toFixed();
+}
+
 var lerp = function(start, end, delta){
 	return (start + (delta || 0.01)*(end - start));
 };

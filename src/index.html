@@ -25,6 +25,10 @@
       {{ 'LOADING' | translate}} ...
     </div>
 
+    <div style="background-color: black; opacity: 20%; margin: 20px; position: absolute; z-index: 1000; font-size: 20px; color: white;">
+        <label>Average FPS: </label><label id="fps"></label>
+    </div>
+
     <div ng-include="'js/pages/settings/settings-layer.html'"></div>
 
     <canvas id='renderCanvas'></canvas>
@@ -49,6 +53,8 @@
   <script src="js/pages/login/loginCtrl.js"></script>
   <script src="js/pages/harbor/harborCtrl.js"></script>
   <script src="js/pages/world/worldCtrl.js"></script>
+
+
  
 </body>
 </html>

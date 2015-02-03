@@ -22,13 +22,9 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 	};
 
 	$scope.authorize = function(event, data){
-        try{
-            if(data && data.authorize){
-                userStorage.set(data);
-                $state.go('harbor');
-            }
-        }catch(e){
-            console.log(e);
+        if(data && data.authorize){
+             userStorage.set(data);
+            $state.go('harbor');
         }
 	};
 
