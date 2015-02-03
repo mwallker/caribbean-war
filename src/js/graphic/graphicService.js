@@ -1,5 +1,4 @@
-caribbeanWarApp.service('graphicService', function ($q) {
-    var deferred = $q.defer();
+caribbeanWarApp.service('graphicService', function () {
 
     //Find canvas
     var canvas = $('#renderCanvas')[0];
@@ -16,9 +15,24 @@ caribbeanWarApp.service('graphicService', function ($q) {
         scene = new BABYLON.Scene(engine);
         camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, BABYLON.Vector3.Zero(), scene);
 
+        var cameraTarget = {};
+        cameraTarget.position = BABYLON.Vector3.Zero();
+        cameraTarget.rotation = {y: 0};
+
         scene.activeCamera = camera;
         //cameraSetup.initCamera(camera, cameraTarget, canvas);
         camera.attachControl(canvas);
+
+        var beforeRenderFunction = function () {
+            //MOTOR
+            delay = Math.abs(deltaTime - Date.now())*0.001;
+
+            console.log(delay);
+
+            deltaTime = Date.now();
+        };
+
+        scene.registerBeforeRender(beforeRenderFunction);
 
         engine.runRenderLoop(function() {
             scene.render();
@@ -37,21 +51,20 @@ caribbeanWarApp.service('graphicService', function ($q) {
     window.addEventListener("resize", function () {
         if(engine) engine.resize();
     });
-    //
-    //
+
     return {
         create: createScene,
         dispose: disposeScene
     };
 });
 
+
+
+
+
+
+
 /*
-    var engine = new BABYLON.Engine(canvas, true);
-
-    var scene = new BABYLON.Scene(engine);
-
-
-
     var ship = BABYLON.Mesh.CreateBox("ship", 5, scene);
 
     shipControl.initShip(scene, ship);
@@ -133,7 +146,5 @@ caribbeanWarApp.service('graphicService', function ($q) {
     };
 
     scene.registerBeforeRender(beforeRenderFunction);
-
-
 
     */

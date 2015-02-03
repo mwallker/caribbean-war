@@ -186,7 +186,7 @@ caribbeanWarApp.service('shipControl', function () {
 		update: function(delay){
 			if(ship.initiated){
 				timer = timer + delay%(2*Math.PI);
-				obs = lerp(obs, rand(- 0.3, 0.3), 0.03);
+				obs = lerp(obs, ranged(- 0.3, 0.3), 0.03);
 				
 				ship.speed = lerp(ship.speed, ship.sailsMode*ship.maxSpeed*delay/4, 0.01);
 

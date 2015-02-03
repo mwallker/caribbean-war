@@ -5,12 +5,17 @@ angular.module('caribbean-war')
             $scope.appLoading = true;
 
             graphicService.create();
-
+/*
             setTimeout(function () {
                 graphicService.dispose();
                 console.log('end');
-            }, 5000);
+            }, 30000);
 
+            setTimeout(function () {
+                graphicService.create();
+                console.log('new start');
+            }, 60000);
+   */
             $scope.registrateTasks = function (tasks) {
                 $scope.appLoading = true;
                 $q.all(tasks).then(function(){
