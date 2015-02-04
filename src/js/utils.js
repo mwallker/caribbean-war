@@ -1,14 +1,26 @@
-var states = {stoped:'S', preparing: 'P', running: 'R'};
+//Common objects
+var states = {stoped:'S', preparing: 'P', running: 'R'},
+    targetDirection = {none: 0, left: -1, right: 1, both: 2};
 
-//FPS Monitoring
-var count = 0;
+//FPS Monitoring (only for development)
+// =start=
+var count = 0, buffer = [];
 setInterval(function(){
-    $('#fps').text(count);
-}, 100);
+    $('#fps').text(count.toFixed());
+}, 20);
 
 function fps(value) {
-    count = (1/value).toFixed();
+    buffer.push(1/value);
+
+    if(buffer.length >= 80){
+        buffer.shift();
+    }
+
+    count = buffer.reduce(function(a, b) {
+        return a + b;
+    })/(buffer.length);
 }
+// =end=
 
 
 var lerp = function(start, end, delta){

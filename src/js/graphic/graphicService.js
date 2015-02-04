@@ -7,13 +7,17 @@ caribbeanWarApp.service('graphicService', function () {
     var deltaTime = Date.now();
     var delay = 0;
 
-    //Create scene
+    //Scene objects
     var engine, scene, camera;
-    var sceneState = states.;
+    var sceneState = states.stoped;
+
+    var setupSceneContent = function (sceneName) {
+
+    };
 
     var createScene = function () {
-        if(sceneState == 0){
-            sceneState = 1;
+        if(sceneState == states.stoped){
+            sceneState = states.preparing;
 
             engine = new BABYLON.Engine(canvas, true);
             scene = new BABYLON.Scene(engine);
@@ -34,7 +38,7 @@ caribbeanWarApp.service('graphicService', function () {
                 deltaTime = Date.now();
             };
 
-            sceneState = 2;
+            sceneState = states.running;
 
             scene.registerBeforeRender(beforeRenderFunction);
 
@@ -42,20 +46,21 @@ caribbeanWarApp.service('graphicService', function () {
                 scene.render();
             });
         }
-
-    }
+    };
 
     var disposeScene = function () {
-        if(sceneState == 2){
-            sceneState = ;
+        if(sceneState == states.running){
+            sceneState = states.preparing;
+
             engine.stopRenderLoop();
 
             camera.dispose();
             scene.dispose();
             engine.dispose();
-        }
-    }
 
+            sceneState = states.stoped;
+        }
+    };
 
     window.addEventListener("resize", function () {
         if(engine) engine.resize();
