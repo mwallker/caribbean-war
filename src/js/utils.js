@@ -11,7 +11,7 @@ function fps(value) {
 // ====== end =======
 
 
-//Smoothing value's change
+//Smoothing value's changes
 var lerp = function(start, end, delta){
 	return (start + (delta || 0.01)*(end - start));
 };
@@ -49,6 +49,7 @@ var resolveAngles = function (angle, direction) {
     }
 }
 
+//http://plnkr.co/edit/vBxFqfwt7TyAaV3xtpFj?p=preview
 var calculateCurve = function (start, end, options) {
     if(options.direction == targetingDirection.none){
         return [];
@@ -61,16 +62,13 @@ var calculateCurve = function (start, end, options) {
         var scatter = options.scatter || 0;
 
         //Cashing values
-        var cosS = distance*Math.cos(scatter),
-            sinS = distance*Math.sin(scatter),
-            cosA = 0,
-            sinA = 0;
+        var cosS = distance*Math.cos(scatter), sinS = distance*Math.sin(scatter), cosA = 0, sinA = 0;
 
         //Coordinates of the corners
         var dxU = 0, dxD = 0, dzU =0, dzD = 0;
 
         //Count of lines steps
-        var n = 1;
+        var n = 3;
 
         for(var i = 0; i < angles.length; i++){
             cosA = Math.cos(angles[i]);
