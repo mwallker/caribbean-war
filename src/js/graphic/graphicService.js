@@ -7,36 +7,20 @@ caribbeanWarApp.service('graphicService', function () {
     var deltaTime = Date.now();
     var delay = 0;
 
-    //Scene objects
-    var engine, scene, camera;
+    var scene = sceneTemplates['login'];
+
     var state = states.stoped;
 
-    var createScene = function () {
+    var createScene = function (sceneName) {
         if(state == states.stoped){
             state = states.preparing;
 
-            engine = new BABYLON.Engine(canvas, true);
-            scene = new BABYLON.Scene(engine);
-            camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, BABYLON.Vector3.Zero(), scene);
-
-            scene.activeCamera = camera;
-            camera.attachControl(canvas);
-
-            var options = {direction: targetingDirection.both, distance: 0, angle : 0, scatter: 0};
-            var start = {x: 0, y: 0, z: 0};
-            var end = {x: 0, y: 0, z: 50};
-
-            var lines = new BABYLON.Mesh.CreateLines("lines", calculateCurve(start, end, options), scene);
+            scene.init(canvas);
 
             var beforeRenderFunction = function () {
                 delay = Math.abs(deltaTime - Date.now())*0.001;
 
-                options.distance = correctDictance(Math.hypot(end.x - start.x, end.z - start.z), 20, 100);
-                options.angle = (options.angle+delay)%(Math.PI*2);
-                options.scatter = (options.scatter + 0.01) % (Math.PI/6);
-
-                lines.dispose();
-                lines = new BABYLON.Mesh.CreateLines("lines", calculateCurve(start, options), scene);
+                scene.update(delay);
 
                 fps(delay);
 
@@ -45,10 +29,10 @@ caribbeanWarApp.service('graphicService', function () {
 
             state = states.running;
 
-            scene.registerBeforeRender(beforeRenderFunction);
+            scene.scene.registerBeforeRender(beforeRenderFunction);
 
-            engine.runRenderLoop(function() {
-                scene.render();
+            scene.engine.runRenderLoop(function() {
+                scene.scene.render();
             });
         }
     };
@@ -57,9 +41,8 @@ caribbeanWarApp.service('graphicService', function () {
         if(state == states.running){
             state = states.preparing;
 
-            engine.stopRenderLoop();
-            engine.dispose();
-            engine.clear(new BABYLON.Color4(0, 0, 0, 0), true, true);
+            scene.dispose();
+
             state = states.stoped;
         }
     };
@@ -115,7 +98,7 @@ var sceneTemplates = {
             this.content.start = {x: 0, y: 0, z: 0};
             this.content.end = {x: 0, y: 0, z: 50};
 
-            this.content.lines = new BABYLON.Mesh.CreateLines("lines", calculateCurve(start, end, options), scene);
+            this.content.lines = new BABYLON.Mesh.CreateLines("lines", calculateCurve(this.content.start, this.content.options), this.scene);
         },
         dispose: function () {
             this.engine.stopRenderLoop();
@@ -123,14 +106,12 @@ var sceneTemplates = {
             this.engine.dispose();
         },
         update: function (delay) {
-            console.log(this.scene);
-
             this.content.options.distance = correctDictance(Math.hypot(this.content.end.x - this.content.start.x, this.content.end.z - this.content.start.z), 20, 100);
             this.content.options.angle = (this.content.options.angle+delay)%(Math.PI*2);
             this.content.options.scatter = (this.content.options.scatter + 0.01) % (Math.PI/6);
 
             this.content.lines.dispose();
-            this.content.lines = new BABYLON.Mesh.CreateLines("lines", calculateCurve(this.content.start, options), this.scene);
+            this.content.lines = new BABYLON.Mesh.CreateLines("lines", calculateCurve(this.content.start, this.content.options), this.scene);
         }
     },
     'harbor': {},
