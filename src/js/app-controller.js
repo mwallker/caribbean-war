@@ -1,6 +1,6 @@
 angular.module('caribbean-war')
 	.controller('appCtrl', ['$scope', '$rootScope', '$q', '$state', 'audioControl', 'renderService',
-		function ($scope, $rootScope, $q, $state, audioControl, graphicService) {
+		function ($scope, $rootScope, $q, $state, audioControl, renderService) {
 
 			$scope.appLoading = true;
 
