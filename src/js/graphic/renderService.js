@@ -1,138 +1,111 @@
-caribbeanWarApp.service('graphicService', function () {
+caribbeanWarApp.service('renderService', function () {
 
-    //Find canvas
-    var canvas = $('#renderCanvas')[0];
+	//Find canvas
+	var canvas = $('#renderCanvas')[0];
+	var engine = null;
+	var scene = null;
+	var camera = null;
 
-    var scene = new sceneConstructor();
+	var content = null;
 
-    var state = states.stoped;
+	//Timer setup
+	var deltaTime = 0;
+	var delay = 0;
 
-    var createScene = function (target) {
-        if(state == states.stoped){
-            state = states.preparing;
+	function createScene(label) {
+		engine = new BABYLON.Engine(canvas, true);
+		scene = new BABYLON.Scene(engine);
+		camera = new BABYLON.ArcRotateCamera("Camera0", 0, 0, 10, BABYLON.Vector3.Zero(), scene);
 
-            scene.create(canvas, target, event);
+		content = sceneTemplates[label](scene);
 
-            state = states.running;
-        }
-    };
+		scene.activeCamera = camera;
+		camera.attachControl(canvas);
 
-    var disposeScene = function () {
-        if(state == states.running){
-            state = states.preparing;
+		deltaTime = Date.now();
 
-            scene.dispose();
+		var beforeRenderFunction = function () {
+			delay = Math.abs(deltaTime - Date.now()) * 0.001;
 
-            state = states.stoped;
-        }
-    };
+			content.onUpdate(delay);
 
-    window.addEventListener("resize", scene.onResize);
+			fps(delay);
 
-    return {
-        load: createScene,
-        dispose: disposeScene,
-        getState: function () {
-            return state;
-        }
-    };
+			deltaTime = Date.now();
+		};
+
+		scene.registerBeforeRender(beforeRenderFunction);
+
+		engine.runRenderLoop(function () {
+			scene.render();
+		});
+	}
+
+	function disposeScene() {
+		if(engine){
+			engine.stopRenderLoop();
+			engine.clear(new BABYLON.Color4(0, 0, 0, 0), true, true);
+			engine.dispose();
+		}
+	}
+
+	window.addEventListener("resize", function () {
+		if (engine) engine.resize();
+	});
+
+	return {
+		load: createScene,
+		dispose: disposeScene
+	};
 });
 
 var sceneTemplates = {
-    'login': function (scene) {
-        var start = {x: 0, y: 0, z: 0},
-            end = {x: 0, y: 0, z: 50},
-            options = {
-                direction: targetingDirection.both,
-                distance: 0,
-                angle : 0,
-                scatter: 0
-            },
-            lines = new BABYLON.Mesh.CreateLines("lines", calculateCurve(start, options), scene);
+	'login': function (scene) {
+		var start = {
+				x: 0,
+				y: 0,
+				z: 0
+			},
+			end = {
+				x: 0,
+				y: 0,
+				z: 50
+			},
+			options = {
+				direction: targetingDirection.both,
+				distance: 0,
+				angle: 0,
+				scatter: 0
+			},
+			lines = new BABYLON.Mesh.CreateLines("lines", calculateCurve(start, options), scene);
 
-        return {
-            onUpdate: function (delay){
-                options.distance = correctDictance(Math.hypot(end.x - start.x, end.z - start.z), 20, 100);
-                options.angle = (options.angle+delay)%(Math.PI*2);
-                options.scatter = (options.scatter + 0.01) % (Math.PI/6);
+		return {
+			onUpdate: function (delay) {
+				options.distance = correctDictance(Math.hypot(end.x - start.x, end.z - start.z), 20, 100);
+				options.angle = (options.angle + delay) % (Math.PI * 2);
+				options.scatter = (options.scatter + 0.01) % (Math.PI / 6);
 
-                lines.dispose();
-                lines = new BABYLON.Mesh.CreateLines("lines", calculateCurve(start, options), scene);
-            }
-        }
-    },
-    'harbor': function (scene) {
+				lines.dispose();
+				lines = new BABYLON.Mesh.CreateLines("lines", calculateCurve(start, options), scene);
+			}
+		}
+	},
+	'harbor': function (scene) {
 
-        return {
-            onUpdate: function (delay){
+		return {
+			onUpdate: function (delay) {
 
-            }
-        }
-    },
-    'world': function (scene) {
+			}
+		}
+	},
+	'world': function (scene) {
 
-        return {
-            onUpdate: function (delay){
+		return {
+			onUpdate: function (delay) {
 
-            }
-        }
-    }
-};
-
-function sceneConstructor (){
-    var canvas = null;
-    var engine = null;
-    var scene = null;
-    var camera = null;
-
-    var content = null;
-
-    //Timer setup
-    var deltaTime = 0;
-    var delay = 0;
-
-    function init (canvas, label){
-        engine = new BABYLON.Engine(canvas, true);
-        scene = new BABYLON.Scene(engine);
-        camera = new BABYLON.ArcRotateCamera("Camera0", 0, 0, 10, BABYLON.Vector3.Zero(), scene);
-
-        content = sceneTemplates[label || 0](scene);
-
-        scene.activeCamera = camera;
-        camera.attachControl(canvas);
-
-        deltaTime = Date.now();
-
-        var beforeRenderFunction = function () {
-            delay = Math.abs(deltaTime - Date.now())*0.001;
-
-            content.onUpdate(delay);
-
-            fps(delay);
-
-            deltaTime = Date.now();
-        };
-
-        scene.registerBeforeRender(beforeRenderFunction);
-
-        engine.runRenderLoop(function() {
-            scene.render();
-        });
-    }
-
-    function dispose (){
-        engine.stopRenderLoop();
-        engine.clear(new BABYLON.Color4(0, 0, 0, 0), true, true);
-        engine.dispose();
-    }
-
-    return {
-        create: init,
-        dispose: dispose,
-        onResize: function () {
-            if(engine) engine.resize();
-        }
-    }
+			}
+		}
+	}
 };
 
 
