@@ -11,27 +11,32 @@ caribbeanWarApp.service('graphicService', function () {
     var engine, scene, camera;
     var sceneState = states.stoped;
 
-    var setupSceneContent = function (sceneName) {
-
-    };
-
     var createScene = function () {
         if(sceneState == states.stoped){
             sceneState = states.preparing;
 
-            engine = new BABYLON.Engine(canvas, true);
+            engine = new BABYLON.Engine(this.canvas, true);
             scene = new BABYLON.Scene(engine);
             camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, BABYLON.Vector3.Zero(), scene);
-
-            var cameraTarget = {};
-            cameraTarget.position = BABYLON.Vector3.Zero();
-            cameraTarget.rotation = {y: 0};
 
             scene.activeCamera = camera;
             camera.attachControl(canvas);
 
+            var options = {direction: targetingDirection.both, distance: 0, angle : 0, scatter: 0};
+            var start = {x: 0, y: 0, z: 0};
+            var end = {x: 0, y: 0, z: 50};
+
+            var lines = new BABYLON.Mesh.CreateLines("lines", calculateCurve(start, end, options), scene);
+
             var beforeRenderFunction = function () {
                 delay = Math.abs(deltaTime - Date.now())*0.001;
+
+                options.distance = correctDictance(Math.hypot(end.x - start.x, end.z - start.z), 20, 100);
+                options.angle = (options.angle+delay)%(Math.PI*2);
+                options.scatter = (options.scatter + 0.01) % (Math.PI/6);
+
+                lines.dispose();
+                lines = new BABYLON.Mesh.CreateLines("lines", calculateCurve(start, options), scene);
 
                 fps(delay);
 
@@ -72,10 +77,35 @@ caribbeanWarApp.service('graphicService', function () {
     };
 });
 
-
-
-
-
+var sceneTemplates = {
+    'login': {
+        canvas: $('#renderCanvas')[0],
+        engine: new BABYLON.Engine(this.canvas, true),
+        scene: null,
+        camera: null,
+        cameraTarget: {
+            position: BABYLON.Vector3.Zero(),
+            rotation: BABYLON.Vector3.Zero()
+        },
+        light: (function(){
+            if(this.scene){
+                var light = new BABYLON.DirectionalLight("light", new BABYLON.Vector3(-1, -10, 0), this.scene);
+                light.position = new BABYLON.Vector3(20, 40, 20);
+                light.diffuse = new BABYLON.Color3(1, 1, 1);
+                light.specular = new BABYLON.Color3(1, 1, 1);
+                light.intensity = 1;
+                return light;
+            }
+            return null;
+        })(),
+        init: function (scene, camera) {
+            this.scene = scene;
+        },
+        update: function () {
+            console.log(this.scene);
+        }
+    }
+}
 
 
 /*
@@ -90,7 +120,7 @@ caribbeanWarApp.service('graphicService', function () {
 
     var cameraTarget = {};
     cameraTarget.position = BABYLON.Vector3.Zero();
-    cameraTarget.rotation = {y: 0};
+    cameraTarget.rotation = BABYLON.Vector3.Zero();
 
     console.log(scene);
 
@@ -121,7 +151,7 @@ caribbeanWarApp.service('graphicService', function () {
         skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
 
         skybox.material = skyboxMaterial;
-    })();
+    })(scene);
 
     //Water
     (function(){

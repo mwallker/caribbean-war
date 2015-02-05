@@ -6,6 +6,8 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 		$rootScope.$broadcast("close", "");
 	}
 
+    $scope.loadScene('login');
+
     $scope.registrateTasks([/*audioControl.loadSoundFile('js/sound/ocean.mp3')*/]);
 
 	$scope.connect = function(){

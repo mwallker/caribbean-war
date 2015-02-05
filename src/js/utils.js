@@ -41,7 +41,7 @@ var correctDictance = function (dist, max, min) {
 
 var resolveAngles = function (angle, direction) {
     var normalAngle = -(Math.PI + angle);
-    if(direction = targetingDirection.both){
+    if(direction == targetingDirection.both){
         return [normalAngle - Math.PI/2, normalAngle + Math.PI/2];
     }
     else{
@@ -49,8 +49,8 @@ var resolveAngles = function (angle, direction) {
     }
 }
 
-//http://plnkr.co/edit/vBxFqfwt7TyAaV3xtpFj?p=preview
-var calculateCurve = function (start, end, options) {
+//TODO remove "magic numbers" with constants
+var calculateCurve = function (position, options) {
     if(options.direction == targetingDirection.none){
         return [];
     }
@@ -58,7 +58,7 @@ var calculateCurve = function (start, end, options) {
         var curve = [];
 
         var angles = resolveAngles(options.angle, options.direction);
-        var distance = correctDictance(Math.hypot(end.x - start.x, end.z - start.z), 20, 100);
+        var distance = options.distance;
         var scatter = options.scatter || 0;
 
         //Cashing values
@@ -68,7 +68,7 @@ var calculateCurve = function (start, end, options) {
         var dxU = 0, dxD = 0, dzU =0, dzD = 0;
 
         //Count of lines steps
-        var n = 3;
+        var n = 8;
 
         for(var i = 0; i < angles.length; i++){
             cosA = Math.cos(angles[i]);
@@ -80,22 +80,14 @@ var calculateCurve = function (start, end, options) {
             dzD = sinA*cosS - cosA*sinS;
 
             for(var j = 0; j <= n; j++){
-                /*curve.push({x: start.x + dxU*j/n - sinA,
+                curve.push({x: position.x + dxU*j/n - sinA,
                             y: Math.sin(Math.PI*j/n)*distance*0.03,
-                            z: start.z + dzU*j/n + cosA});*/
-
-                curve.push(new BABYLON.Vector3(start.x + dxU*j/n - sinA,
-                                            Math.sin(Math.PI*j/n)*distance*0.03,
-                                            start.z + dzU*j/n + cosA));
+                            z: position.z + dzU*j/n + cosA});
             }
             for(var k = n; k >= 0; k--){
-                /*curve.push({x: start.x + dxD*k/n + sinA,
+                curve.push({x: position.x + dxD*k/n + sinA,
                             y: Math.sin(Math.PI*k/n)*distance*0.03,
-                            z: start.z + dzD*k/n - cosA});*/
-
-                curve.push(new BABYLON.Vector3(start.x + dxD*k/n + sinA,
-                                            Math.sin(Math.PI*k/n)*distance*0.03,
-                                            start.z + dzD*k/n - cosA));
+                            z: position.z + dzD*k/n - cosA});
             }
         }
         return curve;
