@@ -4,14 +4,10 @@ angular.module('caribbean-war')
 
             $scope.appLoading = true;
 
-            $scope.loadScene = function (sceneName) {
-                graphicService.create();
-            };
-
-            setTimeout(function(){
+            /*setTimeout(function(){
                 console.log('stop');
                 graphicService.dispose();
-            }, 6000);
+            }, 6000);*/
 
             /*
             setTimeout(function(){
@@ -29,13 +25,13 @@ angular.module('caribbean-war')
             };
 
 			$rootScope.$on('$stateChangeStart', 
-				function(event){
-					//console.log('state-start');
+				function(event, toState){
+                    graphicService.dispose();
 				});
 
             $rootScope.$on('$stateChangeSuccess',
-				function(event){
-					//console.log('state-success');
+				function(event, toState){
+					graphicService.load(toState.name);
 				});
         }
     ]);
