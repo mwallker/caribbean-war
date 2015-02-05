@@ -37,7 +37,7 @@ var correctDictance = function (dist, max, min) {
             return dist;
         }
     }
-}
+};
 
 var resolveAngles = function (angle, direction) {
     var normalAngle = -(Math.PI + angle);
@@ -47,7 +47,7 @@ var resolveAngles = function (angle, direction) {
     else{
         return [normalAngle + direction*Math.PI/2];
     }
-}
+};
 
 //TODO remove "magic numbers" with constants
 var calculateCurve = function (position, options) {
