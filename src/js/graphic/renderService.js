@@ -6,8 +6,9 @@ caribbeanWarApp.service('renderService', function ($q) {
 	var scene = null;
 	var camera = null;
 
-	var content = null;
 	var lockCamera = false;
+
+	var content = null;
 
 	//Timer setup
 	var deltaTime = 0;
@@ -51,6 +52,7 @@ caribbeanWarApp.service('renderService', function ($q) {
 		}
 	}
 
+	//Render events
 	window.addEventListener('resize', function () {
 		if (engine) {
 			engine.resize();
@@ -179,13 +181,23 @@ var basicComponents = {
 	test: function (scene) {
 		var buffer = [];
 		for (var i = 0; i < 10; i++) {
-			buffer.push(new BABYLON.Mesh.CreateBox("ship_" + i, 5, scene));
+			buffer.push(new BABYLON.Mesh.CreateBox("box_" + i, 5, scene));
 		}
 	},
 	//Ship
-	ship: function (scene, shipControl) {
-		if (shipControl) {
+	ship: function (scene, underUserControl) {
+
+		//TEMPORARY
+		var ship = BABYLON.Mesh.CreateBox("ship", 5, scene);
+
+		var shipMaterial = new BABYLON.StandardMaterial("shipMaterial", scene);
+		ship.specularColor = new BABYLON.Color3(1, 1, 1);
+		ship.diffuseColor = new BABYLON.Color3(0.3, 0.6, 1);
+		ship.material = shipMaterial;
+
+		if (underUserControl) {
 			//Ship under user's control
+
 		} else {
 			//View of ship
 		}
@@ -236,19 +248,27 @@ function cameraController(bindedCamera, options) {
 };
 
 /*
-    var ship = BABYLON.Mesh.CreateBox("ship", 5, scene);
+var dummy = {
+		correctCamera: function (targeting) {
+			if (camera && target) {
+				if (targeting <= 2 && targeting >= -1) {
+					if (targeting !== 2) {
+						settings.alpha = -(Math.PI + target.rotation.y);
+						settings.beta = maxBeta - 0.9;
+					} else {
+						settings.alpha = -(Math.PI + target.rotation.y) - targeting * Math.PI / 2;
+						settings.beta = normalBeta;
+					}
+				}
 
-    shipControl.initShip(scene, ship);
-
-    var shipMaterial = new BABYLON.StandardMaterial("shipMaterial", scene);
-    ship.specularColor = new BABYLON.Color3(1, 1, 1);
-    ship.diffuseColor = new BABYLON.Color3(0.3, 0.6, 1);
-    ship.material = shipMaterial;
-	var beforeRenderFunction = function () {
-        cameraTarget.position.x = skybox.position.x = ship.position.x;
-        cameraTarget.position.z = skybox.position.z = ship.position.z;
-        cameraTarget.position.y = skybox.position.y = 0;
-        cameraTarget.rotation.y = ship.rotation.y;
-        cameraSetup.correctCamera(-2);
-    };
+				if (!lockCamera) {
+					camera.alpha = lerp(camera.alpha, settings.alpha, lerpFactor);
+					camera.beta = lerp(camera.beta, settings.beta, lerpFactor);
+				}
+			}
+		},
+		initCamera: function (cam, tar) {
+			camera.alpha = -(Math.PI + (target.rotation.y || 0));
+		}
+	};
 */
