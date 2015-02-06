@@ -27,11 +27,6 @@ var randomRange = function (min, max) {
 };
 
 //Common objects
-var states = {
-	stoped: 'S',
-	preparing: 'P',
-	running: 'R'
-};
 var targetingDirection = {
 	none: 0,
 	left: -1,
@@ -39,7 +34,7 @@ var targetingDirection = {
 	both: 2
 };
 
-var correctDictance = function (dist, max, min) {
+var correctDistance = function (dist, max, min) {
 	if (dist > max) {
 		return max;
 	} else {

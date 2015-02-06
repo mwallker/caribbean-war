@@ -26,26 +26,34 @@
   padding: 0;
 }
 
-#error {
-  position: fixed;
-  z-index: 5;
-  top: 0;
-  width: 200px;
-  height: 60px;
-  background: #C0C0C0;
-  border: solid 1px #FF0000;
-}
-#error div {
-  background: #FF0000;
-  color: #FFFFFF;
-  position: absolute;
+/*common properties*/
+html,
+body {
   width: 100%;
-  height: 20px;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
 }
-#error div a {
-  position: absolute;
-  right: 0;
-  color: #FFFFFF;
+li {
+  list-style: none;
+}
+.cloak {
+  position: fixed;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+}
+.page-loader {
+  position: fixed;
+  z-index: 90;
+  width: 100%;
+  height: 100%;
+  font-size: 60px;
+  text-align: center;
+  color: #ddd;
+  background-color: #046c6c;
 }
 
 #harbor-layer {
@@ -86,18 +94,6 @@
   color: #fff;
   border: solid 5px #fff;
   background: #046c6c;
-}
-
-
-#loader {
-  position: fixed;
-  z-index: 9;
-  text-align: center;
-  background: #400000;
-  color: #FFFFFF;
-  font-size: 60px;
-  width: 100%;
-  height: 100%;
 }
 
 #login-layer {
@@ -169,30 +165,9 @@
   width: 300px;
   background-color: #005959;
   background-opacity: 0.7;
-  z-index: 3;
+  z-index: 300;
   color: #ddd;
+  right: 0;
 }
 
-/*common properties*/
-html,
-body {
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
-}
-li {
-  list-style: none;
-}
-.splash-screen {
-  position: fixed;
-  z-index: 10;
-  width: 100%;
-  height: 100%;
-  font-size: 60px;
-  text-align: center;
-  color: #ddd;
-  background-color: #046c6c;
-}
 

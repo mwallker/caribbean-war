@@ -2,13 +2,12 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 	$scope.email = localStorage.email || "";
 	$rootScope.authorized = false;
 
-	if(connection.status()){
+	if (connection.status()) {
 		$rootScope.$broadcast("close", "");
 	}
 
-    $scope.registrateTasks([/*audioControl.loadSoundFile('js/sound/ocean.mp3')*/]);
 
-	$scope.connect = function(){
+	$scope.connect = function () {
 		localStorage.email = $scope.email || "";
 
 		var credits = {
@@ -16,19 +15,19 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 			password: new jsSHA(($scope.password).toString(), 'TEXT').getHash('SHA-256', 'HEX')
 		};
 
-		connection.open(credits).then(function(){
+		connection.open(credits).then(function () {
 			connection.send("auth", credits);
 		});
 	};
 
-	$scope.authorize = function(event, data){
-        if(data && data.authorize){
-             userStorage.set(data);
-            $state.go('harbor');
-        }
+	$scope.authorize = function (event, data) {
+		if (data && data.authorize) {
+			userStorage.set(data);
+			$state.go('harbor');
+		}
 	};
 
-	$scope.close = function(event, message){
+	$scope.close = function (event, message) {
 		connection.close();
 		userStorage.reset();
 		$state.go('login');

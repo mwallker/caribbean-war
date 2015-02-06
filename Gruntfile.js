@@ -17,11 +17,11 @@ module.exports = function(grunt) {
 			less: {
 				files: "src/css/*.less",
 				tasks: ["less"]
-			},
-			js: {
-				files: ["src/**/*.js", "!src/js/libs/**/*"],
-				tasks: ["jshint"]
-			}
+			}//,
+			//js: {
+			//	files: ["src/**/*.js", "!src/js/libs/**/*"],
+			//	tasks: ["jshint"]
+			//}*/
 		},
 		jshint: {
 			all: {

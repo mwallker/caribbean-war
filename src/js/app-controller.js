@@ -3,22 +3,25 @@ angular.module('caribbean-war')
 		function ($scope, $rootScope, $q, $state, audioControl, renderService) {
 
 			$scope.appLoading = true;
+			$scope.pageLoading = true;
 
-			setTimeout(function () {
-				console.log('stop');
-				renderService.dispose();
-			}, 6000);
+			/*
+				setTimeout(function () {
+					console.log('stop');
+					renderService.dispose();
+				}, 6000);
 
 
-			setTimeout(function () {
-				console.log('start again');
-				renderService.load('login');
-			}, 10000);
-
-			$scope.registrateTasks = function (tasks) {
+				setTimeout(function () {
+					console.log('start again');
+					renderService.load('login');
+				}, 10000);
+			*/
+			$scope.manageTasks = function (tasks, state) {
 				$scope.appLoading = true;
 				$q.all(tasks).then(function () {
 					$scope.appLoading = false;
+					$scope.pageLoading = false;
 				}, function () {
 					console.log('fail');
 				});
@@ -32,6 +35,7 @@ angular.module('caribbean-war')
 			$rootScope.$on('$stateChangeSuccess',
 				function (event, toState) {
 					renderService.load(toState.name);
+					$scope.manageTasks([/*audioControl.loadSoundFile('js/sound/ocean.mp3')*/], toState);
 				});
-        }
-    ]);
+		}
+	]);
