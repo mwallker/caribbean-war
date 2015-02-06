@@ -50,7 +50,8 @@ caribbeanWarApp.service('cameraSetup', function () {
 				}
 
 				if (camera.beta < minBeta) camera.beta = minBeta;
-				else if (camera.beta > maxBeta) camera.beta = maxBeta;
+				else
+				if (camera.beta > maxBeta) camera.beta = maxBeta;
 
 				if (camera.radius > maxDist) camera.radius = maxDist;
 

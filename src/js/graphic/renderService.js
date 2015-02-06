@@ -7,6 +7,7 @@ caribbeanWarApp.service('renderService', function ($q) {
 	var camera = null;
 
 	var content = null;
+	var lockCamera = false;
 
 	//Timer setup
 	var deltaTime = 0;
@@ -17,7 +18,7 @@ caribbeanWarApp.service('renderService', function ($q) {
 		scene = new BABYLON.Scene(engine);
 		camera = new BABYLON.ArcRotateCamera("Camera0", 0, 0, 10, BABYLON.Vector3.Zero(), scene);
 
-		content = sceneTemplates[label](scene);
+		content = sceneTemplates[label](scene, camera);
 
 		scene.activeCamera = camera;
 		camera.attachControl(canvas);
@@ -50,8 +51,18 @@ caribbeanWarApp.service('renderService', function ($q) {
 		}
 	}
 
-	window.addEventListener("resize", function () {
-		if (engine) engine.resize();
+	window.addEventListener('resize', function () {
+		if (engine) {
+			engine.resize();
+		}
+	});
+
+	$(document).on('mouseup', function (event) {
+		lockCamera = false;
+	});
+
+	$('#renderCanvas').on('mousedown', function (event) {
+		lockCamera = true;
 	});
 
 	return {
@@ -61,7 +72,7 @@ caribbeanWarApp.service('renderService', function ($q) {
 });
 
 var sceneTemplates = {
-	'login': function (scene) {
+	'login': function (scene, camera) {
 		var start = {
 				x: 0,
 				y: 0,
@@ -80,17 +91,20 @@ var sceneTemplates = {
 			},
 			lines = new BABYLON.Mesh.CreateLines("lines", calculateCurve(start, options), scene);
 
-		prefabs.water(scene);
-		prefabs.sun(scene);
-		prefabs.skybox(scene);
-		prefabs.test(scene);
-		prefabs.cameraTarget();
+		var cameraControl = new cameraController(camera, {});
+
+		basicComponents.water(scene);
+		basicComponents.sun(scene);
+		basicComponents.skybox(scene);
+		basicComponents.test(scene);
 
 		return {
 			onUpdate: function (delay) {
 				options.distance = correctDistance(Math.hypot(end.x - start.x, end.z - start.z), 20, 100);
 				options.angle = (options.angle + delay) % (Math.PI * 2);
 				options.scatter = (options.scatter + 0.01) % (Math.PI / 6);
+
+				cameraControl.axisCorrection()
 
 				lines.dispose();
 				lines = new BABYLON.Mesh.CreateLines("lines", calculateCurve(start, options), scene);
@@ -123,7 +137,7 @@ var sceneTemplates = {
 	}
 };
 
-var prefabs = {
+var basicComponents = {
 	//Light
 	sun: function (scene) {
 		var light = new BABYLON.DirectionalLight("light", new BABYLON.Vector3(-1, -10, 0), scene);
@@ -167,7 +181,6 @@ var prefabs = {
 		for (var i = 0; i < 10; i++) {
 			buffer.push(new BABYLON.Mesh.CreateBox("ship_" + i, 5, scene));
 		}
-		console.log(buffer);
 	},
 	//Ship
 	ship: function (scene, shipControl) {
@@ -176,15 +189,51 @@ var prefabs = {
 		} else {
 			//View of ship
 		}
-	},
-	//Camera Target
-	cameraTarget: function () {
-		return new BABYLON.Vector3.Zero();
 	}
 };
 
+function cameraController(bindedCamera, options) {
+	//Consts
+	var minDist = 5,
+		maxDist = 40,
+		normalAlpha = 0,
+		normalBeta = 1.2,
+		minBeta = 0.03,
+		maxBeta = (Math.PI / 2) * 0.9,
+		lerpFactor = 0.1;
 
+	var camera = bindedCamera;
 
+	//Params
+	var target = options.target || {
+			position: BABYLON.Vector3.Zero(),
+			rotation: BABYLON.Vector3.Zero()
+		},
+		radius = options.radius || maxDist / 2,
+		alpha = options.alpha || normalAlpha,
+		beta = normalBeta;
+
+	return {
+		axisCorrection: function () {
+			if (camera) {
+				if (camera.beta < minBeta) {
+					camera.beta = minBeta;
+				} else {
+					if (camera.beta > maxBeta) camera.beta = maxBeta;
+				}
+
+				if (camera.radius > maxDist) camera.radius = maxDist;
+
+				if (camera.radius < minDist) camera.radius = minDist;
+
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+
+};
 
 /*
     var ship = BABYLON.Mesh.CreateBox("ship", 5, scene);
