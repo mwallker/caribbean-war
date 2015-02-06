@@ -106,7 +106,8 @@ var sceneTemplates = {
 				options.angle = (options.angle + delay) % (Math.PI * 2);
 				options.scatter = (options.scatter + 0.01) % (Math.PI / 6);
 
-				cameraControl.axisCorrection()
+				cameraControl.axisCorrection();
+				cameraControl.lockCorrection();
 
 				lines.dispose();
 				lines = new BABYLON.Mesh.CreateLines("lines", calculateCurve(start, options), scene);
@@ -242,12 +243,20 @@ function cameraController(bindedCamera, options) {
 			} else {
 				return false;
 			}
+		},
+		//TODO rename it!!!
+		lockCorrection: function (locked) {
+			if (!locked) {
+				camera.alpha = lerp(camera.alpha, alpha, lerpFactor);
+				camera.beta = lerp(camera.beta, beta, lerpFactor);
+			}
 		}
 	}
 
 };
 
 /*
+//Improve cameraController with this peace of cameraService code
 var dummy = {
 		correctCamera: function (targeting) {
 			if (camera && target) {
@@ -261,10 +270,7 @@ var dummy = {
 					}
 				}
 
-				if (!lockCamera) {
-					camera.alpha = lerp(camera.alpha, settings.alpha, lerpFactor);
-					camera.beta = lerp(camera.beta, settings.beta, lerpFactor);
-				}
+
 			}
 		},
 		initCamera: function (cam, tar) {
