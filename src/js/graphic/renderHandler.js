@@ -74,7 +74,7 @@ caribbeanWarApp.service('renderHandler', function ($q) {
 });
 
 var sceneTemplates = {
-	'login': function (scene, camera) {
+	'login1': function (scene, camera) {
 		var start = {
 				x: 0,
 				y: 0,
@@ -100,21 +100,35 @@ var sceneTemplates = {
 		basicComponents.water(scene);
 		basicComponents.sun(scene);
 		basicComponents.skybox(scene);
-		basicComponents.test(scene);
-		console.log(new BABYLON.Mesh.CreateLines("po", calculateCurve(start, options), scene));
+		basicComponents.ship(scene, true);
 
 		return {
 			onUpdate: function (delay) {
 				options.distance = correctDistance(Math.hypot(end.x - start.x, end.z - start.z), 20, 100);
 				options.angle = (options.angle + delay) % (Math.PI * 2);
-				options.scatter = (options.scatter + 0.01) % (Math.PI / 6);
+				//options.scatter = (options.scatter + 0.01) % (Math.PI / 6);
 
-				//cameraControl.axisCorrection();
-				//cameraControl.lockCorrection();
-				cameraControl.observeCorrection();
+				cameraControl.axisCorrection();
+				cameraControl.lockCorrection();
 
 				basicComponents.targetCurves(scene, calculateCurve(start, options));
+			}
+		}
+	},
+	'login': function (scene, camera) {
 
+		var cameraControl = new cameraController(camera, {});
+
+		basicComponents.water(scene);
+		basicComponents.sun(scene);
+		basicComponents.skybox(scene);
+		basicComponents.ship(scene, true);
+		//basicComponents.targetCurves(scene, []);
+
+		return {
+			onUpdate: function (delay) {
+				cameraControl.baseCorrection();
+				//cameraControl.observeCorrection();
 			}
 		}
 	},
@@ -126,15 +140,7 @@ var sceneTemplates = {
 			}
 		}
 	},
-	'world': function (scene) {
-
-		return {
-			onUpdate: function (delay) {
-
-			}
-		}
-	},
-	'default': function (scene) {
+	'world': function (scene, camera) {
 
 		return {
 			onUpdate: function (delay) {
@@ -155,7 +161,7 @@ var basicComponents = {
 	},
 	//Water
 	water: function (scene) {
-		var water = BABYLON.Mesh.CreateGround("water", 10000, 10000, 100, scene);
+		var water = BABYLON.Mesh.CreateGround("water", 5000, 5000, 100, scene);
 
 		var waterMaterial = new BABYLON.StandardMaterial("water", scene);
 		waterMaterial.bumpTexture = new BABYLON.Texture("images/water.png", scene);
@@ -185,7 +191,7 @@ var basicComponents = {
 	//Test Obj.
 	test: function (scene) {
 		var buffer = [];
-		for (var i = 0; i < 10; i++) {
+		for (var i = 0; i < 1; i++) {
 			buffer.push(new BABYLON.Mesh.CreateBox("box_" + i, 5, scene));
 		}
 	},
@@ -193,18 +199,18 @@ var basicComponents = {
 	ship: function (scene, controledByUser) {
 
 		//TEMPORARY
-		var ship = BABYLON.Mesh.CreateBox("ship", 5, scene);
-
+		var ship = BABYLON.Mesh.CreateBox("ship", 2, scene);
 		var shipMaterial = new BABYLON.StandardMaterial("shipMaterial", scene);
-		ship.specularColor = new BABYLON.Color3(1, 1, 1);
-		ship.diffuseColor = new BABYLON.Color3(0.3, 0.6, 1);
+		ship.specularColor = new BABYLON.Color4(0.6, 0.2, 0.2, 0.5);
+		ship.diffuseColor = new BABYLON.Color3(0.6, 0.2, 0.2);
 		ship.material = shipMaterial;
 
-		if (underUserControl) {
+		if (controledByUser) {
 			//Ship under user's control
 
 		} else {
 			//View of ship
+
 		}
 	},
 	//Targeting Curve(s)
@@ -213,7 +219,9 @@ var basicComponents = {
 
 		if (lines) lines.dispose();
 
-		lines = new BABYLON.Mesh.CreateLines('lines', collection, scene);
+		if (collection.length) {
+			lines = new BABYLON.Mesh.CreateLines('lines', collection, scene);
+		}
 	}
 };
 
@@ -241,7 +249,7 @@ function cameraController(bindedCamera, options) {
 	var observeTimer = 0;
 
 	return {
-		axisCorrection: function () {
+		baseCorrection: function () {
 			if (camera) {
 				if (camera.beta < minBeta) {
 					camera.beta = minBeta;
@@ -258,7 +266,6 @@ function cameraController(bindedCamera, options) {
 				return false;
 			}
 		},
-		//TODO rename it!!!
 		lockCorrection: function (locked) {
 			if (!locked) {
 				camera.alpha = lerp(camera.alpha, alpha, lerpFactor);

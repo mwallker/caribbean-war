@@ -60,50 +60,39 @@ caribbeanWarApp.service('shipControl', function () {
 	});
 
 	//Shoting
-	var holdenSpace = false;
+	var holdenE = false,
+		holdenQ = false,
+		holdenSpace = false;
+	var direction = targetingDirection.none;
 	var focusTimer = 0;
-	var onColdDown = false;
+
 	KeyboardJS.on('space',
 		function () {
-			if (checkFocus() && ((holdenE || holdenQ) && !holdenSpace)) {
-				if (!onColdDown) {
-					holdenSpace = true;
-				}
+			if (checkFocus()) {
+				if ((holdenE || holdenQ) && !holdenSpace) holdenSpace = true;
 			}
 		},
 		function () {
 			if (holdenSpace) {
 				holdenSpace = false;
 				focusTimer = 0;
-				if (holdenE || holdenQ) {
-					console.log("Caramba! Piy piy piy!");
-					onColdDown = true;
-					console.log(onColdDown);
-					setTimeout(function () {
-						onColdDown = false;
-						console.log(onColdDown);
-					}, ship.cannon.coldDown * 1000);
-				}
 			}
 		});
 
-	//Targeting
-	var holdenE = false;
-	var holdenQ = false;
-	var direction = 0;
+
 	KeyboardJS.on('q',
 		function () {
 			if (!holdenQ && checkFocus()) {
 				holdenQ = true;
-				direction = -1;
+				direction = targetingDirection.left;
 				focusTimer = 0;
 			}
 		},
 		function () {
-			if (holdenQ && checkFocus()) {
+			if (holdenQ) {
 				holdenQ = false;
 				focusTimer = 0;
-				if (!holdenE) direction = 0;
+				if (!holdenE) direction = targetingDirection.none;
 			}
 		});
 
@@ -111,15 +100,15 @@ caribbeanWarApp.service('shipControl', function () {
 		function () {
 			if (!holdenE && checkFocus()) {
 				holdenE = true;
-				direction = 1;
+				direction = targetingDirection.right;
 				focusTimer = 0;
 			}
 		},
 		function () {
-			if (holdenE && checkFocus()) {
+			if (holdenE) {
 				holdenE = false;
 				focusTimer = 0;
-				if (!holdenQ) direction = 0;
+				if (!holdenQ) direction = targetingDirection.none;
 			}
 		});
 
@@ -128,6 +117,17 @@ caribbeanWarApp.service('shipControl', function () {
 		if (distance > 100) distance = 100;
 		else if (distance < 20) distance = 20;
 	};
+
+
+
+	function cannonsManager(options) {
+		var scatter = 0;
+		var focusTime = 0;
+
+		return {
+
+		}
+	}
 
 	var calculateScatter = function () {
 		if (holdenSpace) {

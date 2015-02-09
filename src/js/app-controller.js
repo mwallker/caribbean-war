@@ -36,7 +36,7 @@ angular.module('caribbean-war')
 			$rootScope.$on('$stateChangeSuccess',
 				function (event, toState) {
 					renderHandler.load(toState.name);
-					$scope.manageTasks([/*audioControl.loadSoundFile('js/sound/ocean.mp3')*/], toState);
+					$scope.manageTasks([ /*audioControl.loadSoundFile('js/sound/ocean.mp3')*/ ], toState);
 				});
 		}
 	]);
