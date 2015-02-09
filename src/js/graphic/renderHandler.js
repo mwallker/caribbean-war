@@ -1,4 +1,4 @@
-caribbeanWarApp.service('renderHandler', function ($q) {
+caribbeanWarApp.service('renderHandler', ['cameraHandler', function (cameraHandler) {
 
 	//Find canvas
 	var canvas = $('#renderCanvas')[0];
@@ -71,7 +71,7 @@ caribbeanWarApp.service('renderHandler', function ($q) {
 		load: createScene,
 		dispose: disposeScene
 	};
-});
+}]);
 
 var sceneTemplates = {
 	'login1': function (scene, camera) {
@@ -283,6 +283,9 @@ function cameraController(bindedCamera, options) {
 	}
 
 };
+
+
+
 
 /*
 //Improve cameraController with this peace of cameraService code
