@@ -1,4 +1,4 @@
-caribbeanWarApp.service('renderService', function ($q) {
+caribbeanWarApp.service('renderHandler', function ($q) {
 
 	//Find canvas
 	var canvas = $('#renderCanvas')[0];
@@ -90,15 +90,18 @@ var sceneTemplates = {
 				distance: 0,
 				angle: 0,
 				scatter: 0
-			},
-			lines = new BABYLON.Mesh.CreateLines("lines", calculateCurve(start, options), scene);
+			};
+		//lines =
 
-		var cameraControl = new cameraController(camera, {});
+		var cameraControl = new cameraController(camera, {
+			alpha: -Math.PI
+		});
 
 		basicComponents.water(scene);
 		basicComponents.sun(scene);
 		basicComponents.skybox(scene);
 		basicComponents.test(scene);
+		console.log(new BABYLON.Mesh.CreateLines("po", calculateCurve(start, options), scene));
 
 		return {
 			onUpdate: function (delay) {
@@ -106,11 +109,12 @@ var sceneTemplates = {
 				options.angle = (options.angle + delay) % (Math.PI * 2);
 				options.scatter = (options.scatter + 0.01) % (Math.PI / 6);
 
-				cameraControl.axisCorrection();
-				cameraControl.lockCorrection();
+				//cameraControl.axisCorrection();
+				//cameraControl.lockCorrection();
+				cameraControl.observeCorrection();
 
-				lines.dispose();
-				lines = new BABYLON.Mesh.CreateLines("lines", calculateCurve(start, options), scene);
+				basicComponents.targetCurves(scene, calculateCurve(start, options));
+
 			}
 		}
 	},
@@ -186,7 +190,7 @@ var basicComponents = {
 		}
 	},
 	//Ship
-	ship: function (scene, underUserControl) {
+	ship: function (scene, controledByUser) {
 
 		//TEMPORARY
 		var ship = BABYLON.Mesh.CreateBox("ship", 5, scene);
@@ -202,6 +206,14 @@ var basicComponents = {
 		} else {
 			//View of ship
 		}
+	},
+	//Targeting Curve(s)
+	targetCurves: function (scene, collection) {
+		var lines = scene.getMeshByName('lines');
+
+		if (lines) lines.dispose();
+
+		lines = new BABYLON.Mesh.CreateLines('lines', collection, scene);
 	}
 };
 
@@ -225,6 +237,8 @@ function cameraController(bindedCamera, options) {
 		radius = options.radius || maxDist / 2,
 		alpha = options.alpha || normalAlpha,
 		beta = normalBeta;
+
+	var observeTimer = 0;
 
 	return {
 		axisCorrection: function () {
@@ -250,6 +264,14 @@ function cameraController(bindedCamera, options) {
 				camera.alpha = lerp(camera.alpha, alpha, lerpFactor);
 				camera.beta = lerp(camera.beta, beta, lerpFactor);
 			}
+		},
+		targetingCorrection: function () {
+
+		},
+		observeCorrection: function () {
+			observeTimer = (observeTimer + 0.0003) % (2 * Math.PI);
+			camera.alpha = observeTimer;
+			camera.beta = Math.cos(observeTimer) * Math.PI / 7 + Math.PI / 3;
 		}
 	}
 
