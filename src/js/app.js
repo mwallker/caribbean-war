@@ -1,7 +1,10 @@
+var render = angular.module('render', []);
+
 var caribbeanWarApp = angular.module('caribbean-war', [
 	'ui.router',
 	'ngResource',
-	'pascalprecht.translate'
+	'pascalprecht.translate',
+	'render'
 ]);
 
 caribbeanWarApp.constant('appConfig', {

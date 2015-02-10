@@ -1,12 +1,10 @@
-caribbeanWarApp.service('renderHandler', ['cameraHandler', function (cameraHandler) {
+angular.module('render').service('renderHandler', function () {
 
 	//Find canvas
 	var canvas = $('#renderCanvas')[0];
 	var engine = null;
 	var scene = null;
 	var camera = null;
-
-	var lockCamera = false;
 
 	var content = null;
 
@@ -59,19 +57,11 @@ caribbeanWarApp.service('renderHandler', ['cameraHandler', function (cameraHandl
 		}
 	});
 
-	$(document).on('mouseup', function (event) {
-		lockCamera = false;
-	});
-
-	$('#renderCanvas').on('mousedown', function (event) {
-		lockCamera = true;
-	});
-
 	return {
 		load: createScene,
 		dispose: disposeScene
 	};
-}]);
+});
 
 var sceneTemplates = {
 	'login1': function (scene, camera) {
@@ -117,7 +107,10 @@ var sceneTemplates = {
 	},
 	'login': function (scene, camera) {
 
-		var cameraControl = new cameraController(camera, {});
+		var cameraControl = new cameraController(camera, {
+			alpha: -Math.PI,
+			beta: Math.PI / 4
+		});
 
 		basicComponents.water(scene);
 		basicComponents.sun(scene);
@@ -128,6 +121,8 @@ var sceneTemplates = {
 		return {
 			onUpdate: function (delay) {
 				cameraControl.baseCorrection();
+				cameraControl.lockCorrection();
+				cameraControl.targetingCorrection();
 				//cameraControl.observeCorrection();
 			}
 		}
@@ -229,9 +224,9 @@ function cameraController(bindedCamera, options) {
 	//Consts
 	var minDist = 5,
 		maxDist = 40,
-		normalAlpha = 0,
+		normalAlpha = -Math.PI,
 		normalBeta = 1.2,
-		minBeta = 0.03,
+		minBeta = 0.2,
 		maxBeta = (Math.PI / 2) * 0.9,
 		lerpFactor = 0.1;
 
@@ -239,12 +234,14 @@ function cameraController(bindedCamera, options) {
 
 	//Params
 	var target = options.target || {
-			position: BABYLON.Vector3.Zero(),
-			rotation: BABYLON.Vector3.Zero()
-		},
-		radius = options.radius || maxDist / 2,
-		alpha = options.alpha || normalAlpha,
-		beta = normalBeta;
+		position: BABYLON.Vector3.Zero(),
+		rotation: BABYLON.Vector3.Zero()
+	};
+	camera.radius = options.radius || maxDist / 4;
+	camera.alpha = options.alpha || normalAlpha;
+	camera.beta = options.beta || normalBeta;
+
+	camera.target = target;
 
 	var observeTimer = 0;
 
@@ -266,14 +263,22 @@ function cameraController(bindedCamera, options) {
 				return false;
 			}
 		},
-		lockCorrection: function (locked) {
-			if (!locked) {
-				camera.alpha = lerp(camera.alpha, alpha, lerpFactor);
-				camera.beta = lerp(camera.beta, beta, lerpFactor);
+		lockCorrection: function () {
+			if (!lockCamera) {
+				camera.alpha = lerp(camera.alpha, normalAlpha, lerpFactor);
+				camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
 			}
 		},
 		targetingCorrection: function () {
-
+			if (direction !== targetingDirection.none) {
+				if (direction == targetingDirection.both) {
+					camera.alpha = lerp(camera.alpha, -(Math.PI + target.rotation.y), lerpFactor);
+					camera.beta = lerp(camera.beta, minBeta, lerpFactor);
+				} else {
+					camera.alpha = lerp(camera.alpha, -(Math.PI + target.rotation.y) - direction * Math.PI, lerpFactor);
+					camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
+				}
+			}
 		},
 		observeCorrection: function () {
 			observeTimer = (observeTimer + 0.0003) % (2 * Math.PI);
@@ -284,29 +289,57 @@ function cameraController(bindedCamera, options) {
 
 };
 
+//=====================================================
+//=======   SCREEN, MOUSE and KEYBOARD EVENTS   =======
+//=====================================================
 
+var lockCamera = false,
+	holdenE = false,
+	holdenQ = false,
+	holdenSpace = false;
 
+var direction = targetingDirection.none;
 
-/*
-//Improve cameraController with this peace of cameraService code
-var dummy = {
-		correctCamera: function (targeting) {
-			if (camera && target) {
-				if (targeting <= 2 && targeting >= -1) {
-					if (targeting !== 2) {
-						settings.alpha = -(Math.PI + target.rotation.y);
-						settings.beta = maxBeta - 0.9;
-					} else {
-						settings.alpha = -(Math.PI + target.rotation.y) - targeting * Math.PI / 2;
-						settings.beta = normalBeta;
-					}
-				}
+$(document).on('mouseup', function (event) {
+	lockCamera = false;
+	console.log('object push');
+});
 
+$('#renderCanvas').on('mousedown', function (event) {
+	lockCamera = true;
+	console.log('object release');
+});
 
+(function () {
+
+	KeyboardJS.on('q',
+		function () {
+			if (!holdenQ && checkFocus()) {
+				holdenQ = true;
+				if (holdenE && holdenQ) direction = targetingDirection.both;
+				else direction = targetingDirection.left;
 			}
 		},
-		initCamera: function (cam, tar) {
-			camera.alpha = -(Math.PI + (target.rotation.y || 0));
-		}
-	};
-*/
+		function () {
+			if (holdenQ) {
+				holdenQ = false;
+				if (!holdenE) direction = targetingDirection.none;
+			}
+		});
+
+	KeyboardJS.on('e',
+		function () {
+			if (!holdenE && checkFocus()) {
+				holdenE = true;
+				if (holdenE && holdenQ) direction = targetingDirection.both;
+				else direction = targetingDirection.right;
+			}
+		},
+		function () {
+			if (holdenE) {
+				holdenE = false;
+				if (!holdenQ) direction = targetingDirection.none;
+			}
+		});
+
+})();

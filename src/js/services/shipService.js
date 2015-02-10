@@ -171,13 +171,6 @@ caribbeanWarApp.service('shipControl', function () {
 				ship.mesh.rotation.x = lerp(ship.mesh.rotation.x, ship.wheelMode * ship.speed * 0.7 + obs, 0.02);
 				ship.mesh.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.06;
 
-				if (holdenQ || holdenE) {
-					if (holdenQ && holdenE) {
-
-					} else {
-
-					}
-				}
 			}
 		}
 	};

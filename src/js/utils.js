@@ -34,6 +34,11 @@ var targetingDirection = {
 	both: 2
 };
 
+
+var checkFocus = function () {
+	return !$("input").is(':focus');
+};
+
 var correctDistance = function (dist, max, min) {
 	if (dist > max) {
 		return max;
