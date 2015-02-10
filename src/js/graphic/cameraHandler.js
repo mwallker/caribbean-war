@@ -1,6 +1,7 @@
-angular.module('render').factory('cameraHandler', function () {
-
-	var camera = {}, options = {};
+angular.module('render').service('cameraHandler', function () {
+	console.log('ssd');
+	var camera = {},
+		options = {};
 
 	var locked = false;
 

@@ -127,7 +127,7 @@ var sceneTemplates = {
 			}
 		}
 	},
-	'harbor': function (scene) {
+	'harbor': function (scene, camera) {
 
 		return {
 			onUpdate: function (delay) {
@@ -289,6 +289,15 @@ function cameraController(bindedCamera, options) {
 
 };
 
+function shipController(ship, cannon) {
+	var timer = 0;
+	var focusTimer = 0;
+
+	return {
+		//move: function (ship, delay) {}
+	}
+}
+
 //=====================================================
 //=======   SCREEN, MOUSE and KEYBOARD EVENTS   =======
 //=====================================================
@@ -302,44 +311,40 @@ var direction = targetingDirection.none;
 
 $(document).on('mouseup', function (event) {
 	lockCamera = false;
-	console.log('object push');
 });
 
 $('#renderCanvas').on('mousedown', function (event) {
 	lockCamera = true;
-	console.log('object release');
 });
 
-(function () {
+KeyboardJS.on('q',
+	function () {
+		if (!holdenQ && checkFocus()) {
+			holdenQ = true;
+			if (holdenE && holdenQ) direction = targetingDirection.both;
+			else direction = targetingDirection.left;
+		}
+	},
+	function () {
+		if (holdenQ) {
+			holdenQ = false;
+			if (!holdenE) direction = targetingDirection.none;
+			else direction = targetingDirection.right;
+		}
+	});
 
-	KeyboardJS.on('q',
-		function () {
-			if (!holdenQ && checkFocus()) {
-				holdenQ = true;
-				if (holdenE && holdenQ) direction = targetingDirection.both;
-				else direction = targetingDirection.left;
-			}
-		},
-		function () {
-			if (holdenQ) {
-				holdenQ = false;
-				if (!holdenE) direction = targetingDirection.none;
-			}
-		});
-
-	KeyboardJS.on('e',
-		function () {
-			if (!holdenE && checkFocus()) {
-				holdenE = true;
-				if (holdenE && holdenQ) direction = targetingDirection.both;
-				else direction = targetingDirection.right;
-			}
-		},
-		function () {
-			if (holdenE) {
-				holdenE = false;
-				if (!holdenQ) direction = targetingDirection.none;
-			}
-		});
-
-})();
+KeyboardJS.on('e',
+	function () {
+		if (!holdenE && checkFocus()) {
+			holdenE = true;
+			if (holdenE && holdenQ) direction = targetingDirection.both;
+			else direction = targetingDirection.right;
+		}
+	},
+	function () {
+		if (holdenE) {
+			holdenE = false;
+			if (!holdenQ) direction = targetingDirection.none;
+			else direction = targetingDirection.left;
+		}
+	});

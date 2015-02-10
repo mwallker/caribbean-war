@@ -118,17 +118,6 @@ caribbeanWarApp.service('shipControl', function () {
 		else if (distance < 20) distance = 20;
 	};
 
-
-
-	function cannonsManager(options) {
-		var scatter = 0;
-		var focusTime = 0;
-
-		return {
-
-		}
-	}
-
 	var calculateScatter = function () {
 		if (holdenSpace) {
 			if (focusTimer < ship.cannon.scatter.time) {
