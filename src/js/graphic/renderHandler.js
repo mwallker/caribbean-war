@@ -45,11 +45,13 @@ angular.module('render').service('renderHandler', function () {
 		deltaTime = Date.now();
 
 		var update = function () {
+			console.profile();
 			delay = Math.abs(deltaTime - Date.now()) * 0.001;
 
 			content.onUpdate(delay);
 
 			deltaTime = Date.now();
+			console.log(console.profileEnd());
 		};
 
 		scene.registerBeforeRender(update);
@@ -233,6 +235,71 @@ var basicComponents = {
 	}
 };
 
+function ShipController(mesh, options) {
+	var ship = angular.extend(mesh, options);
+
+	var sailsMode = 0;
+	var wheelMode = 0;
+
+	// EVENTS
+	KeyboardJS.on('up, w', function () {
+		if (checkFocus() && sailsMode <= 3) {
+			sailsMode++;
+		}
+	});
+
+	KeyboardJS.on('down, s', function () {
+		if (checkFocus() && sailsMode > 0) {
+			sailsMode--;
+		}
+	});
+
+	KeyboardJS.on('left, d', function () {
+		if (checkFocus()) wheelMode = -1;
+	}, function () {
+		if (checkFocus()) wheelMode = 0;
+	});
+
+	KeyboardJS.on('right, a', function () {
+		if (checkFocus()) wheelMode = 1;
+	}, function () {
+		if (checkFocus()) wheelMode = 0;
+	});
+
+	function startRotation() {};
+
+	function stopRotation() {};
+
+	//increaseSpeed()
+
+
+	function move(delay) {
+		obs = lerp(obs, ranged(-0.3, 0.3), 0.03);
+
+		ship.speed = lerp(ship.speed, sailsMode * ship.maxSpeed * delay / 4, 0.01);
+
+		//Movement
+		ship.position.x = ship.position.x + Math.cos(ship.rotation.y) * ship.speed;
+		ship.position.z = ship.position.z + Math.sin(ship.rotation.y) * ship.speed;
+		ship.position.y = ship.position.y + Math.sin(timer * 1.2) / (ship.weight * 0.3);
+
+		//Rotation
+		ship.rotation.y = ship.rotation.y + (wheelMode * ship.speed * 0.075) / (sailsMode + 1);
+		ship.rotation.x = lerp(ship.rotation.x, wheelMode * ship.speed * 0.7 + obs, 0.02);
+		ship.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.06;
+	}
+
+
+	return {
+		attach: function () {
+
+		},
+		dettach: function () {
+			KeyboardJS.clear('up, down, left, right, w, s, a, d');
+		}
+	};
+}
+
 function CameraController(bindedCamera, options) {
 	var camera = {};
 
@@ -312,7 +379,6 @@ var lockCamera = false,
 	holdenE = false,
 	holdenQ = false,
 	holdenSpace = false;
-
 var direction = targetingDirection.none;
 
 KeyboardJS.on('q',
@@ -344,5 +410,17 @@ KeyboardJS.on('e',
 			holdenE = false;
 			if (!holdenQ) direction = targetingDirection.none;
 			else direction = targetingDirection.left;
+		}
+	});
+
+KeyboardJS.on('space',
+	function () {
+		if (checkFocus()) {
+			if ((holdenE || holdenQ) && !holdenSpace) holdenSpace = true;
+		}
+	},
+	function () {
+		if (holdenSpace) {
+			holdenSpace = false;
 		}
 	});
