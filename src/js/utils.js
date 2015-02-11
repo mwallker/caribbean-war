@@ -1,21 +1,3 @@
-//FPS Monitoring (only for development)
-// ====== start ======
-var count = 0,
-	buffer = [];
-setInterval(function () {
-	$('#fps').text(count.toFixed());
-}, 75);
-
-function fps(value) {
-		buffer.push(1 / value);
-		if (buffer.length >= 30) buffer.shift();
-		count = buffer.reduce(function (a, b) {
-			return a + b;
-		}) / (buffer.length);
-	}
-	// ====== end =======
-
-
 //Smoothing value's changes
 var lerp = function (start, end, delta) {
 	return (start + (delta || 0.01) * (end - start));
@@ -33,7 +15,6 @@ var targetingDirection = {
 	right: 1,
 	both: 2
 };
-
 
 var checkFocus = function () {
 	return !$("input").is(':focus');
