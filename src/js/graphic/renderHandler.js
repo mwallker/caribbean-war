@@ -12,6 +12,26 @@ angular.module('render').service('renderHandler', function () {
 	var deltaTime = 0;
 	var delay = 0;
 
+
+	//EVENTS
+	$('#renderCanvas').on('mousedown', function (event) {
+		CameraController.locked = true;
+	});
+
+	$(document).on('mouseup', function (event) {
+		CameraController.locked = false;
+	});
+
+
+	//Render events
+	window.addEventListener('resize', function () {
+		if (engine) {
+			engine.resize();
+		}
+	});
+
+
+	//RENDER API's METHODS
 	function createScene(label) {
 		engine = new BABYLON.Engine(canvas, true);
 		scene = new BABYLON.Scene(engine);
@@ -50,13 +70,6 @@ angular.module('render').service('renderHandler', function () {
 		}
 	}
 
-	//Render events
-	window.addEventListener('resize', function () {
-		if (engine) {
-			engine.resize();
-		}
-	});
-
 	return {
 		load: createScene,
 		dispose: disposeScene
@@ -83,7 +96,7 @@ var sceneTemplates = {
 			};
 		//lines =
 
-		var cameraControl = new cameraController(camera, {
+		var cameraControl = new CameraController(camera, {
 			alpha: -Math.PI
 		});
 
@@ -98,8 +111,8 @@ var sceneTemplates = {
 				options.angle = (options.angle + delay) % (Math.PI * 2);
 				//options.scatter = (options.scatter + 0.01) % (Math.PI / 6);
 
-				cameraControl.axisCorrection();
-				cameraControl.lockCorrection();
+				cameraControl.baseCorrection();
+				cameraControl.overviewCorrection();
 
 				basicComponents.targetCurves(scene, calculateCurve(start, options));
 			}
@@ -107,7 +120,7 @@ var sceneTemplates = {
 	},
 	'login': function (scene, camera) {
 
-		var cameraControl = new cameraController(camera, {
+		var cameraControl = new CameraController(camera, {
 			alpha: -Math.PI,
 			beta: Math.PI / 4
 		});
@@ -121,7 +134,7 @@ var sceneTemplates = {
 		return {
 			onUpdate: function (delay) {
 				cameraControl.baseCorrection();
-				cameraControl.lockCorrection();
+				cameraControl.overviewCorrection();
 				cameraControl.targetingCorrection();
 				//cameraControl.observeCorrection();
 			}
@@ -220,8 +233,9 @@ var basicComponents = {
 	}
 };
 
-function cameraController(bindedCamera, options) {
-	//Consts
+function CameraController(bindedCamera, options) {
+	var camera = {};
+
 	var minDist = 5,
 		maxDist = 40,
 		normalAlpha = -Math.PI,
@@ -230,20 +244,20 @@ function cameraController(bindedCamera, options) {
 		maxBeta = (Math.PI / 2) * 0.9,
 		lerpFactor = 0.1;
 
-	var camera = bindedCamera;
+	var observeTimer = 0;
 
-	//Params
-	var target = options.target || {
+	var target = {
 		position: BABYLON.Vector3.Zero(),
 		rotation: BABYLON.Vector3.Zero()
 	};
-	camera.radius = options.radius || maxDist / 4;
-	camera.alpha = options.alpha || normalAlpha;
-	camera.beta = options.beta || normalBeta;
 
-	camera.target = target;
-
-	var observeTimer = 0;
+	if (!!bindedCamera && !!options) {
+		camera = bindedCamera;
+		camera.radius = options.radius || maxDist / 4;
+		camera.alpha = options.alpha || normalAlpha;
+		camera.beta = options.beta || normalBeta;
+		camera.target = options.target || target;
+	}
 
 	return {
 		baseCorrection: function () {
@@ -263,8 +277,8 @@ function cameraController(bindedCamera, options) {
 				return false;
 			}
 		},
-		lockCorrection: function () {
-			if (!lockCamera) {
+		overviewCorrection: function () {
+			if (!CameraController.locked) {
 				camera.alpha = lerp(camera.alpha, normalAlpha, lerpFactor);
 				camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
 			}
@@ -286,17 +300,9 @@ function cameraController(bindedCamera, options) {
 			camera.beta = Math.cos(observeTimer) * Math.PI / 7 + Math.PI / 3;
 		}
 	}
-
 };
 
-function shipController(ship, cannon) {
-	var timer = 0;
-	var focusTimer = 0;
-
-	return {
-		//move: function (ship, delay) {}
-	}
-}
+CameraController.locked = false;
 
 //=====================================================
 //=======   SCREEN, MOUSE and KEYBOARD EVENTS   =======
@@ -308,14 +314,6 @@ var lockCamera = false,
 	holdenSpace = false;
 
 var direction = targetingDirection.none;
-
-$(document).on('mouseup', function (event) {
-	lockCamera = false;
-});
-
-$('#renderCanvas').on('mousedown', function (event) {
-	lockCamera = true;
-});
 
 KeyboardJS.on('q',
 	function () {
