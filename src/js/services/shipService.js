@@ -23,41 +23,8 @@ caribbeanWarApp.service('shipControl', function () {
 	var timer = 0;
 	var obs = 0;
 
-	var checkFocus = function () {
-		return !$("input").is(':focus');
-	};
 
-	KeyboardJS.on('up, w', function () {
-		if (checkFocus()) {
-			if (ship.sailsMode <= 3) ship.sailsMode++;
-		}
-	});
 
-	KeyboardJS.on('down, s', function () {
-		if (checkFocus()) {
-			if (ship.sailsMode > 0) ship.sailsMode--;
-		}
-	});
-
-	KeyboardJS.on('left, d', function () {
-		if (checkFocus()) {
-			if (checkFocus()) ship.wheelMode = -1;
-		}
-	}, function () {
-		if (checkFocus()) {
-			if (checkFocus()) ship.wheelMode = 0;
-		}
-	});
-
-	KeyboardJS.on('right, a', function () {
-		if (checkFocus()) {
-			if (checkFocus()) ship.wheelMode = 1;
-		}
-	}, function () {
-		if (checkFocus()) {
-			if (checkFocus()) ship.wheelMode = 0;
-		}
-	});
 
 	//Shoting
 	var holdenE = false,
@@ -75,7 +42,6 @@ caribbeanWarApp.service('shipControl', function () {
 		function () {
 			if (holdenSpace) {
 				holdenSpace = false;
-				focusTimer = 0;
 			}
 		});
 
