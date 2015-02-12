@@ -129,7 +129,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		//Ship
 		createShip: function (scene, details) {
 
-			var shipMesh = BABYLON.Mesh.CreateBox("ship", 2, scene);
+			var shipMesh = BABYLON.Mesh.CreateBox(details.id + randomRange(0, 1000), 2, scene);
 			var shipMaterial = new BABYLON.StandardMaterial("shipMaterial", scene);
 			shipMesh.specularColor = new BABYLON.Color4(0.6, 0.2, 0.2, 0.5);
 			shipMesh.diffuseColor = new BABYLON.Color3(0.6, 0.2, 0.2);
@@ -223,31 +223,36 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		'world': function (scene, camera) {
 			var ocean = baseComponents.createOcean(scene);
 
+			var ships = [];
+
 			var cameraControl = new CameraController(camera, {
 				alpha: -Math.PI,
 				beta: Math.PI / 4
 			});
 
 			var user = userStorage.get();
-			console.log(user.ID);
+			KeyEvents.bind(user.ID);
+
+			ships.push(new baseComponents.createShip(scene, {id: 93}));
 
 			$rootScope.$on('neigbours', function (event, details) {
-
+				console.log(details);
 			});
 
 			$rootScope.$on('move', function (event, details) {
-
+				console.log(details);
+				//for/in if elem.id == event.id elem.changeState(event.type)
 			});
-
-			var ship = baseComponents.createShip(scene);
-
-			var uncontroledShips = [];
 
 			return {
 				onUpdate: function (delay) {
 					cameraControl.baseCorrection();
 					cameraControl.overviewCorrection();
 					cameraControl.targetingCorrection();
+
+					for(var item in ships){
+						ships[item].move(delay);
+					}
 				}
 			}
 		}

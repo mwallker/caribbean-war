@@ -21,11 +21,7 @@ angular.module('render').service('KeyEvents', function ($rootScope, connection) 
 			if (connection.status() && userId) {
 				connection.send('move', {
 					type: 'upward'
-				});/*
-				$rootScope.$emit('move', {
-					id: userId,
-					type: 'upward'
-				});*/
+				});
 			}
 		}
 	}, function () {
