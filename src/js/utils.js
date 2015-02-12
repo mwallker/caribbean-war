@@ -9,7 +9,7 @@ var randomRange = function (min, max) {
 };
 
 //Common objects
-var targetingDirection = {
+var TargetingDirections = {
 	none: 0,
 	left: -1,
 	right: 1,

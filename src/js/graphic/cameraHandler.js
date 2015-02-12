@@ -1,7 +1,6 @@
-angular.module('render').service('cameraHandler', function () {
-	console.log('ssd');
-	var camera = {},
-		options = {};
+angular.module('render').factory('CameraHandle', function () {
+
+	var options = {};
 
 	var locked = false;
 
@@ -31,16 +30,16 @@ angular.module('render').service('cameraHandler', function () {
 
 	return function (bindedCamera, options) {
 
-		camera = bindedCamera;
-
 		//Params
-		target = options.target || target;
+		var camera = bindedCamera;
 		camera.radius = options.radius || maxDist / 4;
 		camera.alpha = options.alpha || normalAlpha;
 		camera.beta = options.beta || normalBeta;
+		camera.target = options.target || target;
 
 		return {
 			baseCorrection: function () {
+
 				if (camera) {
 					if (camera.beta < minBeta) {
 						camera.beta = minBeta;
@@ -57,27 +56,29 @@ angular.module('render').service('cameraHandler', function () {
 					return false;
 				}
 			},
-			lockCorrection: function (locked) {
+			overviewCorrection: function () {
 				if (!locked) {
-					camera.alpha = lerp(camera.alpha, alpha, lerpFactor);
-					camera.beta = lerp(camera.beta, beta, lerpFactor);
+					camera.alpha = lerp(camera.alpha, normalAlpha, lerpFactor);
+					camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
 				}
 			},
 			targetingCorrection: function (direction) {
 				if (direction !== targetingDirection.none) {
 					if (direction == targetingDirection.both) {
-						camera.alpha = -(Math.PI + target.rotation.y);
-						camera.beta = minBeta;
+						camera.alpha = lerp(camera.alpha, -(Math.PI + target.rotation.y), lerpFactor);
+						camera.beta = lerp(camera.beta, minBeta, lerpFactor);
 					} else {
-						camera.alpha = -(Math.PI + target.rotation.y) - targeting * Math.PI / 2;
-						camera.beta = normalBeta;
+						camera.alpha = lerp(camera.alpha, -(Math.PI + target.rotation.y) - direction * Math.PI, lerpFactor);
+						camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
 					}
 				}
 			},
 			observeCorrection: function () {
 				observeTimer = (observeTimer + 0.0003) % (2 * Math.PI);
-				camera.alpha = observeTimer;
-				camera.beta = Math.cos(observeTimer) * Math.PI / 7 + Math.PI / 3;
+				if (camera) {
+					camera.alpha = observeTimer;
+					camera.beta = Math.cos(observeTimer) * Math.PI / 7 + Math.PI / 3;
+				}
 			}
 		}
 
