@@ -24,60 +24,6 @@ caribbeanWarApp.service('shipControl', function () {
 	var obs = 0;
 
 
-
-
-	//Shoting
-	var holdenE = false,
-		holdenQ = false,
-		holdenSpace = false;
-	var direction = targetingDirection.none;
-	var focusTimer = 0;
-
-	KeyboardJS.on('space',
-		function () {
-			if (checkFocus()) {
-				if ((holdenE || holdenQ) && !holdenSpace) holdenSpace = true;
-			}
-		},
-		function () {
-			if (holdenSpace) {
-				holdenSpace = false;
-			}
-		});
-
-
-	KeyboardJS.on('q',
-		function () {
-			if (!holdenQ && checkFocus()) {
-				holdenQ = true;
-				direction = targetingDirection.left;
-				focusTimer = 0;
-			}
-		},
-		function () {
-			if (holdenQ) {
-				holdenQ = false;
-				focusTimer = 0;
-				if (!holdenE) direction = targetingDirection.none;
-			}
-		});
-
-	KeyboardJS.on('e',
-		function () {
-			if (!holdenE && checkFocus()) {
-				holdenE = true;
-				direction = targetingDirection.right;
-				focusTimer = 0;
-			}
-		},
-		function () {
-			if (holdenE) {
-				holdenE = false;
-				focusTimer = 0;
-				if (!holdenQ) direction = targetingDirection.none;
-			}
-		});
-
 	var calculateDistance = function (target) {
 		var distance = Math.hypot(target.x - ship.mesh.position.x, target.z - ship.mesh.position.z);
 		if (distance > 100) distance = 100;

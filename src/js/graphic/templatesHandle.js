@@ -1,4 +1,4 @@
-angular.module('render').factory('Templates', function ($rootScope, CameraHandle) {
+angular.module('render').factory('Templates', function ($rootScope) {
 
 	var locked = false;
 
@@ -157,6 +157,32 @@ angular.module('render').factory('Templates', function ($rootScope, CameraHandle
 
 	return {
 		'login': function (scene, camera) {
+			var cameraControl = new CameraController(camera, {});
+
+			var ocaen = Components.createOcean(scene);
+			var controledShip = Components.createShip(scene, false);
+
+			return {
+				onUpdate: function (delay) {
+					cameraControl.baseCorrection();
+					cameraControl.observeCorrection();
+				}
+			}
+		},
+		'harbor': function (scene, camera) {
+			var cameraControl = new CameraController(camera, {});
+
+			var ocaen = Components.createOcean(scene);
+			var controledShip = Components.createShip(scene, false);
+
+			return {
+				onUpdate: function (delay) {
+					cameraControl.baseCorrection();
+					cameraControl.observeCorrection();
+				}
+			}
+		},
+		'world': function (scene, camera) {
 			var cameraControl = new CameraController(camera, {
 				alpha: -Math.PI,
 				beta: Math.PI / 4
@@ -171,23 +197,6 @@ angular.module('render').factory('Templates', function ($rootScope, CameraHandle
 					cameraControl.baseCorrection();
 					cameraControl.overviewCorrection();
 					cameraControl.targetingCorrection();
-					//cameraControl.observeCorrection();
-				}
-			}
-		},
-		'harbor': function (scene, camera) {
-
-			return {
-				onUpdate: function (delay) {
-
-				}
-			}
-		},
-		'world': function (scene, camera) {
-
-			return {
-				onUpdate: function (delay) {
-
 				}
 			}
 		}

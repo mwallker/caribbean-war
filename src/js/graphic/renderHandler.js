@@ -1,4 +1,4 @@
-angular.module('render').service('renderHandler', ['CameraHandle', 'Templates', function (CameraHandle, Templates) {
+angular.module('render').service('renderHandler', ['Templates', function (Templates) {
 
 	//Find canvas
 	var canvas = $('#renderCanvas')[0];

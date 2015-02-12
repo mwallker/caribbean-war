@@ -1,11 +1,11 @@
 angular.module('render').factory('eventsHandle', function () {
 
-	var subs = [];
+	var subs = {};
 
 	return {
 		subscribe: function (type, callback) {
-			if(subs){
-
+			if(subs[type]){
+				subs
 			}
 		},
 		publish: function () {
