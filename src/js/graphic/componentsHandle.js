@@ -1,4 +1,4 @@
-angular.module('render').factory('Templates', function ($rootScope) {
+angular.module('render').factory('Components', function ($rootScope, KeyEvents, userStorage) {
 
 	var locked = false;
 
@@ -76,11 +76,12 @@ angular.module('render').factory('Templates', function ($rootScope) {
 				observeTimer = (observeTimer + 0.0003) % (2 * Math.PI);
 				camera.alpha = observeTimer;
 				camera.beta = Math.cos(observeTimer) * Math.PI / 7 + Math.PI / 3;
+				camera.radius = maxDist / 4;
 			}
 		}
 	};
 
-	var Components = {
+	var baseComponents = {
 		//Envirement
 		createOcean: function (scene) {
 
@@ -126,22 +127,59 @@ angular.module('render').factory('Templates', function ($rootScope) {
 			}
 		},
 		//Ship
-		createShip: function (scene, controledByUser) {
+		createShip: function (scene, details) {
 
-			//TEMPORARY
-			var ship = BABYLON.Mesh.CreateBox("ship", 2, scene);
+			var shipMesh = BABYLON.Mesh.CreateBox("ship", 2, scene);
 			var shipMaterial = new BABYLON.StandardMaterial("shipMaterial", scene);
-			ship.specularColor = new BABYLON.Color4(0.6, 0.2, 0.2, 0.5);
-			ship.diffuseColor = new BABYLON.Color3(0.6, 0.2, 0.2);
-			ship.material = shipMaterial;
+			shipMesh.specularColor = new BABYLON.Color4(0.6, 0.2, 0.2, 0.5);
+			shipMesh.diffuseColor = new BABYLON.Color3(0.6, 0.2, 0.2);
+			shipMesh.material = shipMaterial;
 
-			if (controledByUser) {
-				//Ship under user's control
+			var ship = angular.extend(shipMesh, {
+				speed: 0,
+				maxSpeed: 10,
+				weight: 1000
+			});
 
-			} else {
-				//View of ship
+			var sailsMode = 0;
+			var wheelMode = 0;
 
-			}
+			return {
+				changeState: function (type) {
+					switch (type) {
+					case 'upward':
+						if (sailsMode <= 3) ++sailsMode;
+						break;
+					case 'backward':
+						if (sailsMode > 0) --sailsMode;
+						break;
+					case 'right':
+						wheelMode = 1;
+						break;
+					case 'left':
+						wheelMode = -1;
+						break;
+					case 'none':
+						wheelMode = 0;
+						break;
+					}
+				},
+				move: function (delay) {
+					obs = lerp(obs, ranged(-0.3, 0.3), 0.03);
+
+					ship.speed = lerp(ship.speed, sailsMode * ship.maxSpeed * delay / 4, 0.01);
+
+					//Movement
+					ship.position.x = ship.position.x + Math.cos(ship.rotation.y) * ship.speed;
+					ship.position.z = ship.position.z + Math.sin(ship.rotation.y) * ship.speed;
+					ship.position.y = ship.position.y + Math.sin(timer * 1.2) / (ship.weight * 0.3);
+
+					//Rotation
+					ship.rotation.y = ship.rotation.y + (wheelMode * ship.speed * 0.075) / (sailsMode + 1);
+					ship.rotation.x = lerp(ship.rotation.x, wheelMode * ship.speed * 0.7 + obs, 0.02);
+					ship.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.06;
+				}
+			};
 		},
 		//Targeting Curve(s)
 		getCurves: function (scene, collection) {
@@ -159,8 +197,8 @@ angular.module('render').factory('Templates', function ($rootScope) {
 		'login': function (scene, camera) {
 			var cameraControl = new CameraController(camera, {});
 
-			var ocaen = Components.createOcean(scene);
-			var controledShip = Components.createShip(scene, false);
+			var ocean = baseComponents.createOcean(scene);
+			var controledShip = baseComponents.createShip(scene, false);
 
 			return {
 				onUpdate: function (delay) {
@@ -172,8 +210,8 @@ angular.module('render').factory('Templates', function ($rootScope) {
 		'harbor': function (scene, camera) {
 			var cameraControl = new CameraController(camera, {});
 
-			var ocaen = Components.createOcean(scene);
-			var controledShip = Components.createShip(scene, false);
+			var ocean = baseComponents.createOcean(scene);
+			var controledShip = baseComponents.createShip(scene, false);
 
 			return {
 				onUpdate: function (delay) {
@@ -183,13 +221,26 @@ angular.module('render').factory('Templates', function ($rootScope) {
 			}
 		},
 		'world': function (scene, camera) {
+			var ocean = baseComponents.createOcean(scene);
+
 			var cameraControl = new CameraController(camera, {
 				alpha: -Math.PI,
 				beta: Math.PI / 4
 			});
 
-			var ocaen = Components.createOcean(scene);
-			var controledShip = Components.createShip(scene, true);
+			var user = userStorage.get();
+			console.log(user.ID);
+
+			$rootScope.$on('neigbours', function (event, details) {
+
+			});
+
+			$rootScope.$on('move', function (event, details) {
+
+			});
+
+			var ship = baseComponents.createShip(scene);
+
 			var uncontroledShips = [];
 
 			return {
