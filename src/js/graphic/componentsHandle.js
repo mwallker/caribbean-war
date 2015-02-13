@@ -257,7 +257,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			}));
 
 			$rootScope.$on('neigbours', function (event, details) {
-
+				console.log('Will be removed');
 			});
 
 			$rootScope.$on('onUserEnter', function (event, details) {
