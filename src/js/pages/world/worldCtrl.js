@@ -9,7 +9,7 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 		}
 
 		$scope.user = userStorage.get();
-		$scope.showMenu = false;
+		$scope.showMenu = true;
 		$scope.showMap = false;
 
 		$scope.options = [

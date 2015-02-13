@@ -7,22 +7,22 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $root
 		$state.go('login');
 	} else {
 		$scope.user = userStorage.get();
-		$scope.ships = userStorage.get().Ships;
+		$scope.ships = userStorage.get().ships;
 
 		$scope.selectedShip = (($scope.ships && $scope.ships.length) ? $scope.ships[0] : {
-			ID: 0
+			id: 0
 		});
 
 		angular.forEach($scope.ships, function (value, key) {
 			value.selected = false;
-			if (value.ID == $scope.selectedShip.ID) {
+			if (value.id == $scope.selectedShip.id) {
 				value.selected = true;
 			}
 		});
 	}
 
 	$scope.pickShip = function (index) {
-		if ($scope.selectedShip.ID != $scope.ships[index].ID) {
+		if ($scope.selectedShip.id != $scope.ships[index].id) {
 			angular.forEach($scope.ships, function (value, key) {
 				value.selected = false;
 			});
@@ -36,9 +36,9 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $root
 	};
 
 	$scope.toWorld = function () {
-		if ($scope.selectedShip.ID) {
+		if ($scope.selectedShip.id) {
 			connection.send("enterWorld", {
-				shipId: +$scope.selectedShip.ID
+				shipId: +$scope.selectedShip.id
 			});
 		} else {
 			$rootScope.$emit("error", "No ships avaible");

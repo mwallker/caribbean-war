@@ -1,4 +1,4 @@
-angular.module('render').service('KeyEvents', function ($rootScope, connection) {
+angular.module('render').factory('KeyEvents', function ($rootScope, connection) {
 
 	var userId = null;
 
@@ -14,55 +14,79 @@ angular.module('render').service('KeyEvents', function ($rootScope, connection) 
 		holdenRight = false,
 		holdenSpace = false;
 
-	KeyboardJS.on('up, w', function (event) {
-
-		if (!holdenUp && checkFocus()) {
-			holdenUp = true;
-			if (connection.status() && userId) {
-				connection.send('move', {
-					type: 'upward'
-				});
+	KeyboardJS.on('up, w',
+		function (event) {
+			if (!holdenUp && checkFocus()) {
+				holdenUp = true;
+				if (connection.status() && userId) {
+					connection.send('move', {
+						type: 'upward'
+					});
+				}
 			}
-		}
-	}, function () {
-		if (holdenUp) holdenUp = false;
-	});
+		},
+		function () {
+			if (holdenUp) holdenUp = false;
+		});
 
-	KeyboardJS.on('down, s', function (event) {
-		if (!holdenDown && checkFocus()) {
-			holdenDown = true;
-			$rootScope.$emit('move', {
-				id: userId,
-				type: 'backward'
-			});
-		}
-	}, function () {
-		if (holdenDown) holdenDown = false;
-	});
+	KeyboardJS.on('down, s',
+		function (event) {
+			if (!holdenDown && checkFocus()) {
+				holdenDown = true;
+				if (connection.status() && userId) {
+					connection.send('move', {
+						type: 'backward'
+					});
+				}
+			}
+		},
+		function () {
+			if (holdenDown) holdenDown = false;
+		});
 
-	KeyboardJS.on('left, d', function () {
-		if (checkFocus()) $rootScope.$emit('move', {
-			id: userId,
-			type: 'left'
+	KeyboardJS.on('left, d',
+		function () {
+			if (!holdenLeft) {
+				holdenLeft = true;
+				if (connection.status() && userId) {
+					connection.send('move', {
+						type: 'left'
+					});
+				}
+			}
+		},
+		function () {
+			if (holdenLeft) {
+				holdenLeft = false;
+				if (connection.status() && userId) {
+					connection.send('move', {
+						type: 'none'
+					});
+				}
+			}
 		});
-	}, function () {
-		if (checkFocus()) $rootScope.$emit('move', {
-			id: userId,
-			type: 'none'
-		});
-	});
 
-	KeyboardJS.on('right, a', function () {
-		if (checkFocus()) $rootScope.$emit('move', {
-			id: userId,
-			type: 'right'
+	KeyboardJS.on('right, a',
+		function () {
+			if (!holdenRight) {
+				holdenRight = true;
+				if (connection.status() && userId) {
+					connection.send('move', {
+						type: 'right'
+					});
+				}
+			}
+		},
+		function () {
+			if (holdenRight) {
+				holdenRight = false;
+				if (connection.status() && userId) {
+					connection.send('move', {
+						type: 'none'
+					});
+				}
+			}
 		});
-	}, function () {
-		if (checkFocus()) $rootScope.$emit('move', {
-			id: userId,
-			type: 'none'
-		});
-	});
 
 	KeyboardJS.on('q',
 		function () {

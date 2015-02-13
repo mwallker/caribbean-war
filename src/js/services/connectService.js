@@ -27,6 +27,7 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 				};
 
 				socket.onmessage = function (event) {
+					console.log('Receive');
 					console.log(event.data);
 					var data = angular.fromJson(event.data);
 					$rootScope.$emit(data.action, data.details);
@@ -47,6 +48,7 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 	result.send = function (action, details) {
 		if (this.status()) {
 			try {
+				console.log('Send');
 				console.log(envelopeMessage(action, details));
 				socket.send(envelopeMessage(action, details));
 			} catch (e) {

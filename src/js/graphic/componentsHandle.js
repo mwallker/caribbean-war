@@ -129,7 +129,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		//Ship
 		createShip: function (scene, details) {
 
-			var shipMesh = BABYLON.Mesh.CreateBox(details.id + randomRange(0, 1000), 2, scene);
+			var shipMesh = BABYLON.Mesh.CreateBox('s_' + details.id, 2, scene);
 			var shipMaterial = new BABYLON.StandardMaterial("shipMaterial", scene);
 			shipMesh.specularColor = new BABYLON.Color4(0.6, 0.2, 0.2, 0.5);
 			shipMesh.diffuseColor = new BABYLON.Color3(0.6, 0.2, 0.2);
@@ -141,8 +141,13 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				weight: 1000
 			});
 
+			var shipId = details.id;
+
 			var sailsMode = 0;
 			var wheelMode = 0;
+
+			var obs = 0,
+				timer = 0;
 
 			return {
 				changeState: function (type) {
@@ -164,8 +169,12 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						break;
 					}
 				},
+				getId: function(){
+					return shipId;
+				},
 				move: function (delay) {
-					obs = lerp(obs, ranged(-0.3, 0.3), 0.03);
+					timer = timer + delay % (2 * Math.PI);
+					obs = lerp(obs, randomRange(-0.3, 0.3), 0.03);
 
 					ship.speed = lerp(ship.speed, sailsMode * ship.maxSpeed * delay / 4, 0.01);
 
@@ -180,6 +189,14 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					ship.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.06;
 				}
 			};
+		},
+		//Box
+		test: function (scene) {
+			var box = BABYLON.Mesh.CreateBox('box', 2, scene);
+			var boxMaterial = new BABYLON.StandardMaterial("boxMaterial", scene);
+			box.specularColor = new BABYLON.Color4(0.6, 0.2, 0.2, 0.5);
+			box.diffuseColor = new BABYLON.Color3(0.6, 0.2, 0.2);
+			box.material = boxMaterial;
 		},
 		//Targeting Curve(s)
 		getCurves: function (scene, collection) {
@@ -230,18 +247,34 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				beta: Math.PI / 4
 			});
 
-			var user = userStorage.get();
-			KeyEvents.bind(user.ID);
+			baseComponents.test(scene);
 
-			ships.push(new baseComponents.createShip(scene, {id: 93}));
+			var user = userStorage.get();
+			KeyEvents.bind(user.id);
+
+			ships.push(new baseComponents.createShip(scene, {
+				id: user.id
+			}));
 
 			$rootScope.$on('neigbours', function (event, details) {
+				var mass = details.users;
+			});
+
+			$rootScope.$on('onUserEnter', function (event, details) {
+				console.log(details);
+			});
+
+			$rootScope.$on('onUserExit', function (event, details) {
 				console.log(details);
 			});
 
 			$rootScope.$on('move', function (event, details) {
 				console.log(details);
-				//for/in if elem.id == event.id elem.changeState(event.type)
+				for(var i in ships){
+					if(ships[i].getId() == details.id){
+						ships[i].changeState(details.type);
+					}
+				}
 			});
 
 			return {
@@ -250,7 +283,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					cameraControl.overviewCorrection();
 					cameraControl.targetingCorrection();
 
-					for(var item in ships){
+					for (var item in ships) {
 						ships[item].move(delay);
 					}
 				}

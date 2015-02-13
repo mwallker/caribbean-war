@@ -1,6 +1,6 @@
 <div id="harbor-layer">
-    <span>{{user.Nick}} </span>
-	<span>Cash: {{user.Cash}} </span>
+    <span>{{user.nick}} </span>
+	<span>Cash: {{user.cash}} </span>
 
 	<button ng-click="exit()">Exit</button>
 	<button class="button" ng-click="toWorld()">Sail</button>
@@ -9,7 +9,7 @@
 <div class="shipsList">
 	<ul>
 		<li ng-repeat="ship in ships" ng-class="{active:ship.selected}" ng-click="pickShip($index)">
-			<span>{{ship.Name}}</span>
+			<span>{{ship.name}}</span>
 		</li>
 	</ul>
 </div>
