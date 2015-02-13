@@ -257,14 +257,16 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			}));
 
 			$rootScope.$on('neigbours', function (event, details) {
-				var mass = details.users;
+
 			});
 
 			$rootScope.$on('onUserEnter', function (event, details) {
+				console.log('Does\'t impemented yet :(');
 				console.log(details);
 			});
 
 			$rootScope.$on('onUserExit', function (event, details) {
+				console.log('Does\'t impemented yet :(');
 				console.log(details);
 			});
 
@@ -273,6 +275,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				for(var i in ships){
 					if(ships[i].getId() == details.id){
 						ships[i].changeState(details.type);
+						break;
 					}
 				}
 			});

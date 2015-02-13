@@ -27,10 +27,12 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 				};
 
 				socket.onmessage = function (event) {
-					console.log('Receive');
-					console.log(event.data);
 					var data = angular.fromJson(event.data);
-					$rootScope.$emit(data.action, data.details);
+					if(data && data.action){
+						console.log('Receive');
+						console.log(data);
+						$rootScope.$emit(data.action, data.details);
+					}
 				};
 
 				socket.onerror = socket.onclose = function (e) {
