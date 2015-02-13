@@ -94,7 +94,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			light.intensity = 1;
 
 			//Water
-			var water = BABYLON.Mesh.CreateGround("water", 5000, 5000, 100, scene);
+			var water = BABYLON.Mesh.CreateGround("water", 2000, 2000, 200, scene);
 			var waterMaterial = new BABYLON.StandardMaterial("water", scene);
 
 			waterMaterial.bumpTexture = new BABYLON.Texture("images/water.png", scene);
@@ -169,7 +169,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						break;
 					}
 				},
-				getId: function(){
+				getId: function () {
 					return shipId;
 				},
 				move: function (delay) {
@@ -257,23 +257,38 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			}));
 
 			$rootScope.$on('neigbours', function (event, details) {
+				var users = details.users;
+				for (var u in users) {
+					for(var s in ships){
+						if(ships[s].getId() == users[u].id){
+
+						}
+					}
+				}
 				console.log('Will be removed');
 			});
 
-			$rootScope.$on('onUserEnter', function (event, details) {
-				console.log('Does\'t impemented yet :(');
+			var onUserEnterCallback = $rootScope.$on('onUserEnter', function (event, details) {
+				ships.push(new baseComponents.createShip(scene, {
+					id: details.id
+				}));
 				console.log(details);
 			});
 
-			$rootScope.$on('onUserExit', function (event, details) {
-				console.log('Does\'t impemented yet :(');
+			var onUserExitCallback = $rootScope.$on('onUserExit', function (event, details) {
+				for (var item in ships) {
+					if (ships[item].getId() == details.id) {
+						ships.splice(item, 1);
+						break;
+					}
+				}
 				console.log(details);
 			});
 
-			$rootScope.$on('move', function (event, details) {
+			var onMoveCallback = $rootScope.$on('move', function (event, details) {
 				console.log(details);
-				for(var i in ships){
-					if(ships[i].getId() == details.id){
+				for (var i in ships) {
+					if (ships[i].getId() == details.id) {
 						ships[i].changeState(details.type);
 						break;
 					}
@@ -289,6 +304,11 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					for (var item in ships) {
 						ships[item].move(delay);
 					}
+				},
+				removeEvents: function () {
+					onUserEnterCallback();
+					onUserExitCallback();
+					onMoveCallback();
 				}
 			}
 		}
