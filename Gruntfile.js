@@ -51,7 +51,7 @@ module.exports = function(grunt) {
 	]);
 
 	grunt.registerTask('build', [
-		'jshint',
+		//'jshint',
 		'less',
 		'nodewebkit'
 	]);

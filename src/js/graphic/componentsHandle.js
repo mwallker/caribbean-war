@@ -20,6 +20,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			camera.radius = options.radius || maxDist / 2;
 			camera.alpha = options.alpha || normalAlpha;
 			camera.beta = options.beta || normalBeta;
+			//camera.target = options.target;
 		}
 
 		$('#renderCanvas').on('mousedown', function (event) {
@@ -59,10 +60,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			},
 			trackingCorrection: function (target) {
 				if (!locked) {
-					camera.alpha = lerp(camera.alpha, normalAlpha, lerpFactor);
+					camera.alpha = lerp(camera.alpha, target ? target.alpha :normalAlpha , lerpFactor);
 					camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
 				}
-
 				if (target) {
 					camera.target.x = target.position.x;
 					camera.target.z = target.position.z;
@@ -149,8 +149,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					maxSpeed: 10,
 					weight: 1000
 				});
-
-				console.log(ship);
 			});
 
 			var shipId = details.id;
@@ -180,9 +178,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						wheelMode = 0;
 						break;
 					}
-				},
-				target: function () {
-					return shipMesh;
 				},
 				getId: function () {
 					return shipId;
@@ -299,7 +294,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				}));
 			}
 
-			var onNeigboursCallback = $rootScope.$on('neigbours', function (event, details) {
+			var onNeigboursCallback = $rootScope.$on('nieghbours', function (event, details) {
 				var users = details.users;
 				if (users) {
 					if (users.added) {
