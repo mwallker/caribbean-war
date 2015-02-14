@@ -20,8 +20,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			camera.radius = options.radius || maxDist / 2;
 			camera.alpha = options.alpha || normalAlpha;
 			camera.beta = options.beta || normalBeta;
-			console.log(camera.target)
-				//camera.target = options.target || target;
 		}
 
 		$('#renderCanvas').on('mousedown', function (event) {
@@ -63,12 +61,13 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				if (!locked) {
 					camera.alpha = lerp(camera.alpha, normalAlpha, lerpFactor);
 					camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
-				}/*
-				if (target) {
-					camera.target.x = target.position.x;
-					camera.target.z = target.position.z;
-					camera.alpha = -target.rotation.y;
-				}*/
+				}
+				/*
+								if (target) {
+									camera.target.x = target.position.x;
+									camera.target.z = target.position.z;
+									camera.alpha = -target.rotation.y;
+								}*/
 			},
 			observeCorrection: function () {
 				observeTimer = (observeTimer + 0.003) % (2 * Math.PI);
@@ -134,13 +133,12 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 			BABYLON.SceneLoader.ImportMesh("ship", "js/graphic/models/", "ship01.babylon", scene, function (meshes) {
 				shipMesh = meshes[0];
-				console.log(meshes);
-				shipMesh.position = new BABYLON.Vector3(details.location.x, 0, details.location.y);
-				shipMesh.rotation = new BABYLON.Vector3(0, 0, 0);
+				if (details.location) {
+					shipMesh.position = new BABYLON.Vector3(details.location.x, 0, details.location.y);
+				}
+
 			});
-			/*
-						var shipMesh = BABYLON.Mesh.CreateBox('s_' + details.id, 2, scene);
-				*/
+
 			var shipMaterial = new BABYLON.StandardMaterial("shipMaterial", scene);
 
 			shipMesh.specularColor = new BABYLON.Color4(0.6, 0.2, 0.2, 0.5);
@@ -235,8 +233,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 	return {
 		'login': function (scene, camera) {
-
-
 			var ocean = BaseComponents.createOcean(scene);
 			var controledShip = BaseComponents.createShip(scene, {
 				location: {
@@ -244,14 +240,13 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					y: 0
 				}
 			});
-
 			var cameraControl = new CameraController(camera, {});
 
 			return {
 				onUpdate: function (delay) {
-					cameraControl.baseCorrection();
-					cameraControl.trackingCorrection();
-					//cameraControl.observeCorrection();
+					//cameraControl.baseCorrection();
+					//cameraControl.trackingCorrection();
+					cameraControl.observeCorrection();
 				},
 				unsubscribe: function () {
 					cameraControl.removeEvents();
