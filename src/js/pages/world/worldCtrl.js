@@ -41,17 +41,5 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 		$scope.toogleMenu = function () {
 			$scope.showMenu = !$scope.showMenu;
 		};
-
-		//Keyboard events
-		KeyboardJS.on('esc', function () {
-			$scope.toogleMenu();
-		});
-
-		KeyboardJS.on('m', function () {
-			if (!$("input").is(':focus')) {
-				$scope.showMenu = !$scope.showMenu;
-				console.log($scope.showMenu);
-			}
-		});
 	}
 ]);

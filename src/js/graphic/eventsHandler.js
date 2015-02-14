@@ -12,7 +12,9 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		holdenDown = false,
 		holdenLeft = false,
 		holdenRight = false,
-		holdenSpace = false;
+		holdenSpace = false,
+		holdenEsc = false,
+		holdenM = false;
 
 	KeyboardJS.on('up, w',
 		function (event) {
@@ -129,6 +131,32 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		},
 		function () {
 			if (holdenSpace) holdenSpace = false;
+		});
+
+	KeyboardJS.on('esc',
+		function () {
+			if (!holdenEsc && checkFocus()) {
+				holdenEsc = true;
+				console.log('Toggle menu');
+			}
+		},
+		function () {
+			if (holdenEsc) {
+				holdenEsc = false;
+			}
+		});
+
+	KeyboardJS.on('m',
+		function () {
+			if (!holdenM && checkFocus()) {
+				holdenM = true;
+				console.log('Toggle map');
+			}
+		},
+		function () {
+			if (holdenM) {
+				holdenM = false;
+			}
 		});
 
 	return {

@@ -6,7 +6,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		var locked = false;
 
 		var minDist = 5,
-			maxDist = 40,
+			maxDist = 20,
 			normalAlpha = -Math.PI,
 			normalBeta = 1.2,
 			minBeta = 0.2,
@@ -15,17 +15,13 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 		var observeTimer = 0;
 
-		var target = {
-			position: BABYLON.Vector3.Zero(),
-			rotation: BABYLON.Vector3.Zero()
-		};
-
 		if (bindedCamera && options) {
 			camera = bindedCamera;
-			camera.radius = options.radius || maxDist / 4;
+			camera.radius = options.radius || maxDist / 2;
 			camera.alpha = options.alpha || normalAlpha;
 			camera.beta = options.beta || normalBeta;
-			camera.target = options.target || target;
+			console.log(camera.target)
+				//camera.target = options.target || target;
 		}
 
 		$('#renderCanvas').on('mousedown', function (event) {
@@ -39,6 +35,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		return {
 			baseCorrection: function () {
 				if (camera) {
+					camera.alpha %= Math.PI * 2;
+
 					if (camera.beta < minBeta) {
 						camera.beta = minBeta;
 					} else {
@@ -48,34 +46,35 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					if (camera.radius > maxDist) camera.radius = maxDist;
 
 					if (camera.radius < minDist) camera.radius = minDist;
-
-					return true;
-				} else {
-					return false;
-				}
-			},
-			overviewCorrection: function () {
-				if (!locked) {
-					camera.alpha = lerp(camera.alpha, normalAlpha, lerpFactor);
-					camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
 				}
 			},
 			targetingCorrection: function () {
 				if (direction !== TargetingDirections.none) {
 					if (direction == TargetingDirections.both) {
-						camera.alpha = lerp(camera.alpha, -(Math.PI + target.rotation.y), lerpFactor);
+						camera.alpha = lerp(camera.alpha, -(Math.PI + target.y), lerpFactor);
 						camera.beta = lerp(camera.beta, minBeta, lerpFactor);
 					} else {
-						camera.alpha = lerp(camera.alpha, -(Math.PI + target.rotation.y) - direction * Math.PI, lerpFactor);
+						camera.alpha = lerp(camera.alpha, -(Math.PI + target.y) - direction * Math.PI, lerpFactor);
 						camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
 					}
 				}
+			},
+			trackingCorrection: function (target) {
+				if (!locked) {
+					camera.alpha = lerp(camera.alpha, normalAlpha, lerpFactor);
+					camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
+				}/*
+				if (target) {
+					camera.target.x = target.position.x;
+					camera.target.z = target.position.z;
+					camera.alpha = -target.rotation.y;
+				}*/
 			},
 			observeCorrection: function () {
 				observeTimer = (observeTimer + 0.003) % (2 * Math.PI);
 				camera.alpha = observeTimer;
 				camera.beta = Math.cos(observeTimer) * Math.PI / 7 + Math.PI / 3;
-				camera.radius = maxDist / 4;
+				camera.radius = maxDist / 2;
 			},
 			removeEvents: function () {
 				$('#renderCanvas').off('mousedown');
@@ -136,7 +135,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			BABYLON.SceneLoader.ImportMesh("ship", "js/graphic/models/", "ship01.babylon", scene, function (meshes) {
 				shipMesh = meshes[0];
 				console.log(meshes);
-				shipMesh.position = new BABYLON.Vector3(0, 0, 0);
+				shipMesh.position = new BABYLON.Vector3(details.location.x, 0, details.location.y);
+				shipMesh.rotation = new BABYLON.Vector3(0, 0, 0);
 			});
 			/*
 						var shipMesh = BABYLON.Mesh.CreateBox('s_' + details.id, 2, scene);
@@ -181,6 +181,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						break;
 					}
 				},
+				target: function () {
+					return shipMesh;
+				},
 				getId: function () {
 					return shipId;
 				},
@@ -209,6 +212,14 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			box.specularColor = new BABYLON.Color4(0.6, 0.2, 0.2, 0.5);
 			box.diffuseColor = new BABYLON.Color3(0.6, 0.2, 0.2);
 			box.material = boxMaterial;
+
+			return {
+				target: box,
+				move: function (delay) {
+					box.rotation.y += delay * 2;
+					box.position.x += delay;
+				}
+			}
 		},
 		//Targeting Curve(s)
 		getCurves: function (scene, collection) {
@@ -224,17 +235,26 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 	return {
 		'login': function (scene, camera) {
-			var cameraControl = new CameraController(camera, {});
+
 
 			var ocean = BaseComponents.createOcean(scene);
-			var controledShip = BaseComponents.createShip(scene, false);
+			var controledShip = BaseComponents.createShip(scene, {
+				location: {
+					x: 0,
+					y: 0
+				}
+			});
+
+			var cameraControl = new CameraController(camera, {});
 
 			return {
 				onUpdate: function (delay) {
 					cameraControl.baseCorrection();
-					cameraControl.observeCorrection();
+					cameraControl.trackingCorrection();
+					//cameraControl.observeCorrection();
 				},
 				unsubscribe: function () {
+					cameraControl.removeEvents();
 					return null;
 				}
 			}
@@ -251,28 +271,34 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					cameraControl.observeCorrection();
 				},
 				unsubscribe: function () {
+					cameraControl.removeEvents();
 					return null;
 				}
 			}
 		},
 		'world': function (scene, camera) {
 			var ocean = BaseComponents.createOcean(scene);
-
 			var ships = [];
+
+			var user = userStorage.get();
+			ships.push(BaseComponents.createShip(scene, {
+				id: user.id,
+				location: user.location
+			}));
+			KeyEvents.bind(user.id);
 
 			var cameraControl = new CameraController(camera, {
 				alpha: -Math.PI,
-				beta: Math.PI / 4
+				beta: Math.PI / 4,
+				target: ships[0].target
 			});
 
-			BaseComponents.test(scene);
-
-			var user = userStorage.get();
-			KeyEvents.bind(user.id);
-
-			ships.push(BaseComponents.createShip(scene, {
-				id: user.id
-			}));
+			var neighbors = userStorage.getNeighbors();
+			for (n in neighbors) {
+				ships.push(BaseComponents.createShip(scene, {
+					id: neighbors[n].id
+				}));
+			}
 
 			var onNeigboursCallback = $rootScope.$on('neigbours', function (event, details) {
 				var users = details.users;
@@ -317,7 +343,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					}
 				},
 				unsubscribe: function () {
+					onNeigboursCallback();
 					onMoveCallback();
+					cameraControl.removeEvents();
 				}
 			}
 		}

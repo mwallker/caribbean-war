@@ -1,25 +1,39 @@
-caribbeanWarApp.service('userStorage', function(){
+caribbeanWarApp.service('userStorage', function () {
 	var user = {
-		authorize:false
+		authorize: false
 	};
 
-	return{
-		status:function(){
+	var neighbors = [];
+
+	return {
+		status: function () {
 			return user.authorize || false;
 		},
 
-		set:function(data){
+		set: function (data) {
 			user = data.userInfo;
 			user.authorize = true;
 		},
 
-		get:function(){
+		get: function () {
 			return user;
 		},
 
-		reset:function(){
+		setNeighbors: function (data) {
+			neighbors = data.users;
+		},
+
+		getNeighbors: function () {
+			return neighbors;
+		},
+
+		clearNeighbors: function () {
+			neighbors = [];
+		},
+
+		reset: function () {
 			user = {
-				authorize:false
+				authorize: false
 			};
 		}
 	};

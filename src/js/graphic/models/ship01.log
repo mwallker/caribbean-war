@@ -1,0 +1,16 @@
+	Babylon.js Exporter version: 1.7.0, Blender version: 2.73 (sub 0)
+========= Conversion from Blender to Babylon.js =========
+	Python World class constructor completed
+	WARNING: No active camera has been assigned, or is not in a currently selected Blender layer
+	processing begun of material:  ship01.Material.001
+	processing begun of mesh:  ship
+		num positions      :  5893
+		num normals        :  5893
+		num uvs            :  11786
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  26490
+		WARNING: # of 0 area faces found:  11
+========= Writing of scene file started =========
+========= Writing of scene file completed =========
+========= end of processing =========
