@@ -20,7 +20,7 @@ caribbeanWarApp.service('userStorage', function () {
 		},
 
 		setNeighbors: function (data) {
-			neighbors = data.users;
+			neighbors = data.nearestUsers;
 		},
 
 		getNeighbors: function () {

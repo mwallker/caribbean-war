@@ -11,16 +11,21 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			normalBeta = 1.2,
 			minBeta = 0.2,
 			maxBeta = (Math.PI / 2) * 0.9,
-			lerpFactor = 0.1;
+			lerpFactor = 0.1,
+			targetAlpha = 0;
 
 		var observeTimer = 0;
 
-		if (bindedCamera && options) {
+		if (bindedCamera) {
 			camera = bindedCamera;
-			camera.radius = options.radius || maxDist / 2;
-			camera.alpha = options.alpha || normalAlpha;
-			camera.beta = options.beta || normalBeta;
-			//camera.target = options.target;
+			camera.radius = maxDist / 2;
+			camera.alpha = normalAlpha;
+			camera.beta = normalBeta;
+			if (options && options.target) {
+				camera.target.x = options.target.x || 0;
+				camera.target.z = options.target.z || 0;
+				targetAlpha = options.target.alpha || 0;
+			}
 		}
 
 		$('#renderCanvas').on('mousedown', function (event) {
@@ -50,23 +55,23 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			targetingCorrection: function () {
 				if (direction !== TargetingDirections.none) {
 					if (direction == TargetingDirections.both) {
-						camera.alpha = lerp(camera.alpha, -(Math.PI + target.y), lerpFactor);
+						camera.alpha = lerp(camera.alpha, -(Math.PI + target.alpha), lerpFactor);
 						camera.beta = lerp(camera.beta, minBeta, lerpFactor);
 					} else {
-						camera.alpha = lerp(camera.alpha, -(Math.PI + target.y) - direction * Math.PI, lerpFactor);
+						camera.alpha = lerp(camera.alpha, -(Math.PI + target.alpha) - direction * Math.PI, lerpFactor);
 						camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
 					}
 				}
 			},
 			trackingCorrection: function (target) {
-				if (!locked) {
-					camera.alpha = lerp(camera.alpha, target ? target.alpha :normalAlpha , lerpFactor);
-					camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
-				}
 				if (target) {
-					camera.target.x = target.position.x;
-					camera.target.z = target.position.z;
-					camera.alpha = -target.rotation.y;
+					camera.target.x = target.x;
+					camera.target.z = target.z;
+					targetAlpha = target.alpha || 0;
+				}
+				if (!locked) {
+					camera.alpha = lerp(camera.alpha, -targetAlpha + normalAlpha, lerpFactor);
+					camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
 				}
 			},
 			observeCorrection: function () {
@@ -182,6 +187,13 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				getId: function () {
 					return shipId;
 				},
+				getPosition: function () {
+					return {
+						x: ship ? ship.position.x : 0,
+						z: ship ? ship.position.z : 0,
+						alpha: ship ? ship.rotation.y : 0
+					}
+				},
 				move: function (delay) {
 					if (ship) {
 						timer = timer + delay % (2 * Math.PI);
@@ -213,8 +225,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			return {
 				target: box,
 				move: function (delay) {
-					box.rotation.y += delay * 2;
-					box.position.x += delay;
+					box.rotation.y += delay;
+					//box.position.x += delay;
 				}
 			}
 		},
@@ -233,18 +245,11 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 	return {
 		'login': function (scene, camera) {
 			var ocean = BaseComponents.createOcean(scene);
-			var controledShip = BaseComponents.createShip(scene, {
-				location: {
-					x: 0,
-					y: 0
-				}
-			});
+			var ship = BaseComponents.createShip(scene, {});
 			var cameraControl = new CameraController(camera, {});
 
 			return {
 				onUpdate: function (delay) {
-					//cameraControl.baseCorrection();
-					//cameraControl.trackingCorrection();
 					cameraControl.observeCorrection();
 				},
 				unsubscribe: function () {
@@ -254,14 +259,12 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			}
 		},
 		'harbor': function (scene, camera) {
-			var cameraControl = new CameraController(camera, {});
-
 			var ocean = BaseComponents.createOcean(scene);
-			var controledShip = BaseComponents.createShip(scene, false);
+			var ship = BaseComponents.createShip(scene, {});
+			var cameraControl = new CameraController(camera, {});
 
 			return {
 				onUpdate: function (delay) {
-					cameraControl.baseCorrection();
 					cameraControl.observeCorrection();
 				},
 				unsubscribe: function () {
@@ -275,33 +278,35 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			var ships = [];
 
 			var user = userStorage.get();
-			ships.push(BaseComponents.createShip(scene, {
+			var ship = BaseComponents.createShip(scene, {
 				id: user.id,
 				location: user.location
-			}));
+			})
+			ships.push(ship);
 			KeyEvents.bind(user.id);
 
 			var cameraControl = new CameraController(camera, {
-				alpha: -Math.PI,
-				beta: Math.PI / 4,
-				target: ships[0].target
+				target: ship.getPosition()
 			});
 
 			var neighbors = userStorage.getNeighbors();
-			for (n in neighbors) {
+			for (var n in neighbors) {
+				console.log(neighbors[n]);
 				ships.push(BaseComponents.createShip(scene, {
 					id: neighbors[n].id
 				}));
 			}
 
-			var onNeigboursCallback = $rootScope.$on('nieghbours', function (event, details) {
+			var onNeigboursCallback = $rootScope.$on('neighbours', function (event, details) {
 				var users = details.users;
 				if (users) {
 					if (users.added) {
 						for (var i in users.added) {
-							ships.push(BaseComponents.createShip(scene, {
-								id: users.added[i].id
-							}));
+							if (users.added[i].id != user.id) {
+								ships.push(BaseComponents.createShip(scene, {
+									id: users.added[i].id
+								}));
+							}
 						}
 					}
 					if (users.removed) {
@@ -329,7 +334,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			return {
 				onUpdate: function (delay) {
 					cameraControl.baseCorrection();
-					cameraControl.trackingCorrection();
+					cameraControl.trackingCorrection(ship.getPosition());
 					cameraControl.targetingCorrection();
 
 					for (var item in ships) {
