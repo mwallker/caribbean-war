@@ -62,12 +62,12 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					camera.alpha = lerp(camera.alpha, normalAlpha, lerpFactor);
 					camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
 				}
-				/*
-								if (target) {
-									camera.target.x = target.position.x;
-									camera.target.z = target.position.z;
-									camera.alpha = -target.rotation.y;
-								}*/
+
+				if (target) {
+					camera.target.x = target.position.x;
+					camera.target.z = target.position.z;
+					camera.alpha = -target.rotation.y;
+				}
 			},
 			observeCorrection: function () {
 				observeTimer = (observeTimer + 0.003) % (2 * Math.PI);
@@ -129,26 +129,28 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		},
 		//Ship
 		createShip: function (scene, details) {
-			var shipMesh = {};
+			var ship = null;
 
 			BABYLON.SceneLoader.ImportMesh("ship", "js/graphic/models/", "ship01.babylon", scene, function (meshes) {
-				shipMesh = meshes[0];
+				var shipMesh = meshes[0];
+
 				if (details.location) {
 					shipMesh.position = new BABYLON.Vector3(details.location.x, 0, details.location.y);
 				}
 
-			});
+				var shipMaterial = new BABYLON.StandardMaterial("shipMaterial", scene);
 
-			var shipMaterial = new BABYLON.StandardMaterial("shipMaterial", scene);
+				shipMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+				shipMaterial.diffuseColor = new BABYLON.Color4(1, 1, 1, 0.5);
+				shipMesh.material = shipMaterial;
 
-			shipMesh.specularColor = new BABYLON.Color4(0.6, 0.2, 0.2, 0.5);
-			shipMesh.diffuseColor = new BABYLON.Color3(0.6, 0.2, 0.2);
-			shipMesh.material = shipMaterial;
+				ship = angular.extend(shipMesh, {
+					speed: 0,
+					maxSpeed: 10,
+					weight: 1000
+				});
 
-			var ship = angular.extend(shipMesh, {
-				speed: 0,
-				maxSpeed: 10,
-				weight: 1000
+				console.log(ship);
 			});
 
 			var shipId = details.id;
@@ -186,20 +188,22 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					return shipId;
 				},
 				move: function (delay) {
-					timer = timer + delay % (2 * Math.PI);
-					obs = lerp(obs, randomRange(-0.3, 0.3), 0.03);
+					if (ship) {
+						timer = timer + delay % (2 * Math.PI);
+						obs = lerp(obs, randomRange(-0.3, 0.3), 0.03);
 
-					ship.speed = lerp(ship.speed, sailsMode * ship.maxSpeed * delay / 4, 0.01);
+						ship.speed = lerp(ship.speed, sailsMode * ship.maxSpeed * delay / 4, 0.01);
 
-					//Movement
-					ship.position.x = ship.position.x + Math.cos(ship.rotation.y) * ship.speed;
-					ship.position.z = ship.position.z + Math.sin(ship.rotation.y) * ship.speed;
-					ship.position.y = ship.position.y + Math.sin(timer * 1.2) / (ship.weight * 0.3);
+						//Movement
+						ship.position.x = ship.position.x + Math.cos(ship.rotation.y) * ship.speed;
+						ship.position.z = ship.position.z + Math.sin(ship.rotation.y) * ship.speed;
+						ship.position.y = ship.position.y + Math.sin(timer * 1.2) / (ship.weight * 0.3);
 
-					//Rotation
-					ship.rotation.y = ship.rotation.y + (wheelMode * ship.speed * 0.075) / (sailsMode + 1);
-					ship.rotation.x = lerp(ship.rotation.x, wheelMode * ship.speed * 0.7 + obs, 0.02);
-					ship.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.06;
+						//Rotation
+						ship.rotation.y = ship.rotation.y + (wheelMode * ship.speed * 0.075) / (sailsMode + 1);
+						ship.rotation.x = lerp(ship.rotation.x, wheelMode * ship.speed * 0.7 + obs, 0.02);
+						ship.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.06;
+					}
 				}
 			};
 		},
@@ -330,7 +334,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			return {
 				onUpdate: function (delay) {
 					cameraControl.baseCorrection();
-					cameraControl.overviewCorrection();
+					cameraControl.trackingCorrection();
 					cameraControl.targetingCorrection();
 
 					for (var item in ships) {

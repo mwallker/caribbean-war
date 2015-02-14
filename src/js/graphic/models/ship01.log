@@ -4,13 +4,12 @@
 	WARNING: No active camera has been assigned, or is not in a currently selected Blender layer
 	processing begun of material:  ship01.Material.001
 	processing begun of mesh:  ship
-		num positions      :  5893
-		num normals        :  5893
-		num uvs            :  11786
+		num positions      :  2849
+		num normals        :  2849
+		num uvs            :  5698
 		num uvs2           :  0
 		num colors         :  0
-		num indices        :  26490
-		WARNING: # of 0 area faces found:  11
+		num indices        :  10461
 ========= Writing of scene file started =========
 ========= Writing of scene file completed =========
 ========= end of processing =========
