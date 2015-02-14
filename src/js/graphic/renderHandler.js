@@ -49,7 +49,7 @@ angular.module('render').factory('renderHandler', ['Components', function (Compo
 
 	function disposeScene() {
 		if (engine) {
-			if (content) content.removeEvents();
+			if (content) content.unsubscribe();
 			engine.stopRenderLoop();
 			engine.clear(new BABYLON.Color4(0, 0, 0, 0), true, true);
 			engine.dispose();

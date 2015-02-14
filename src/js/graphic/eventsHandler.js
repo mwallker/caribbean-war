@@ -44,7 +44,7 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 			if (holdenDown) holdenDown = false;
 		});
 
-	KeyboardJS.on('left, d',
+	KeyboardJS.on('left, a',
 		function () {
 			if (!holdenLeft) {
 				holdenLeft = true;
@@ -66,7 +66,7 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 			}
 		});
 
-	KeyboardJS.on('right, a',
+	KeyboardJS.on('right, d',
 		function () {
 			if (!holdenRight) {
 				holdenRight = true;
@@ -91,7 +91,6 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 	KeyboardJS.on('q',
 		function () {
 			if (!holdenQ && checkFocus()) {
-				console.log(event);
 				holdenQ = true;
 				if (holdenE && holdenQ) direction = TargetingDirections.both;
 				else direction = TargetingDirections.left;
@@ -99,7 +98,6 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		},
 		function () {
 			if (holdenQ) {
-				console.log(event);
 				holdenQ = false;
 				if (!holdenE) direction = TargetingDirections.none;
 				else direction = TargetingDirections.right;
@@ -109,7 +107,6 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 	KeyboardJS.on('e',
 		function () {
 			if (!holdenE && checkFocus()) {
-				console.log(event);
 				holdenE = true;
 				if (holdenE && holdenQ) direction = TargetingDirections.both;
 				else direction = TargetingDirections.right;
@@ -117,7 +114,6 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		},
 		function () {
 			if (holdenE) {
-				console.log(event);
 				holdenE = false;
 				if (!holdenQ) direction = TargetingDirections.none;
 				else direction = TargetingDirections.left;

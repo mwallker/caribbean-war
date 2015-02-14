@@ -1,18 +1,9 @@
 angular.module('render').factory('Components', function ($rootScope, KeyEvents, userStorage) {
 
-	var locked = false;
-
-	//EVENTS
-	$('#renderCanvas').on('mousedown', function (event) {
-		locked = true;
-	});
-
-	$(document).on('mouseup', function (event) {
-		locked = false;
-	});
-
 	function CameraController(bindedCamera, options) {
 		var camera = {};
+
+		var locked = false;
 
 		var minDist = 5,
 			maxDist = 40,
@@ -29,13 +20,21 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			rotation: BABYLON.Vector3.Zero()
 		};
 
-		if (!!bindedCamera && !!options) {
+		if (bindedCamera && options) {
 			camera = bindedCamera;
 			camera.radius = options.radius || maxDist / 4;
 			camera.alpha = options.alpha || normalAlpha;
 			camera.beta = options.beta || normalBeta;
 			camera.target = options.target || target;
 		}
+
+		$('#renderCanvas').on('mousedown', function (event) {
+			locked = true;
+		});
+
+		$(document).on('mouseup', function (event) {
+			locked = false;
+		});
 
 		return {
 			baseCorrection: function () {
@@ -73,15 +72,19 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				}
 			},
 			observeCorrection: function () {
-				observeTimer = (observeTimer + 0.0003) % (2 * Math.PI);
+				observeTimer = (observeTimer + 0.003) % (2 * Math.PI);
 				camera.alpha = observeTimer;
 				camera.beta = Math.cos(observeTimer) * Math.PI / 7 + Math.PI / 3;
 				camera.radius = maxDist / 4;
+			},
+			removeEvents: function () {
+				$('#renderCanvas').off('mousedown');
+				$(document).off('mouseup');
 			}
 		}
 	};
 
-	var baseComponents = {
+	var BaseComponents = {
 		//Envirement
 		createOcean: function (scene) {
 
@@ -128,9 +131,18 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		},
 		//Ship
 		createShip: function (scene, details) {
+			var shipMesh = {};
 
-			var shipMesh = BABYLON.Mesh.CreateBox('s_' + details.id, 2, scene);
+			BABYLON.SceneLoader.ImportMesh("ship", "js/graphic/models/", "ship01.babylon", scene, function (meshes) {
+				shipMesh = meshes[0];
+				console.log(meshes);
+				shipMesh.position = new BABYLON.Vector3(0, 0, 0);
+			});
+			/*
+						var shipMesh = BABYLON.Mesh.CreateBox('s_' + details.id, 2, scene);
+				*/
 			var shipMaterial = new BABYLON.StandardMaterial("shipMaterial", scene);
+
 			shipMesh.specularColor = new BABYLON.Color4(0.6, 0.2, 0.2, 0.5);
 			shipMesh.diffuseColor = new BABYLON.Color3(0.6, 0.2, 0.2);
 			shipMesh.material = shipMaterial;
@@ -214,31 +226,37 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		'login': function (scene, camera) {
 			var cameraControl = new CameraController(camera, {});
 
-			var ocean = baseComponents.createOcean(scene);
-			var controledShip = baseComponents.createShip(scene, false);
+			var ocean = BaseComponents.createOcean(scene);
+			var controledShip = BaseComponents.createShip(scene, false);
 
 			return {
 				onUpdate: function (delay) {
 					cameraControl.baseCorrection();
 					cameraControl.observeCorrection();
+				},
+				unsubscribe: function () {
+					return null;
 				}
 			}
 		},
 		'harbor': function (scene, camera) {
 			var cameraControl = new CameraController(camera, {});
 
-			var ocean = baseComponents.createOcean(scene);
-			var controledShip = baseComponents.createShip(scene, false);
+			var ocean = BaseComponents.createOcean(scene);
+			var controledShip = BaseComponents.createShip(scene, false);
 
 			return {
 				onUpdate: function (delay) {
 					cameraControl.baseCorrection();
 					cameraControl.observeCorrection();
+				},
+				unsubscribe: function () {
+					return null;
 				}
 			}
 		},
 		'world': function (scene, camera) {
-			var ocean = baseComponents.createOcean(scene);
+			var ocean = BaseComponents.createOcean(scene);
 
 			var ships = [];
 
@@ -247,42 +265,35 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				beta: Math.PI / 4
 			});
 
-			baseComponents.test(scene);
+			BaseComponents.test(scene);
 
 			var user = userStorage.get();
 			KeyEvents.bind(user.id);
 
-			ships.push(new baseComponents.createShip(scene, {
+			ships.push(BaseComponents.createShip(scene, {
 				id: user.id
 			}));
 
-			$rootScope.$on('neigbours', function (event, details) {
+			var onNeigboursCallback = $rootScope.$on('neigbours', function (event, details) {
 				var users = details.users;
-				for (var u in users) {
-					for(var s in ships){
-						if(ships[s].getId() == users[u].id){
-
+				if (users) {
+					if (users.added) {
+						for (var i in users.added) {
+							ships.push(BaseComponents.createShip(scene, {
+								id: users.added[i].id
+							}));
+						}
+					}
+					if (users.removed) {
+						for (var j in users.removed) {
+							for (var s in ships) {
+								if (ships[s].getId() == users.removed[j].id) {
+									ships.splice(s, 1);
+								}
+							}
 						}
 					}
 				}
-				console.log('Will be removed');
-			});
-
-			var onUserEnterCallback = $rootScope.$on('onUserEnter', function (event, details) {
-				ships.push(new baseComponents.createShip(scene, {
-					id: details.id
-				}));
-				console.log(details);
-			});
-
-			var onUserExitCallback = $rootScope.$on('onUserExit', function (event, details) {
-				for (var item in ships) {
-					if (ships[item].getId() == details.id) {
-						ships.splice(item, 1);
-						break;
-					}
-				}
-				console.log(details);
 			});
 
 			var onMoveCallback = $rootScope.$on('move', function (event, details) {
@@ -305,9 +316,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						ships[item].move(delay);
 					}
 				},
-				removeEvents: function () {
-					onUserEnterCallback();
-					onUserExitCallback();
+				unsubscribe: function () {
 					onMoveCallback();
 				}
 			}
