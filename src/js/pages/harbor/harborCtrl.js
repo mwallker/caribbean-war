@@ -47,7 +47,7 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $root
 
 	$scope.enterWorld = function (event, details) {
 		if (details.success === true) {
-			console.log();
+			userStorage.setNeighbors(details);
 			$state.go('world');
 		}
 	};

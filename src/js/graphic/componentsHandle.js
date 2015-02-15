@@ -204,12 +204,12 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						//Movement
 						ship.position.x = ship.position.x + Math.cos(ship.rotation.y) * ship.speed;
 						ship.position.z = ship.position.z + Math.sin(ship.rotation.y) * ship.speed;
-						ship.position.y = ship.position.y + Math.sin(timer * 1.2) / (ship.weight * 0.3);
+						//ship.position.y = ship.position.y + Math.sin(timer * 1.2) / (ship.weight * 0.3);
 
 						//Rotation
 						ship.rotation.y = ship.rotation.y + (wheelMode * ship.speed * 0.075) / (sailsMode + 1);
-						ship.rotation.x = lerp(ship.rotation.x, wheelMode * ship.speed * 0.7 + obs, 0.02);
-						ship.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.06;
+						//ship.rotation.x = lerp(ship.rotation.x, wheelMode * ship.speed * 0.7 + obs, 0.02);
+						//ship.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.06;
 					}
 				}
 			};
@@ -279,8 +279,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 			var user = userStorage.get();
 			var ship = BaseComponents.createShip(scene, {
-				id: user.id,
-				location: user.location
+				id: user.id
 			})
 			ships.push(ship);
 			KeyEvents.bind(user.id);
@@ -298,7 +297,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			}
 
 			var onNeigboursCallback = $rootScope.$on('neighbours', function (event, details) {
-				var users = details.users;
+				var users = details;
 				if (users) {
 					if (users.added) {
 						for (var i in users.added) {
