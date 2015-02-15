@@ -205,8 +205,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						ship.position.x = ship.position.x + Math.cos(ship.rotation.y) * ship.speed;
 						ship.position.z = ship.position.z + Math.sin(ship.rotation.y) * ship.speed;
 						//ship.position.y = ship.position.y + Math.sin(timer * 1.2) / (ship.weight * 0.3);
-
-						//Rotation
+						console.log(ship.position.z)
+							//Rotation
 						ship.rotation.y = ship.rotation.y + (wheelMode * ship.speed * 0.075) / (sailsMode + 1);
 						//ship.rotation.x = lerp(ship.rotation.x, wheelMode * ship.speed * 0.7 + obs, 0.02);
 						//ship.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.06;
@@ -321,7 +321,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			});
 
 			var onMoveCallback = $rootScope.$on('move', function (event, details) {
-				console.log(details);
 				for (var i in ships) {
 					if (ships[i].getId() == details.id) {
 						ships[i].changeState(details.type);
