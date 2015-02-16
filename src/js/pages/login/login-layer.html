@@ -10,7 +10,7 @@
 	</div>
 	<div>
 		<label>{{'LOGIN_REMEMBER_USER' | translate}}</label>
-		<input type="checkbox" class="RememberMe"/>
+		<input type="checkbox" ng-model="rememberUser" class="RememberMe"/>
 	</div>
 	<div>
 		<input ng-disabled="form.$invalid" type="submit" value="{{ 'LOGIN_ENTER' | translate }}" class="Enter"/>

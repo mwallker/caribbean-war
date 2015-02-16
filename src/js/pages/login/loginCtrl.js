@@ -1,14 +1,14 @@
 angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootScope, $state, connection, userStorage) {
 	$scope.email = localStorage.email || "";
+	$scope.rememberUser = !!localStorage.email;
 	$rootScope.authorized = false;
 
 	if (connection.status()) {
 		$rootScope.$broadcast("close", "");
 	}
 
-
 	$scope.connect = function () {
-		localStorage.email = $scope.email || "";
+		localStorage.email = $scope.rememberUser ? $scope.email : '';
 
 		var credits = {
 			login: $scope.email,
