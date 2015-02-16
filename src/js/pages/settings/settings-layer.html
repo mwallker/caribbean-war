@@ -6,11 +6,11 @@
 <div id="settings-layer" ng-controller="settingsCtrl" class="settings" ng-show="showSettings">
 	<div>
 		<label class="" translate>{{:: 'SETTINGS_MUSIC' }}:</label>
-		<input type="range" ng-model="musicVolume" ng-change="changeVolume(0)">
+		<input type="range" ng-model="musicVolume" ng-change="changeVolume('music')">
 	</div>
 	<div>
 		<label class="" translate>{{:: 'SETTINGS_EFFECTS' }}:</label>
-		<input type="range" ng-model="musicVolume" ng-change="changeVolume(1)">
+		<input type="range" ng-model="effectsVolume" ng-change="changeVolume('effects')">
 	</div>
 	<div>
 		<label class="" translate>{{:: 'SETTINGS_LANGUAGE' }}:</label>
