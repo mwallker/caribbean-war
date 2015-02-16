@@ -135,9 +135,10 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		//Ship
 		createShip: function (scene, details) {
 			var ship = null;
+			var shipMesh = null;
 
 			BABYLON.SceneLoader.ImportMesh("ship", "js/graphic/models/", "ship01.babylon", scene, function (meshes) {
-				var shipMesh = meshes[0];
+				shipMesh = meshes[0];
 
 				if (details.location) {
 					shipMesh.position = new BABYLON.Vector3(details.location.x, 0, details.location.y);
@@ -203,14 +204,17 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 						//Movement
 						ship.position.x = ship.position.x + Math.cos(ship.rotation.y) * ship.speed;
-						ship.position.z = ship.position.z + Math.sin(ship.rotation.y) * ship.speed;
-						//ship.position.y = ship.position.y + Math.sin(timer * 1.2) / (ship.weight * 0.3);
-						//console.log(ship.position.z)
-							//Rotation
+						ship.position.z = ship.position.z + Math.sin(-ship.rotation.y) * ship.speed;
+						ship.position.y = ship.position.y + Math.sin(timer * 1.2) / (ship.weight * 0.3);
+
+						//Rotation
 						ship.rotation.y = ship.rotation.y + (wheelMode * ship.speed * 0.075) / (sailsMode + 1);
-						//ship.rotation.x = lerp(ship.rotation.x, wheelMode * ship.speed * 0.7 + obs, 0.02);
-						//ship.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.06;
+						ship.rotation.x = lerp(ship.rotation.x, wheelMode * ship.speed * 0.7 + obs, 0.02);
+						ship.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.06;
 					}
+				},
+				remove: function(){
+					shipMesh.dispose();
 				}
 			};
 		},
@@ -227,6 +231,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				move: function (delay) {
 					box.rotation.y += delay;
 					//box.position.x += delay;
+					box.position.z -= delay;
 				}
 			}
 		},
@@ -277,6 +282,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			var ocean = BaseComponents.createOcean(scene);
 			var ships = [];
 
+			var test = BaseComponents.test(scene);
+
 			var user = userStorage.get();
 			var ship = BaseComponents.createShip(scene, {
 				id: user.id
@@ -312,6 +319,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						for (var j in users.removed) {
 							for (var s in ships) {
 								if (ships[s].getId() == users.removed[j].id) {
+									ships[s].remove();
 									ships.splice(s, 1);
 								}
 							}
