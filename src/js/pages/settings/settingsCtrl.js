@@ -9,6 +9,8 @@ angular.module('caribbean-war')
 			$scope.locale = localStorage.locale || appConfig.languages[0].code;
 			$scope.server = localStorage.server || $scope.servers[0].url;
 
+			$scope.showSettings = false;
+
 			//locale
 			$scope.$watch('locale', function (newVal, oldVal) {
 				if (newVal != oldVal) {
@@ -33,6 +35,11 @@ angular.module('caribbean-war')
 			$scope.changeVolume = function (target) {
 				audioControl.changeVolume($scope.musicVolume / 100, target);
 			};
+
+			$('#renderCanvas').on('toggleMenu', function () {
+				$scope.showSettings = !$scope.showSettings;
+				$scope.$apply();
+			});
 
 			(function (){
 				$scope.changeVolume('music');
