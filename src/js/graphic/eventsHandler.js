@@ -137,8 +137,7 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		function () {
 			if (!holdenEsc && checkFocus()) {
 				holdenEsc = true;
-				//$rootScope.$emit('toggleSettings');
-				//console.log('Toggle menu');
+				$rootScope.$emit('toggleSettings');
 			}
 		},
 		function () {
