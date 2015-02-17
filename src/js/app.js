@@ -24,6 +24,18 @@ caribbeanWarApp.constant('appConfig', {
 			label: 'Zulu',
 			code: 'zu-ZU'
 		}
+	],
+	servers: [
+		{
+			id: 0,
+			url: 'ws://warm-crag-3328.herokuapp.com/ws',
+			label: 'Heroku Warm Crag'
+		},
+		{
+			id: 1,
+			url: 'ws://localhost:80/ws',
+			label: 'Local Go Server'
+		}
 	]
 });
 

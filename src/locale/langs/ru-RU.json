@@ -1,15 +1,16 @@
 {
-    "LOADING": "Загрузка",
+	"LOADING": "Загрузка",
 
-    "LOGIN_EMAIL": "Адресс электронной почты",
-    "LOGIN_PASSWORD": "Пароль",
-    "LOGIN_REMEMBER_USER": "Запомнить имя пользователя",
-    "LOGIN_FORGOT_PASSWORD": "Забыли пароль",
-    "LOGIN_REGISTRATION": "Зарегистрироваться",
-    "LOGIN_ENTER": "Войти",
+	"LOGIN_EMAIL": "Адресс электронной почты",
+	"LOGIN_PASSWORD": "Пароль",
+	"LOGIN_REMEMBER_USER": "Запомнить имя пользователя",
+	"LOGIN_FORGOT_PASSWORD": "Забыли пароль",
+	"LOGIN_REGISTRATION": "Зарегистрироваться",
+	"LOGIN_ENTER": "Войти",
 
-    "SETTINGS_MUSIC": "Музыка",
-    "SETTINGS_EFFECTS": "Эффекты",
-    "SETTINGS_LANGUAGE": "Язык",
-    "SETTINGS_SAVE": "Сохранить"
+	"SETTINGS_MUSIC": "Музыка",
+	"SETTINGS_EFFECTS": "Эффекты",
+	"SETTINGS_LANGUAGE": "Язык",
+	"SETTINGS_SAVE": "Сохранить",
+	"SETTINGS_SERVERS": "Сервера"
 }

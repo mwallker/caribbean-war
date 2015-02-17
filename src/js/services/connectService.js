@@ -1,7 +1,4 @@
 caribbeanWarApp.service('connection', function ($q, $rootScope) {
-	var socketUrl = "ws://warm-crag-3328.herokuapp.com/ws";
-	var local = "ws://localhost:5000";
-
 	var result = {};
 
 	var socket = null;
@@ -13,6 +10,7 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 	};
 
 	result.open = function (credits) {
+		var socketUrl = localStorage.server || 'ws://warm-crag-3328.herokuapp.com/ws';
 
 		if (!this.status()) {
 
@@ -22,13 +20,13 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 				socket = new WebSocket(socketUrl);
 
 				socket.onopen = function () {
-					console.log("Connection opened");
+					console.log("Connection opened: " + socketUrl);
 					deferred.resolve();
 				};
 
 				socket.onmessage = function (event) {
 					var data = angular.fromJson(event.data);
-					if(data && data.action){
+					if (data && data.action) {
 						console.log('Receive');
 						console.log(data);
 						$rootScope.$emit(data.action, data.details);

@@ -1,15 +1,16 @@
 {
-    "LOADING": "Loading",
+	"LOADING": "Loading",
 
-    "LOGIN_EMAIL": "Email",
-    "LOGIN_PASSWORD": "Password",
-    "LOGIN_REMEMBER_USER": "Remember me",
-    "LOGIN_FORGOT_PASSWORD": "Forgot password",
-    "LOGIN_REGISTRATION": "Registration link",
-    "LOGIN_ENTER": "Enter",
+	"LOGIN_EMAIL": "Email",
+	"LOGIN_PASSWORD": "Password",
+	"LOGIN_REMEMBER_USER": "Remember me",
+	"LOGIN_FORGOT_PASSWORD": "Forgot password",
+	"LOGIN_REGISTRATION": "Registration link",
+	"LOGIN_ENTER": "Enter",
 
-    "SETTINGS_MUSIC": "Music",
-    "SETTINGS_EFFECTS": "Effects",
-    "SETTINGS_LANGUAGE": "Language",
-    "SETTINGS_SAVE": "Save"
+	"SETTINGS_MUSIC": "Music",
+	"SETTINGS_EFFECTS": "Effects",
+	"SETTINGS_LANGUAGE": "Language",
+	"SETTINGS_SAVE": "Save",
+	"SETTINGS_SERVERS": "Servers"
 }

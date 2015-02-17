@@ -2,10 +2,14 @@ angular.module('caribbean-war')
 	.controller('settingsCtrl', ['$scope', '$rootScope', '$translate', 'audioControl', 'appConfig',
 		function ($scope, $rootScope, $translate, audioControl, appConfig) {
 			$scope.languages = appConfig.languages;
+			$scope.servers = appConfig.servers;
 
 			$scope.musicVolume = localStorage.musicVolume || 100;
 			$scope.effectsVolume = localStorage.effectsVolume || 100;
 			$scope.locale = localStorage.locale || appConfig.languages[0].code;
+			$scope.server = localStorage.server || $scope.servers[0].url;
+
+			$scope.showSettings = false;
 
 			//locale
 			$scope.$watch('locale', function (newVal, oldVal) {
@@ -14,8 +18,21 @@ angular.module('caribbean-war')
 				}
 			});
 
+			//server
+			$scope.$watch('server', function (newVal, oldVal) {
+				if (newVal != oldVal) {
+					localStorage.server = newVal;
+				}
+			});
+
+			$rootScope.$on('toggleSettings', function () {
+				console.log($scope.showSettings);
+				$scope.showSettings = !$scope.showSettings;
+			});
+
 			$scope.saveConfigurations = function () {
 				localStorage.locale = $scope.locale;
+				localStorage.server = $scope.server;
 				localStorage.musicVolume = $scope.musicVolume;
 				localStorage.effectsVolume = $scope.effectsVolume;
 			};
