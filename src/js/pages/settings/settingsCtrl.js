@@ -36,7 +36,7 @@ angular.module('caribbean-war')
 				audioControl.changeVolume($scope.musicVolume / 100, target);
 			};
 
-			$('#renderCanvas').on('toggleMenu', function () {
+			$rootScope.$on('toggleMenu', function () {
 				$scope.showSettings = !$scope.showSettings;
 				$scope.$apply();
 			});

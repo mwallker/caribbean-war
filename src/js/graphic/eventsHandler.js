@@ -139,7 +139,7 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		function () {
 			if (!holdenEsc && checkFocus()) {
 				holdenEsc = true;
-				canvas.trigger('toggleMenu');
+				$rootScope.$emit('toggleMenu');
 			}
 		},
 		function () {
