@@ -16,6 +16,8 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		holdenEsc = false,
 		holdenM = false;
 
+	var canvas = $('#renderCanvas');
+
 	KeyboardJS.on('up, w',
 		function (event) {
 			if (!holdenUp && checkFocus()) {
@@ -94,15 +96,15 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		function () {
 			if (!holdenQ && checkFocus()) {
 				holdenQ = true;
-				if (holdenE && holdenQ) direction = TargetingDirections.both;
-				else direction = TargetingDirections.left;
+				if (holdenE && holdenQ) canvas.trigger('cameraAction', TargetingDirections.both);
+				else canvas.trigger('cameraAction', TargetingDirections.left);
 			}
 		},
 		function () {
 			if (holdenQ) {
 				holdenQ = false;
-				if (!holdenE) direction = TargetingDirections.none;
-				else direction = TargetingDirections.right;
+				if (!holdenE) canvas.trigger('cameraAction', TargetingDirections.none);
+				else canvas.trigger('cameraAction', TargetingDirections.right);
 			}
 		});
 
@@ -110,15 +112,15 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		function () {
 			if (!holdenE && checkFocus()) {
 				holdenE = true;
-				if (holdenE && holdenQ) direction = TargetingDirections.both;
-				else direction = TargetingDirections.right;
+				if (holdenE && holdenQ) canvas.trigger('cameraAction', TargetingDirections.both) ;
+				else canvas.trigger('cameraAction', TargetingDirections.right);
 			}
 		},
 		function () {
 			if (holdenE) {
 				holdenE = false;
-				if (!holdenQ) direction = TargetingDirections.none;
-				else direction = TargetingDirections.left;
+				if (!holdenQ) canvas.trigger('cameraAction', TargetingDirections.none);
+				else canvas.trigger('cameraAction', TargetingDirections.left);
 			}
 		});
 
@@ -168,5 +170,3 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		}
 	}
 });
-
-var direction = TargetingDirections.none;

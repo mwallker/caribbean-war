@@ -65,7 +65,7 @@ var calculateCurve = function (position, options) {
 			dzD = 0;
 
 		//Count of lines steps
-		var n = 8;
+		var n = 5;
 
 		for (var i = 0; i < angles.length; i++) {
 			cosA = Math.cos(angles[i]);

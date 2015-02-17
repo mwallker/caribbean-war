@@ -3,6 +3,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 	function CameraController(bindedCamera, options) {
 		var camera = {};
 
+		var direction = TargetingDirections.none;
+
 		var locked = false;
 
 		var minDist = 5,
@@ -36,6 +38,12 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			locked = false;
 		});
 
+		$('#renderCanvas').on('cameraAction', function (event, data) {
+			console.log(data);
+			if (data) direction = data;
+			else direction = TargetingDirections.none;
+		});
+
 		return {
 			baseCorrection: function () {
 				if (camera) {
@@ -55,10 +63,10 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			targetingCorrection: function () {
 				if (direction !== TargetingDirections.none) {
 					if (direction == TargetingDirections.both) {
-						camera.alpha = lerp(camera.alpha, -(Math.PI + target.alpha), lerpFactor);
+						camera.alpha = lerp(camera.alpha, -(Math.PI + targetAlpha), lerpFactor);
 						camera.beta = lerp(camera.beta, minBeta, lerpFactor);
 					} else {
-						camera.alpha = lerp(camera.alpha, -(Math.PI + target.alpha) - direction * Math.PI, lerpFactor);
+						camera.alpha = lerp(camera.alpha, -(Math.PI + targetAlpha) - direction * Math.PI, lerpFactor);
 						camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
 					}
 				}
@@ -82,6 +90,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			},
 			removeEvents: function () {
 				$('#renderCanvas').off('mousedown');
+				$('#renderCanvas').off('cameraAction');
 				$(document).off('mouseup');
 			}
 		}
@@ -213,7 +222,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						ship.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.06;
 					}
 				},
-				remove: function(){
+				remove: function () {
 					shipMesh.dispose();
 				}
 			};
