@@ -1,23 +1,35 @@
-<div id="login-layer">
-	<form ng-submit="connect()">
-	<div>
-		<label>{{'LOGIN_EMAIL' | translate}}: </label>
-		<input type="text" ng-model="email" required/>
+<div class='container'>
+	<div id="login-layer" class="col-xs-10 col-sm-4">
+		<form ng-submit="connect()">
+			<div class="form-group">
+				<label for="inputEmail" class="col-sm-3 control-label">{{'LOGIN_EMAIL' | translate}}: </label>
+				<div class="col-sm-12">
+					<input type="email" class="form-control" id="inputEmail" ng-model="email" placeholder="{{'LOGIN_EMAIL' | translate}}" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="inputPassword" class="col-sm-3 control-label">{{'LOGIN_PASSWORD' | translate}}: </label>
+				<div class="col-sm-12">
+					<input type="password" class="form-control" id="inputPassword" placeholder="{{'LOGIN_PASSWORD' | translate}}" ng-model="password" required>
+				</div>
+			</div>
+			<div class="form-group col-sm-10">
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" ng-model="rememberUser"> {{'LOGIN_REMEMBER_USER' | translate}}
+					</label>
+				</div>
+			</div>
+			<div class="form-group col-sm-10">
+				<a>{{'LOGIN_FORGOT_PASSWORD' | translate}}</a> |
+				<a>{{'LOGIN_REGISTRATION' | translate}}</a>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" ng-disabled="form.$invalid" class="btn btn-default">{{ 'LOGIN_ENTER' | translate }}</button>
+				</div>
+			</div>
+		</form>
 	</div>
-	<div>
-		<label>{{'LOGIN_PASSWORD' | translate}}: </label>
-		<input type="password" ng-model="password" required/>
-	</div>
-	<div>
-		<label>{{'LOGIN_REMEMBER_USER' | translate}}</label>
-		<input type="checkbox" ng-model="rememberUser" class="RememberMe"/>
-	</div>
-	<div>
-		<input ng-disabled="form.$invalid" type="submit" value="{{ 'LOGIN_ENTER' | translate }}" class="Enter"/>
-	</div>
-	<div>
-		<a>{{LOGIN_FORGOT_PASSWORD | translate}}</a>
-		<a>{{LOGIN_REGISTRATION | translate}}</a>
-	</div>
-	</form>
 </div>
