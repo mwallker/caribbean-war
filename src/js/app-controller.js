@@ -18,21 +18,23 @@ angular.module('caribbean-war')
 
 			$scope.manageTasks([audioControl.loadSoundFile('js/sound/theme.mp3', 'music'), audioControl.loadSoundFile('js/sound/ocean.mp3', 'effects')]);
 
-			$rootScope.$on('showError',
-				function (event, type) {
-					console.log(type);
+			$rootScope.$on('showError', function (event, type) {
+				console.log(type);
+				if (type) {
 					$scope.errorType = type;
 					$scope.errorShown = true;
-				});
+				}
+			});
 
-			$rootScope.$on('hideError',
-				function (data) {
-					$scope.errorType = '';
-					$scope.errorShown = false;
-				});
+			$scope.errorHide = function () {
+				$scope.errorType = '';
+				$scope.errorShown = false;
+				console.log($scope.errorShown);
+			}
 
 			$rootScope.$on('$stateChangeStart',
 				function (event, toState) {
+					$scope.errorShown = false;
 					//renderHandler.dispose();
 				});
 
@@ -40,6 +42,12 @@ angular.module('caribbean-war')
 				function (event, toState) {
 					//renderHandler.load(toState.name);
 					$scope.manageTasks([]);
+				});
+
+			$rootScope.$on('$stateChangeError',
+				function (event, toState) {
+					$scope.errorType = 'ERROR_ROUT';
+					$scope.errorShown = true;
 				});
 		}
 	]);

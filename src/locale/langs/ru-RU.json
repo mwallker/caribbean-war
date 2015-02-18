@@ -12,8 +12,9 @@
 	"SETTINGS_EFFECTS": "Эффекты",
 	"SETTINGS_LANGUAGE": "Язык",
 	"SETTINGS_SAVE": "Сохранить",
-	"SETTINGS_SERVERS": "Сервера",
+	"SETTINGS_SERVERS": "Сервер",
 
 	"ERRORS_CONN": "Не удалось установить соединение с сервером",
-	"ERRORS_AUTH": "Неверный адресс электронной почты или пароль"
+	"ERRORS_AUTH": "Неверный адресс электронной почты или пароль",
+	"ERRORS_ROUT": "Во время загрузки произошла ошибка"
 }

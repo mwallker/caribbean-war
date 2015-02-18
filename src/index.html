@@ -37,7 +37,12 @@
 		<div ui-view></div>
 
 		<div id="error-layer">
-			<div class="alert alert-danger" role="alert" ng-show="errorShown">{{errorType | translate}}</div>
+			<div class="alert alert-danger" role="alert" ng-show="errorShown">
+				<a class="close" aria-label="Close" ng-click="errorHide()">
+					<span aria-hidden="true">&times;</span>
+				</a>
+				<p>{{errorType | translate}}</p>
+			</div>
 		</div>
 	</div>
 

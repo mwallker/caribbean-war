@@ -12,8 +12,9 @@
 	"SETTINGS_EFFECTS": "Effects",
 	"SETTINGS_LANGUAGE": "Language",
 	"SETTINGS_SAVE": "Save",
-	"SETTINGS_SERVERS": "Servers",
+	"SETTINGS_SERVERS": "Server",
 
 	"ERRORS_CONN": "Cannot establish connection",
-	"ERRORS_AUTH": "Wrong login or password"
+	"ERRORS_AUTH": "Wrong login or password",
+	"ERRORS_ROUT": "Loading fail"
 }
