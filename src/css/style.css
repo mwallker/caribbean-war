@@ -55,6 +55,13 @@ li {
   color: #ddd;
   background-color: #046c6c;
 }
+#error-layer {
+  position: fixed;
+  bottom: 0;
+  margin: 1%;
+  width: 98%;
+  z-index: 10;
+}
 
 #harbor-layer {
   border: solid 1px #0A151F;
@@ -98,58 +105,13 @@ li {
 
 #login-layer {
   position: fixed;
-  height: 100%;
-  width: 300px;
-  background-color: #005959;
-  background-opacity: 0.7;
   z-index: 2;
-}
-#login-layer form {
-  position: absolute;
-  top: 35%;
-  width: 250px;
-  padding: 20px;
+  background-color: #333;
+  padding: 150px 5px 10px 5px;
   color: #ddd;
-}
-#login-layer form div {
-  margin-bottom: 5px;
-}
-#login-layer form div input {
-  width: 98%;
-}
-#login-layer form div input.RememberMe {
-  margin: 0px;
-  vertical-align: middle;
-}
-#login-layer form div input.Enter {
-  margin-left: 5px;
-  border-color: transparent;
-  border-radius: 5px;
-  background-color: #ddd;
-  color: #005959;
-}
-#login-layer form div input.Enter:hover {
-  opacity: 0.85;
-}
-#login-layer form div input.RememberMe,
-#login-layer form div input.Enter {
-  width: auto;
-}
-#login-layer form a {
-  margin-right: 20px;
-}
-#login-layer form a:hover {
-  color: #fff;
-}
-#login-layer form a,
-#login-layer form label {
-  margin: 3px;
-  display: inline-block;
-}
-#login-layer form a,
-#login-layer form input.Enter,
-#login-layer form input.RememberMe {
-  cursor: pointer;
+  margin: 3% 0 3% 0;
+  height: 95%;
+  border-radius: 10px;
 }
 
 #renderCanvas {

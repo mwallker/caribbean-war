@@ -1,7 +1,5 @@
 node_modules/
 src/js/libs
-src/css/style.css
-.sublime-workspace
-.sublime-project
 bin/
 cache/
+/src/css/style.css

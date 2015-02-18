@@ -35,6 +35,10 @@
 		<canvas id='renderCanvas'></canvas>
 
 		<div ui-view></div>
+
+		<div id="error-layer">
+			<div class="alert alert-danger" role="alert" ng-show="errorShown">{{errorType | translate}}</div>
+		</div>
 	</div>
 
 	<!-- JS controllers files-->

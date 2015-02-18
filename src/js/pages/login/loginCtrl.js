@@ -15,15 +15,24 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 			password: new jsSHA(($scope.password).toString(), 'TEXT').getHash('SHA-256', 'HEX')
 		};
 
-		connection.open(credits).then(function () {
-			connection.send("auth", credits);
-		});
+		connection.open(credits).then(
+			function () {
+				connection.send("auth", credits);
+			},
+			function () {
+				$rootScope.$emit('showError', 'ERRORS_CONN');
+			});
 	};
 
 	$scope.authorize = function (event, data) {
-		if (data && data.authorize) {
-			userStorage.set(data);
-			$state.go('harbor');
+		if (data){
+			if(data.authorize) {
+				userStorage.set(data);
+				$state.go('harbor');
+			}
+			else{
+				$rootScope.$emit('showError', 'ERRORS_AUTH');
+			}
 		}
 	};
 

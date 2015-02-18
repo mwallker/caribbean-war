@@ -192,6 +192,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					case 'none':
 						wheelMode = 0;
 						break;
+					default:
+						wheelMode = 0;
+						break;
 					}
 				},
 				getId: function () {
