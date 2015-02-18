@@ -55,6 +55,9 @@ li {
   color: #ddd;
   background-color: #046c6c;
 }
+div.container {
+  width: 100%;
+}
 #error-layer {
   position: fixed;
   bottom: 0;
@@ -132,6 +135,14 @@ li {
   border: 2px solid #222;
   background-color: #333;
   width: 50%;
+}
+#inputEffects {
+  height: 5px;
+  padding: 0;
+}
+select.form-control {
+  height: 25px;
+  padding: 0;
 }
 
 
