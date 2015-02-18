@@ -29,18 +29,17 @@ angular.module('caribbean-war')
 			$scope.errorHide = function () {
 				$scope.errorType = '';
 				$scope.errorShown = false;
-				console.log($scope.errorShown);
 			}
 
 			$rootScope.$on('$stateChangeStart',
 				function (event, toState) {
 					$scope.errorShown = false;
-					renderHandler.dispose();
+					//renderHandler.dispose();
 				});
 
 			$rootScope.$on('$stateChangeSuccess',
 				function (event, toState) {
-					renderHandler.load(toState.name);
+					//renderHandler.load(toState.name);
 					$scope.manageTasks([]);
 				});
 

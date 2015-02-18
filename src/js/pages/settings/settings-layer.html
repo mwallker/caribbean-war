@@ -1,22 +1,25 @@
-<div id="settings-layer" ng-controller="settingsCtrl" class="settings" ng-show="showSettings">
-	{{showSettings}}
-	<div>
-		<label class="" translate>{{:: 'SETTINGS_MUSIC' }}:</label>
-		<input type="range" ng-model="musicVolume" ng-change="changeVolume('music')">
-	</div>
-	<div>
-		<label class="" translate>{{:: 'SETTINGS_EFFECTS' }}:</label>
-		<input type="range" ng-model="effectsVolume" ng-change="changeVolume('effects')">
-	</div>
-	<div>
-		<label class="" translate>{{:: 'SETTINGS_LANGUAGE' }}:</label>
-		<select ng-model="locale" ng-options="item.code as item.label for item in languages"> </select>
-	</div>
-	<div>
-		<label class="" translate>{{:: 'SETTINGS_SERVERS' }}:</label>
-		<select ng-model="server" ng-options="item.url as item.label for item in servers"> </select>
-	</div>
-	<div>
-		<input type="button" ng-click="saveConfigurations()" value="{{ 'SETTINGS_SAVE' | translate }}">
+<div class='container'>
+	<div id="settings-layer" ng-controller="settingsCtrl" ng-show="showSettings">
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label for="inputMusic" class="control-label col-xs-2" translate>{{:: 'SETTINGS_MUSIC' }}:</label>
+				<input id="inputMusic" type="range" ng-model="musicVolume" ng-change="changeVolume('music')">
+			</div>
+			<div class="form-group">
+				<label for="inputEffects" class="control-label col-xs-2" translate>{{:: 'SETTINGS_EFFECTS' }}:</label>
+				<input id="inputEffects" class="form-control col-xs-2" type="range" ng-model="effectsVolume" ng-change="changeVolume('effects')">
+			</div>
+			<div class="form-group">
+				<label class="" translate>{{:: 'SETTINGS_LANGUAGE' }}:</label>
+				<select ng-model="locale" class="form-control" ng-options="item.code as item.label for item in languages"> </select>
+			</div>
+			<div class="form-group">
+				<label class="" translate>{{:: 'SETTINGS_SERVERS' }}:</label>
+				<select ng-model="server" class="form-control" ng-options="item.url as item.label for item in servers"> </select>
+			</div>
+			<div class="form-group">
+				<input type="button" class="" ng-click="saveConfigurations()" value="{{ 'SETTINGS_SAVE' | translate }}">
+			</div>
+		</form>
 	</div>
 </div>
