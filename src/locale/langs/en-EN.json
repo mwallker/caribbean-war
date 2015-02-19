@@ -8,10 +8,12 @@
 	"LOGIN_REGISTRATION": "Registration link",
 	"LOGIN_ENTER": "Enter",
 
+	"SETTINGS_LABEL": "Settings",
 	"SETTINGS_MUSIC": "Music",
 	"SETTINGS_EFFECTS": "Effects",
 	"SETTINGS_LANGUAGE": "Language",
-	"SETTINGS_SAVE": "Save",
+	"SETTINGS_SAVE": "Save changes",
+	"SETTINGS_CLOSE": "Close",
 	"SETTINGS_SERVERS": "Server",
 
 	"ERRORS_CONN": "Cannot establish connection",

@@ -1,25 +1,44 @@
-<div class='container'>
-	<div id="settings-layer" ng-controller="settingsCtrl" ng-show="showSettings">
-		<form class="form-horizontal">
-			<div class="form-group">
-				<label for="inputMusic" class="control-label col-xs-2" translate>{{:: 'SETTINGS_MUSIC' }}:</label>
-				<input id="inputMusic" type="range" ng-model="musicVolume" ng-change="changeVolume('music')">
+<div>
+	<div class="modal fade" id="settingsModal" ng-controller="settingsCtrl" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content primary-theme">
+				<div class="modal-body primary-theme">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<h3 class="text-center" id="myModalLabel" translate>{{:: 'SETTINGS_LABEL' }}</h3>
+						</div>
+
+						<div class="form-group">
+							<label for="inputMusic" class="control-label col-xs-4" translate>{{:: 'SETTINGS_MUSIC' }}:</label>
+							<div class="col-xs-6">
+								<input id="inputMusic" class="form-control" type="range" ng-model="musicVolume" ng-change="changeVolume('music')">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputEffects" class="control-label col-xs-4" translate>{{:: 'SETTINGS_EFFECTS' }}:</label>
+							<div class="col-xs-6">
+								<input id="inputEffects" class="form-control" type="range" ng-model="effectsVolume" ng-change="changeVolume('effects')">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="langSelect" class="control-label col-xs-4" translate>{{:: 'SETTINGS_LANGUAGE' }}:</label>
+							<div class="col-xs-6">
+								<select id="langSelect" ng-model="locale" class="form-control  col-xs-10" ng-options="item.code as item.label for item in languages"> </select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="serverSelect" class="control-label col-xs-4" translate>{{:: 'SETTINGS_SERVERS' }}:</label>
+							<div class="col-xs-6">
+								<select id="serverSelect" ng-model="server" class="form-control" ng-options="item.url as item.label for item in servers"> </select>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer primary-theme">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{{ 'SETTINGS_CLOSE' | translate }}</button>
+					<button type="button" class="btn btn-primary" ng-click="saveConfigurations()" data-dismiss="modal">{{ 'SETTINGS_SAVE' | translate }}</button>
+				</div>
 			</div>
-			<div class="form-group">
-				<label for="inputEffects" class="control-label col-xs-2" translate>{{:: 'SETTINGS_EFFECTS' }}:</label>
-				<input id="inputEffects" class="form-control col-xs-2" type="range" ng-model="effectsVolume" ng-change="changeVolume('effects')">
-			</div>
-			<div class="form-group">
-				<label class="" translate>{{:: 'SETTINGS_LANGUAGE' }}:</label>
-				<select ng-model="locale" class="form-control" ng-options="item.code as item.label for item in languages"> </select>
-			</div>
-			<div class="form-group">
-				<label class="" translate>{{:: 'SETTINGS_SERVERS' }}:</label>
-				<select ng-model="server" class="form-control" ng-options="item.url as item.label for item in servers"> </select>
-			</div>
-			<div class="form-group">
-				<input type="button" class="" ng-click="saveConfigurations()" value="{{ 'SETTINGS_SAVE' | translate }}">
-			</div>
-		</form>
+		</div>
 	</div>
 </div>

@@ -8,10 +8,12 @@
 	"LOGIN_REGISTRATION": "Зарегистрироваться",
 	"LOGIN_ENTER": "Войти",
 
+	"SETTINGS_LABEL": "Настройки",
 	"SETTINGS_MUSIC": "Музыка",
 	"SETTINGS_EFFECTS": "Эффекты",
 	"SETTINGS_LANGUAGE": "Язык",
-	"SETTINGS_SAVE": "Сохранить",
+	"SETTINGS_SAVE": "Сохранить изменения",
+	"SETTINGS_CLOSE": "Закрыть",
 	"SETTINGS_SERVERS": "Сервер",
 
 	"ERRORS_CONN": "Не удалось установить соединение с сервером",

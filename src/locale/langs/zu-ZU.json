@@ -8,10 +8,12 @@
 	"LOGIN_REGISTRATION": "Knil noitartsiger",
 	"LOGIN_ENTER": "Retne",
 
+	"SETTINGS_LABEL": "Sgnittes",
 	"SETTINGS_MUSIC": "Cisum",
 	"SETTINGS_EFFECTS": "Stceffe",
 	"SETTINGS_LANGUAGE": "Egaugnal",
-	"SETTINGS_SAVE": "Evas",
+	"SETTINGS_SAVE": "Segnahc evas",
+	"SETTINGS_CLOSE": "Esolc",
 	"SETTINGS_SERVERS": "Revres",
 
 	"ERRORS_CONN": "Cannot establish connection",
