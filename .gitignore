@@ -3,3 +3,4 @@ src/js/libs
 bin/
 cache/
 /src/css/style.css
+/src/js/app-controller.js
