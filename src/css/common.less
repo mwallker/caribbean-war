@@ -1,6 +1,6 @@
 /*common properties*/
-@import "variables.less";
 
+@import "variables.less";
 html,
 body {
 	width: 100%;
@@ -8,6 +8,13 @@ body {
 	padding: 0;
 	margin: 0;
 	overflow: hidden;
+}
+
+a {
+	text-decoration: none;
+	&:hover, &:active, &:visited {
+		text-decoration: none;
+	}
 }
 
 li {
@@ -33,14 +40,14 @@ li {
 	background-color: #046c6c;
 }
 
-.primary-theme{
+.primary-theme {
 	background: #333;
 	color: #ddd;
 	border: none;
 	border-radius: 0;
 }
 
-#error-layer{
+#error-layer {
 	position: fixed;
 	bottom: 0;
 	margin: 1%;

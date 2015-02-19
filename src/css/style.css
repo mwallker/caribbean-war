@@ -1,29 +1,56 @@
 #chat-layer {
   position: fixed;
-  bottom: 25px;
-  left: 5px;
-  width: 300px;
-  height: 200px;
-  border: solid 1px #1D1D1D;
-  background-color: #005959;
+  bottom: 30px;
+  z-index: 103;
 }
-#chat-layer ul {
-  position: relative;
-  overflow-y: scroll;
-  margin: 0;
-  padding: 0;
-  height: 200px;
-  border-bottom: solid 1px #1D1D1D;
+#chat-layer .chat-box {
+  padding: 2px;
+  margin: 2px;
+  width: 380px;
+  color: #333;
 }
-#chat-layer ul li {
+#chat-layer .chat-box input {
+  display: block;
+  padding: 5px;
+  width: 100%;
+  color: black;
+  border: none;
+}
+#chat-layer .chat-box input:focus {
+  outline: 0;
+}
+#chat-layer .chat-header {
+  padding: 7px;
+}
+#chat-layer .chat-header label {
+  margin: 3px;
+}
+#chat-layer .chat-header label span {
   color: #ddd;
 }
-#chat-layer form {
-  position: relative;
+#chat-layer .chat-header label span:hover {
+  cursor: pointer;
 }
-#chat-layer form input {
-  width: 100%;
-  padding: 0;
+#chat-layer .chat-content {
+  height: 240px;
+  background: #F5F5F5;
+  overflow-y: scroll;
+}
+#chat-layer .chat-content ul {
+  padding: 0 10px;
+}
+#chat-layer .chat-content ul li {
+  padding: 5px 0;
+  border-bottom: 1px solid #428bca;
+}
+#chat-layer .chat-content::-webkit-scrollbar {
+  width: 10px;
+  background-color: #F5F5F5;
+}
+#chat-layer .chat-content::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
+  background-color: #428bca;
 }
 
 /*common properties*/
@@ -34,6 +61,14 @@ body {
   padding: 0;
   margin: 0;
   overflow: hidden;
+}
+a {
+  text-decoration: none;
+}
+a:hover,
+a:active,
+a:visited {
+  text-decoration: none;
 }
 li {
   list-style: none;

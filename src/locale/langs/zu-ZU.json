@@ -16,6 +16,9 @@
 	"SETTINGS_CLOSE": "Esolc",
 	"SETTINGS_SERVERS": "Revres",
 
+	"CHAT_LOGS": "Events Logs",
+	"CHAT_PUBLIC": "Ocean",
+
 	"ERRORS_CONN": "Cannot establish connection",
 	"ERRORS_AUTH": "Wrong login or password",
 	"ERRORS_ROUT": "Load fail"

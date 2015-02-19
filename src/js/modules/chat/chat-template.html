@@ -1,10 +1,41 @@
 <div id="chat-layer">
+	<div class="chat-box primary-theme">
+
+		<div class="chat-header primary-theme">
+			{{'CHAT_PUBLIC' | translate}} <span class="badge" ng-show="chatCollapsed">{{chatHistory.length}} {{(chatHistory.length >= chatBuffer) ? '+' : ''}}</span> |
+			{{'CHAT_LOGS' | translate}} <span class="badge" ng-show="chatCollapsed">0</span>
+
+			<label class="pull-right">
+				<span class="glyphicon glyphicon-cog"></span>
+			</label>
+			<label class="pull-right" ng-click="chatCollapsed = !chatCollapsed">
+				<span class="glyphicon glyphicon-collapse-down" ng-show="!chatCollapsed"></span>
+				<span class="glyphicon glyphicon-collapse-up" ng-show="chatCollapsed"></span>
+			</label>
+		</div>
+		<div ng-show="!chatCollapsed">
+			<div class="chat-content">
+				<ul>
+					<li ng-repeat="m in chatHistory">
+						<span>[{{m.timestamp | date:'HH:mm:ss'}}]</span>
+						<a href=""><span>[{{m.from}}]</span></a> : <span>{{m.message}}</span>
+					</li>
+				</ul>
+			</div>
+			<form ng-submit="sendChatMessage()">
+				<input type="text" ng-model="message" />
+			</form>
+		</div>
+
+	</div>
+
+	<!--
 	<ul>
 		<li ng-repeat="m in chatHistory">
 			<span>{{m.from}}</span> : <span>{{m.message}}</span>
 		</li>
 	</ul>
 	<form ng-submit="sendChatMessage()">
-		<input type="text" ng-model="message"/>
-	</form>
+		<input type="text" />
+	</form> -->
 </div>
