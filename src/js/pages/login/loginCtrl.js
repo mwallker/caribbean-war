@@ -20,7 +20,7 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 				connection.send("auth", credits);
 			},
 			function () {
-				$rootScope.$emit('showError', 'ERRORS_CONN');
+				$rootScope.$emit('error', 'ERRORS_CONN');
 			});
 	};
 
@@ -31,7 +31,7 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 				$state.go('harbor');
 			}
 			else{
-				$rootScope.$emit('showError', 'ERRORS_AUTH');
+				$rootScope.$emit('error', 'ERRORS_AUTH');
 			}
 		}
 	};

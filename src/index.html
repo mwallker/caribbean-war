@@ -42,7 +42,10 @@
 				<a class="close" aria-label="Close" ng-click="errorHide()">
 					<span aria-hidden="true">&times;</span>
 				</a>
-				<p>{{errorType | translate}}</p>
+				<p>
+					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					{{errorType | translate}}
+				</p>
 			</div>
 		</div>
 	</div>

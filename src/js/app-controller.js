@@ -18,7 +18,7 @@ angular.module('caribbean-war')
 
 			$scope.manageTasks([audioControl.loadSoundFile('js/sound/theme.mp3', 'music'), audioControl.loadSoundFile('js/sound/ocean.mp3', 'effects')]);
 
-			$rootScope.$on('showError', function (event, type) {
+			$rootScope.$on('error', function (event, type) {
 				console.log(type);
 				if (type) {
 					$scope.errorType = type;
@@ -40,7 +40,7 @@ angular.module('caribbean-war')
 			$rootScope.$on('$stateChangeSuccess',
 				function (event, toState) {
 					//renderHandler.load(toState.name);
-					$scope.manageTasks([]);
+					//$scope.manageTasks([]);
 				});
 
 			$rootScope.$on('$stateChangeError',
