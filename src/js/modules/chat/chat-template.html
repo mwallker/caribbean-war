@@ -8,7 +8,7 @@
 			<label class="pull-right">
 				<span class="glyphicon glyphicon-refresh" ng-click="clearChatHistory()"></span>
 			</label>
-			<label class="pull-right" ng-click="chatCollapsed = !chatCollapsed">
+			<label class="pull-right" ng-click="chatCollapsed = !chatCollapsed; unreaded = 0">
 				<span class="glyphicon glyphicon-collapse-down" ng-show="!chatCollapsed"></span>
 				<span class="glyphicon glyphicon-collapse-up" ng-show="chatCollapsed"></span>
 			</label>
