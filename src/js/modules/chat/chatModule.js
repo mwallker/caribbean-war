@@ -6,15 +6,19 @@ angular.module('caribbean-war')
 				scope: {},
 				controller: function ($scope, $rootScope) {
 					$scope.chatHistory = [];
-					$scope.battleLog = [];
-					$scope.chatBuffer = 4;
+					$scope.chatBuffer = 42;
+					$scope.unreaded = 0;
+					$scope.chatCollapsed = false;
 
 					$scope.clearChatHistory = function () {
 						$scope.chatHistory = [];
+						$scope.unreaded = 0;
 					};
 
 					$scope.recieveChatMessage = function (event, data) {
 						if ($scope.chatHistory.length >= $scope.chatBuffer) $scope.chatHistory.shift();
+
+						$scope.unreaded = $scope.chatCollapsed ? ++$scope.unreaded : 0;
 
 						$scope.chatHistory.push({
 							from: data.sender,

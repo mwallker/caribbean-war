@@ -2,11 +2,11 @@
 	<div class="chat-box primary-theme">
 
 		<div class="chat-header primary-theme">
-			{{'CHAT_PUBLIC' | translate}} <span class="badge" ng-show="chatCollapsed">{{chatHistory.length}} {{(chatHistory.length >= chatBuffer) ? '+' : ''}}</span> |
+			{{'CHAT_PUBLIC' | translate}} <span class="badge" ng-show="chatCollapsed">{{unreaded}} {{unreaded >= chatBuffer ? '+' : ''}}</span> |
 			{{'CHAT_LOGS' | translate}} <span class="badge" ng-show="chatCollapsed">0</span>
 
 			<label class="pull-right">
-				<span class="glyphicon glyphicon-cog"></span>
+				<span class="glyphicon glyphicon-refresh" ng-click="clearChatHistory()"></span>
 			</label>
 			<label class="pull-right" ng-click="chatCollapsed = !chatCollapsed">
 				<span class="glyphicon glyphicon-collapse-down" ng-show="!chatCollapsed"></span>
@@ -17,7 +17,7 @@
 			<div class="chat-content">
 				<ul>
 					<li ng-repeat="m in chatHistory">
-						<span>[{{m.timestamp | date:'HH:mm:ss'}}]</span>
+						<span>[{{m.timestamp | date:'HH:mm'}}]</span>
 						<a href=""><span>[{{m.from}}]</span></a> : <span>{{m.message}}</span>
 					</li>
 				</ul>
