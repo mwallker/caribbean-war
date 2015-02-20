@@ -2,15 +2,16 @@
 	<div class="modal fade" id="settingsModal" ng-controller="settingsCtrl" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content primary-theme">
-				<div class="modal-header">
-					<a href="" data-dismiss="modal" aria-hidden="true">
-						<span class="glyphicon glyphicon-remove-circle pull-right"></span>
-					</a>
-					<h3 class="text-center" id="myModalLabel" translate>{{:: 'SETTINGS_LABEL' }}</h3>
-				</div>
 				<div class="modal-body primary-theme">
 					<form class="form-horizontal" role="form">
-
+						<div class="form-group">
+							<div class="col-xs-12">
+								<a href="" class="pull-right" data-dismiss="modal" aria-hidden="true">
+									<span class="glyphicon glyphicon-remove-circle"></span>
+								</a>
+								<h3 class="text-center" id="myModalLabel" translate>{{:: 'SETTINGS_LABEL' }}</h3>
+							</div>
+						</div>
 						<div class="form-group">
 							<label for="inputMusic" class="control-label col-xs-4" translate>{{:: 'SETTINGS_MUSIC' }}:</label>
 							<div class="col-xs-6">
@@ -35,11 +36,19 @@
 								<select id="serverSelect" ng-model="server" class="form-control" ng-options="item.url as item.label for item in servers"> </select>
 							</div>
 						</div>
+						<div class="form-group">
+							<div class="col-xs-4">
+								<button type="button" class="btn btn-default pull-right" data-dismiss="modal">
+									{{ 'SETTINGS_EXIT' | translate }}
+								</button>
+							</div>
+							<div class="col-xs-6">
+								<button type="button" class="btn btn-primary" ng-click="saveConfigurations()" data-dismiss="modal">
+									{{ 'SETTINGS_SAVE' | translate }}
+								</button>
+							</div>
+						</div>
 					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">{{ 'SETTINGS_EXIT' | translate }}</button>
-					<button type="button" class="btn btn-primary" ng-click="saveConfigurations()" data-dismiss="modal">{{ 'SETTINGS_SAVE' | translate }}</button>
 				</div>
 			</div>
 		</div>
