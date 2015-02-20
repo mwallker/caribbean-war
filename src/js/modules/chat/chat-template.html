@@ -18,7 +18,7 @@
 				<ul>
 					<li ng-repeat="m in chatHistory">
 						<span>[{{m.timestamp | date:'HH:mm'}}]</span>
-						<a href=""><span>[{{m.from}}]</span></a> : <span>{{m.message}}</span>
+						<a href=""><span>[{{m.sender}}]</span></a> : <span>{{m.message}}</span>
 					</li>
 				</ul>
 			</div>

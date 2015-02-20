@@ -22,12 +22,11 @@ caribbeanWarApp.service('audioControl', function ($q) {
 		// Decode asynchronously
 		request.onload = function () {
 			context.decodeAudioData(request.response, function (buffer) {
-				var index = sources.push(context.createBufferSource());
+				var index = sources.push(context.createBufferSource())-1;
 				sources[index] = context.createBufferSource();
 				sources[index].buffer = buffer;
 				sources[index].connect(gainNodes[type || 'effects']);
 				sources[index].start(0);
-				console.log(sources[index]);
 				deffered.resolve();
 			});
 		};
