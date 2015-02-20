@@ -94,3 +94,11 @@ var calculateCurve = function (position, options) {
 		return curve;
 	}
 };
+
+var timeFormat = function (timestamp) {
+	var time = new Date(timestamp);
+	var hours = (time.getHours() > 9 ? '' : '0') + time.getHours(),
+		minutes = (time.getMinutes() > 9 ? '' : '0') + time.getMinutes(),
+		seconds = (time.getSeconds() > 9 ? '' : '0') + time.getSeconds()
+	return hours + ':' + minutes + ':' + seconds;
+}

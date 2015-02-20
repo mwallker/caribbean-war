@@ -7,6 +7,7 @@ angular.module('caribbean-war')
 				controller: function ($scope, $rootScope) {
 					var content = $('.chat-content ul');
 					var history = [];
+					var chatBuffer = 42;
 					var message = {
 						sender: '',
 						senderId: '',
@@ -14,28 +15,33 @@ angular.module('caribbean-war')
 						text: ''
 					}
 
-					function prepareTemplate(data) {
-						return '<li><span>[' + data.timestamp + ']</span><a href="" data-sender="'+data.senderId+'"><span>[' + data.sender + ']</span></a> : <span>' + data.message + '</span></li>'
-					}
-
-					$scope.chatHistory = [];
-					$scope.chatBuffer = 42;
 					$scope.unreaded = 0;
 					$scope.chatCollapsed = false;
 
+					function prepareTemplate(msg) {
+						return '<li><span>[' + timeFormat(msg.timestamp) + ']</span><a href="#" data-sender="' + msg.senderId + '"><span> [' + msg.sender + '] </span></a>:<span> ' + msg.message + ' </span></li>'
+					}
+
+					content.on('click', 'a', function (){console.log($(this).data("sender"));});
+
 					$scope.clearChatHistory = function () {
-						$scope.chatHistory = [];
 						$scope.unreaded = 0;
+						$('.chat-content ul li').remove();
+						history = [];
 					};
 
 					$scope.recieveChatMessage = function (event, data) {
-						if ($scope.chatHistory.length >= $scope.chatBuffer) $scope.chatHistory.shift();
+						if (history.length >= chatBuffer) history.shift();
 
-						$('.chat-content ul').append(prepareTemplate(data));
+						content.parent().animate({
+							scrollTop: content.height()
+						}, "slow");
+
+						content.append(prepareTemplate(data));
 
 						$scope.unreaded = $scope.chatCollapsed ? ++$scope.unreaded : 0;
 
-						$scope.chatHistory.push({
+						history.push({
 							sender: data.sender,
 							message: data.message,
 							timestamp: data.timestamp,

@@ -2,7 +2,7 @@
 	<div class="chat-box primary-theme">
 
 		<div class="chat-header primary-theme">
-			{{'CHAT_PUBLIC' | translate}} <span class="badge" ng-show="chatCollapsed">{{unreaded}} {{unreaded >= chatBuffer ? '+' : ''}}</span> |
+			{{'CHAT_PUBLIC' | translate}} <span class="badge" ng-show="chatCollapsed">{{unreaded}}</span> |
 			{{'CHAT_LOGS' | translate}} <span class="badge" ng-show="chatCollapsed">0</span>
 
 			<label class="pull-right">
@@ -15,12 +15,7 @@
 		</div>
 		<div ng-show="!chatCollapsed">
 			<div class="chat-content primary-theme-scrollbar">
-				<ul>
-					<li ng-repeat="m in chatHistory">
-						<span>[{{m.timestamp | date:'HH:mm'}}]</span>
-						<a href=""><span>[{{m.sender}}]</span></a> : <span>{{m.message}}</span>
-					</li>
-				</ul>
+				<ul></ul>
 			</div>
 			<form ng-submit="sendChatMessage()">
 				<input type="text" ng-model="message" />
