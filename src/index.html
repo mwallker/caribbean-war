@@ -27,10 +27,6 @@
 	<div ng-controller="appCtrl">
 		<div class="cloak" ng-show="appLoading"></div>
 
-		<div class="page-loader" ng-show="pageLoading">
-			{{ 'LOADING' | translate}} ...
-		</div>
-
 		<div ng-include="'js/pages/settings/settings-layer.html'"></div>
 
 		<canvas id='renderCanvas'></canvas>
@@ -43,8 +39,7 @@
 					<span aria-hidden="true">&times;</span>
 				</a>
 				<p>
-					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-					{{errorType | translate}}
+					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {{errorType | translate}}
 				</p>
 			</div>
 		</div>
@@ -52,6 +47,19 @@
 
 	<!-- JS controllers files-->
 
+	<div class="primary-theme" ng-if="false">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+				60%
+			</div>
+		</div>
+	</div>
+
+	<div id="tooltip-panel" class="primary-theme" ng-if="tooltipShown">
+		<h4>Tooltip:</h4>
+		<p>Some text</p>
+		<span></span>
+	</div>
 
 	<script src="js/app.js"></script>
 	<script src="js/app-controller.js"></script>

@@ -9,8 +9,8 @@
 				<span class="glyphicon glyphicon-refresh" ng-click="clearChatHistory()"></span>
 			</label>
 			<label class="pull-right" ng-click="chatCollapsed = !chatCollapsed; unreaded = 0">
-				<span class="glyphicon glyphicon-collapse-down" ng-show="!chatCollapsed"></span>
-				<span class="glyphicon glyphicon-collapse-up" ng-show="chatCollapsed"></span>
+				<span class="glyphicon glyphicon-chevron-down" ng-show="!chatCollapsed"></span>
+				<span class="glyphicon glyphicon-chevron-up" ng-show="chatCollapsed"></span>
 			</label>
 		</div>
 		<div ng-show="!chatCollapsed">
@@ -28,14 +28,4 @@
 		</div>
 
 	</div>
-
-	<!--
-	<ul>
-		<li ng-repeat="m in chatHistory">
-			<span>{{m.from}}</span> : <span>{{m.message}}</span>
-		</li>
-	</ul>
-	<form ng-submit="sendChatMessage()">
-		<input type="text" />
-	</form> -->
 </div>

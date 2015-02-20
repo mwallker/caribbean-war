@@ -1,6 +1,6 @@
 angular.module('caribbean-war')
-	.controller('settingsCtrl', ['$scope', '$rootScope', '$translate', 'audioControl', 'appConfig',
-		function ($scope, $rootScope, $translate, audioControl, appConfig) {
+	.controller('settingsCtrl', ['$scope', '$rootScope', '$translate', '$state', 'audioControl', 'appConfig',
+		function ($scope, $rootScope, $translate, $state, audioControl, appConfig) {
 			$scope.languages = appConfig.languages;
 			$scope.servers = appConfig.servers;
 
@@ -11,22 +11,9 @@ angular.module('caribbean-war')
 
 			var menuReady = true;
 
-			//locale
-			$scope.$watch('locale', function (newVal, oldVal) {
-				if (newVal != oldVal) {
-					$translate.use(newVal);
-				}
-			});
-
-			//server
-			$scope.$watch('server', function (newVal, oldVal) {
-				if (newVal != oldVal) {
-					localStorage.server = newVal;
-				}
-			});
-
 			$scope.saveConfigurations = function () {
 				localStorage.locale = $scope.locale;
+				$translate.use($scope.locale);
 				localStorage.server = $scope.server;
 				localStorage.musicVolume = $scope.musicVolume;
 				localStorage.effectsVolume = $scope.effectsVolume;
@@ -37,14 +24,12 @@ angular.module('caribbean-war')
 			};
 
 			$rootScope.$on('toggleMenu', function () {
-				console.log(menuReady);
 				if (menuReady) {
 					$('#settingsModal').modal('toggle');
 				}
 			});
 
 			$('#settingsModal').on('shown.bs.modal hidden.bs.modal', function (e) {
-				console.log(e);
 				menuReady = true;
 			});
 
