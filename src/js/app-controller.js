@@ -14,7 +14,7 @@ angular.module('caribbean-war')
 				});
 			};
 
-			$scope.manageTasks([audioControl.loadSoundFile('js/sound/theme.mp3', 'music')/*, audioControl.loadSoundFile('js/sound/ocean.mp3', 'effects')*/]);
+			$scope.manageTasks([ /*audioControl.loadSoundFile('js/sound/theme.mp3', 'music'), audioControl.loadSoundFile('js/sound/ocean.mp3', 'effects')*/ ]);
 
 
 			$scope.errorHide = function () {
@@ -46,5 +46,9 @@ angular.module('caribbean-war')
 					$scope.errorType = 'ERROR_ROUT';
 					$scope.errorShown = true;
 				});
+
+			$rootScope.$on('exit', function (event) {
+
+			});
 		}
 	]);

@@ -1,5 +1,5 @@
 angular.module('caribbean-war').controller('harborCtrl', function ($scope, $rootScope, $state, connection, userStorage) {
-
+$scope.masss = ['1', '2', '3', '4', '6', '5'];
 	//SCENE INIT
 	if (!userStorage.status()) {
 		connection.close();
@@ -41,7 +41,7 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $root
 				shipId: +$scope.selectedShip.id
 			});
 		} else {
-			$rootScope.$emit("error", "No ships avaible");
+			$rootScope.$emit('error', '');
 		}
 	};
 

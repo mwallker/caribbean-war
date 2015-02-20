@@ -19,6 +19,22 @@ angular.module('caribbean-war')
 				localStorage.effectsVolume = $scope.effectsVolume;
 			};
 
+			$scope.exitHandler = function () {
+				console.log();
+				switch ($state.current.name) {
+				case 'harbor':
+					connection.close();
+					userStorage.reset();
+					$state.go('login');
+					break;
+				case 'world':
+					break;
+				default:
+					$rootScope.$emit('error', 'ERRORS_NOT_READY');
+					break;
+				}
+			}
+
 			$scope.changeVolume = function (target) {
 				audioControl.changeVolume($scope.musicVolume / 100, target);
 			};

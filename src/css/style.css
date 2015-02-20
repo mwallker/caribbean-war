@@ -36,11 +36,6 @@
   height: 240px;
   background: #eee;
   overflow-y: scroll;
-  /*&::-webkit-scrollbar-track {
-			-webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3);
-			border-radius: 5px;
-			background-color: #F5F5F5;
-		}*/
 }
 #chat-layer .chat-content ul {
   padding: 0 10px;
@@ -48,15 +43,6 @@
 #chat-layer .chat-content ul li {
   padding: 5px 0;
   border-bottom: 1px solid #ddd;
-}
-#chat-layer .chat-content::-webkit-scrollbar {
-  width: 10px;
-  background-color: #eee;
-}
-#chat-layer .chat-content::-webkit-scrollbar-thumb {
-  border-radius: 5px;
-  -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
-  background-color: #428bca;
 }
 
 /*common properties*/
@@ -94,7 +80,6 @@ li {
   font-size: 60px;
   text-align: center;
   color: #ddd;
-  background-color: #046c6c;
 }
 .primary-theme {
   background: #333;
@@ -120,46 +105,55 @@ li {
   width: 98%;
   z-index: 10;
 }
+.primary-theme-scrollbar {
+  padding-left: 8px;
+  overflow-y: scroll;
+}
+.primary-theme-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.primary-theme-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
+  background-color: #428bca;
+}
 
 #harbor-layer {
-  /*border: solid 1px #0A151F;
-	margin: 10px;
-	padding: 10px;
-	position: fixed;
-	z-index: 2;
-	background-color: #005959;
-	color: #ddd;*/
+  position: fixed;
+  z-index: 2;
+  padding: 10px 20px;
+  top: 0;
+  bottom: 0;
+  width: 220px;
+  margin: auto;
 }
-.shipsList {
-  /*
-	position:fixed;
-	z-index:9;
-	bottom:0;
-	width:100%;
-	border: solid 5px #005959;
-	background: #005959;
-	ul {
-		margin: 10px;
-		padding: 10px;
-		color: #ddd;
-		li {
-			display: inline-block;
-			padding: 10px;
-			width: 100px;
-			height: 100px;
-			vertical-align: middle;
-			margin-right: 20px;
-			background: #005959;
-			color: #bbb;
-			border: solid 5px #bbb;
-			cursor: pointer;
-			&.active{
-				color: #fff;
-				border: solid 5px #fff;
-				background: #046c6c;
-			}
-		}
-	}*/
+.shipList {
+  position: fixed;
+  top: 100px;
+  bottom: 20px;
+  margin: auto;
+  border-top: 2px solid #eee;
+  border-bottom: 2px solid #eee;
+  width: 180px;
+  overflow-x: hidden;
+  background-color: #444;
+}
+.shipList ul {
+  padding: 0;
+  margin: 10px 0;
+}
+.shipList ul li {
+  padding: 5px;
+  margin: 5px;
+  height: 154px;
+  background: #333;
+  border: solid 2px #eee;
+}
+.shipList ul li.active {
+  border-color: #428bca;
+}
+.shipList ul li:hover {
+  cursor: pointer;
 }
 
 #login-layer {

@@ -22,5 +22,6 @@
 
 	"ERRORS_CONN": "Cannot establish connection",
 	"ERRORS_AUTH": "Wrong login or password",
-	"ERRORS_ROUT": "Load fail"
+	"ERRORS_ROUT": "Load fail",
+	"ERRORS_NOT_READY": "O_o"
 }

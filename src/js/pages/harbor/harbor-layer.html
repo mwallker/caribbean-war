@@ -1,15 +1,25 @@
-<div id="harbor-layer">
-	<span>{{user.nick}} </span>
-	<span>Cash: {{user.cash}} </span>
+<div id="harbor-layer" class="primary-theme">
+	<form>
+		<div class="form-group text-center">
+			<label>{{user.nick}}</label>
+		</div>
+		<div class="form-group text-center">
+			<button class="btn btn-primary" ng-click="toWorld()">Ocean</button>
+		</div>
+	</form>
 
-	<button ng-click="exit()">Exit</button>
-	<button class="button" ng-click="toWorld()">Sail</button>
+	<div class="shipList primary-theme-scrollbar">
+		<ul>
+			<li ng-repeat="ship in ships" ng-class="{active:ship.selected}" ng-click="pickShip($index)">
+				<span>{{ship.name}}</span>
+			</li>
+		</ul>
+	</div>
+
+</div>
 </div>
 
-<div class="shipsList">
-	<ul>
-		<li ng-repeat="ship in ships" ng-class="{active:ship.selected}" ng-click="pickShip($index)">
-			<span>{{ship.name}}</span>
-		</li>
-	</ul>
-</div>
+
+<!-- <li ng-repeat="ship in ['1', '2', '3', '4', '4', '5']" ng-class="{active:ship.selected}" ng-click="pickShip($index)">
+				<span>{ship.name}</span>
+			</li>-->
