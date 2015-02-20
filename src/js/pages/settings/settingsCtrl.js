@@ -9,6 +9,8 @@ angular.module('caribbean-war')
 			$scope.locale = localStorage.locale || appConfig.languages[0].code;
 			$scope.server = localStorage.server || $scope.servers[0].url;
 
+			var menuReady = true;
+
 			//locale
 			$scope.$watch('locale', function (newVal, oldVal) {
 				if (newVal != oldVal) {
@@ -35,7 +37,19 @@ angular.module('caribbean-war')
 			};
 
 			$rootScope.$on('toggleMenu', function () {
-				$('#settingsModal').modal();
+				console.log(menuReady);
+				if (menuReady) {
+					$('#settingsModal').modal('toggle');
+				}
+			});
+
+			$('#settingsModal').on('shown.bs.modal hidden.bs.modal', function (e) {
+				console.log(e);
+				menuReady = true;
+			});
+
+			$('#settingsModal').on('hide.bs.modal show.bs.modal', function (e) {
+				menuReady = false;
 			});
 
 			(function () {
