@@ -19,7 +19,7 @@ angular.module('caribbean-war')
 					$scope.chatCollapsed = false;
 
 					function prepareTemplate(msg) {
-						return '<li><span>[' + timeFormat(msg.timestamp) + ']</span><a href="#" data-sender="' + msg.senderId + '"><span> [' + msg.sender + '] </span></a>:<span> ' + msg.message + ' </span></li>'
+						return '<li><span>[' + timeFormat(msg.timestamp) + ']</span><a href="" data-sender="' + msg.senderId + '"><span> [' + msg.sender + '] </span></a>:<span> ' + msg.message + ' </span></li>'
 					}
 
 					content.on('click', 'a', function (){console.log($(this).data("sender"));});
