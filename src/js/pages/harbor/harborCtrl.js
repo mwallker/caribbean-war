@@ -1,5 +1,7 @@
 angular.module('caribbean-war').controller('harborCtrl', function ($scope, $rootScope, $state, connection, userStorage) {
-$scope.masss = ['1', '2', '3', '4', '6', '5'];
+
+	$scope.loadingBarShown = false;
+
 	//SCENE INIT
 	if (!userStorage.status()) {
 		connection.close();
@@ -49,6 +51,7 @@ $scope.masss = ['1', '2', '3', '4', '6', '5'];
 		if (details.success === true) {
 			userStorage.setNeighbors(details);
 			$state.go('world');
+			$scope.loadingBarShown = false;
 		}
 	};
 

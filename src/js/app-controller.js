@@ -23,6 +23,7 @@ angular.module('caribbean-war')
 			}
 
 			$rootScope.$on('error', function (event, type) {
+				$rootScope.loadingBarShown = false;
 				if (type) {
 					$scope.errorType = type;
 					$scope.errorShown = true;

@@ -16,10 +16,13 @@
 		</ul>
 	</div>
 
+	<div class="text-center loading-bar-container" ng-if="loadingBarShown">
+		<div class="loading-bar">
+			<span class="active-1"></span>
+			<span class="active-2"></span>
+			<span class="active-3"></span>
+			<span class="active-4"></span>
+			<span class="active-5"></span>
+		</div>
+	</div>
 </div>
-</div>
-
-
-<!-- <li ng-repeat="ship in ['1', '2', '3', '4', '4', '5']" ng-class="{active:ship.selected}" ng-click="pickShip($index)">
-				<span>{ship.name}</span>
-			</li>-->

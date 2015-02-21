@@ -3,12 +3,15 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 	$scope.rememberUser = !!localStorage.email;
 	$rootScope.authorized = false;
 
+	$rootScope.loadingBarShown = false;
+
 	if (connection.status()) {
 		$rootScope.$broadcast("close", "");
 	}
 
 	$scope.connect = function () {
 		localStorage.email = $scope.rememberUser ? $scope.email : '';
+		$rootScope.loadingBarShown = true;
 
 		var credits = {
 			login: $scope.email,
@@ -25,12 +28,12 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 	};
 
 	$scope.authorize = function (event, data) {
-		if (data){
-			if(data.authorize) {
+		if (data) {
+			if (data.authorize) {
 				userStorage.set(data);
 				$state.go('harbor');
-			}
-			else{
+				$rootScope.loadingBarShown = false;
+			} else {
 				$rootScope.$emit('error', 'ERRORS_AUTH');
 			}
 		}
