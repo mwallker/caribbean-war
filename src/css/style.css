@@ -1,13 +1,14 @@
 #chat-layer {
   position: fixed;
-  bottom: 15px;
-  left: 15px;
+  bottom: 10px;
+  left: 10px;
   z-index: 103;
+  font-size: 0.9em;
 }
 #chat-layer .chat-box {
+  width: 380px;
   padding: 2px;
   margin: 2px;
-  width: 380px;
   color: #333;
 }
 #chat-layer .chat-box input {
@@ -21,10 +22,10 @@
   outline: 0;
 }
 #chat-layer .chat-header {
-  padding: 7px;
+  padding: 3px;
 }
 #chat-layer .chat-header label {
-  margin: 3px;
+  margin: 1px 4px;
 }
 #chat-layer .chat-header label span {
   color: #ddd;
@@ -33,15 +34,16 @@
   cursor: pointer;
 }
 #chat-layer .chat-content {
-  height: 240px;
+  height: 230px;
   background: #eee;
   overflow-y: scroll;
 }
 #chat-layer .chat-content ul {
-  padding: 0 10px;
+  padding: 2px;
+  margin: 1px;
 }
 #chat-layer .chat-content ul li {
-  padding: 5px 0;
+  padding: 2px 0;
   border-bottom: 1px solid #ddd;
 }
 

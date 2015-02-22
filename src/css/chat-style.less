@@ -1,12 +1,13 @@
 #chat-layer {
 	position: fixed;
-	bottom: 15px;
-	left: 15px;
+	bottom: 10px;
+	left: 10px;
 	z-index: 103;
+	font-size: 0.9em;
 	.chat-box {
+		width: 380px;
 		padding: 2px;
 		margin: 2px;
-		width: 380px;
 		color: #333;
 		input {
 			display: block;
@@ -20,9 +21,9 @@
 		}
 	}
 	.chat-header {
-		padding: 7px;
+		padding: 3px;
 		label {
-			margin: 3px;
+			margin: 1px 4px;
 			span {
 				color: #ddd;
 			}
@@ -32,13 +33,14 @@
 		}
 	}
 	.chat-content {
-		height: 240px;
+		height: 230px;
 		background: #eee;
 		overflow-y: scroll;
 		ul {
-			padding: 0 10px;
+			padding: 2px;
+			margin:1px;
 			li {
-				padding: 5px 0;
+				padding: 2px 0;
 				border-bottom: 1px solid #ddd;
 			}
 		}
