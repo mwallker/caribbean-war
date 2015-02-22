@@ -22,12 +22,12 @@ angular.module('caribbean-war')
 			$scope.exitHandler = function () {
 				console.log();
 				switch ($state.current.name) {
-				case 'harbor':
-					connection.close();
+				case 'harborS':
+					//connection.close();
 					userStorage.reset();
 					$state.go('login');
 					break;
-				case 'world':
+				case 'worldS':
 					break;
 				default:
 					$rootScope.$emit('error', 'ERRORS_NOT_READY');

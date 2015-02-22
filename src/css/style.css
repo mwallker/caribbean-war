@@ -6,7 +6,7 @@
   font-size: 0.9em;
 }
 #chat-layer .chat-box {
-  width: 380px;
+  width: 320px;
   padding: 2px;
   margin: 2px;
   color: #333;
@@ -169,9 +169,8 @@ li {
 }
 .shipList {
   position: fixed;
-  top: 100px;
+  top: 120px;
   bottom: 30px;
-  margin: auto;
   border-top: 2px solid #eee;
   border-bottom: 2px solid #eee;
   width: 180px;
@@ -203,6 +202,22 @@ li {
   top: 0;
   bottom: 0;
   margin: auto;
+}
+
+#map-layer {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 10;
+  font-size: 0.9em;
+}
+#map-layer .map-content {
+  height: 200px;
+  width: 200px;
+  border-radius: 100px;
+  border: 2px solid #333;
+  background: #eee;
+  overflow: hiden;
 }
 
 #renderCanvas {

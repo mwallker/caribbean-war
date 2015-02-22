@@ -27,24 +27,24 @@ angular.module('caribbean-war')
 				if (type) {
 					$scope.errorType = type;
 					$scope.errorShown = true;
-					$timeout($scope.errorHide, 4000);
+					$timeout($scope.errorHide, 3000);
 				}
 			});
 
 			$rootScope.$on('send', function (event, data) {
-				//
+
 			});
 
 			$rootScope.$on('$stateChangeStart',
 				function (event, toState) {
 					$scope.errorShown = false;
-					//renderHandler.dispose();
+					renderHandler.dispose();
 				});
 
 			$rootScope.$on('$stateChangeSuccess',
 				function (event, toState) {
 					$rootScope.loading = false;
-					//renderHandler.load(toState.name);
+					renderHandler.load(toState.name);
 					//$scope.manageTasks([]);
 				});
 
