@@ -1,6 +1,6 @@
 angular.module('caribbean-war')
-	.controller('appCtrl', ['$scope', '$rootScope', '$q', '$state', 'audioControl', 'renderHandler',
-		function ($scope, $rootScope, $q, $state, audioControl, renderHandler) {
+	.controller('appCtrl', ['$scope', '$rootScope', '$q', '$state', '$timeout', 'audioControl', 'renderHandler',
+		function ($scope, $rootScope, $q, $state, $timeout, audioControl, renderHandler) {
 
 			$scope.appLoading = true;
 			$scope.errorShown = false;
@@ -23,11 +23,16 @@ angular.module('caribbean-war')
 			}
 
 			$rootScope.$on('error', function (event, type) {
-				$rootScope.loadingBarShown = false;
+				$rootScope.loading = false;
 				if (type) {
 					$scope.errorType = type;
 					$scope.errorShown = true;
+					$timeout($scope.errorHide, 4000);
 				}
+			});
+
+			$rootScope.$on('send', function (event, data) {
+				//
 			});
 
 			$rootScope.$on('$stateChangeStart',
