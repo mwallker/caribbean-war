@@ -1,5 +1,5 @@
 <div id="login-layer" class="primary-theme">
-	<form ng-submit="connect()">
+	<form ng-submit="connect()" role="form">
 		<div class="form-group">
 			<label for="inputEmail" class="control-label">{{'LOGIN_EMAIL' | translate}}: </label>
 			<input type="email" class="form-control" id="inputEmail" ng-model="email" placeholder="{{'LOGIN_EMAIL' | translate}}" required>
@@ -16,14 +16,17 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">{{ 'LOGIN_ENTER' | translate }}</button>
+			<button type="submit" ng-disabled="form.$invalid || loading" class="btn btn-primary">
+				{{ 'LOGIN_ENTER' | translate }}
+			</button>
 		</div>
 		<div class="form-group">
 			<a href="">{{'LOGIN_FORGOT_PASSWORD' | translate}}</a> |
 			<a href="">{{'LOGIN_REGISTRATION' | translate}}</a>
 		</div>
 	</form>
-	<div class="text-center" ng-if="loadingBarShown">
+
+	<div class="text-center" ng-if="loading">
 		<div class="loading-bar">
 			<span class="active-1"></span>
 			<span class="active-2"></span>

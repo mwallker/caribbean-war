@@ -1,7 +1,4 @@
 angular.module('caribbean-war').controller('harborCtrl', function ($scope, $rootScope, $state, connection, userStorage) {
-
-	$scope.loadingBarShown = false;
-
 	//SCENE INIT
 	if (!userStorage.status()) {
 		connection.close();
@@ -39,6 +36,10 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $root
 
 	$scope.toWorld = function () {
 		if ($scope.selectedShip.id) {
+			/*$rootScope.$emit('send', ['enterWorld', {
+				shipId: +$scope.selectedShip.id
+			}, true]);*/
+			$rootScope.loading = true;
 			connection.send("enterWorld", {
 				shipId: +$scope.selectedShip.id
 			});
@@ -51,7 +52,6 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $root
 		if (details.success === true) {
 			userStorage.setNeighbors(details);
 			$state.go('world');
-			$scope.loadingBarShown = false;
 		}
 	};
 
