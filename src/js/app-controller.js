@@ -1,6 +1,6 @@
 angular.module('caribbean-war')
-	.controller('appCtrl', ['$scope', '$rootScope', '$q', '$state', '$timeout', 'audioControl', 'renderHandler',
-		function ($scope, $rootScope, $q, $state, $timeout, audioControl, renderHandler) {
+	.controller('appCtrl', ['$scope', '$rootScope', '$q', '$state', '$timeout', 'audioControl', 'connection', 'renderHandler',
+		function ($scope, $rootScope, $q, $state, $timeout, audioControl, connection, renderHandler) {
 
 			$scope.appLoading = true;
 			$scope.errorShown = false;
@@ -31,20 +31,40 @@ angular.module('caribbean-war')
 				}
 			});
 
+			$rootScope.$on('open', function (event, credits) {
+				$rootScope.loading = true;
+				connection.open().then(
+					function () {
+						connection.send('auth', credits);
+					},
+					function () {
+						$rootScope.$emit('error', 'ERRORS_CONN');
+					});
+			});
+
 			$rootScope.$on('send', function (event, data) {
+				try {
+					$rootScope.loading = true;
+					//connection.send(data[0], data[1]);
+				} catch (e) {
+					$rootScope.$emit('error', 'ERRORS_SEND_FAIL');
+				}
+			});
+
+			$rootScope.$on('exit', function (event) {
 
 			});
 
 			$rootScope.$on('$stateChangeStart',
 				function (event, toState) {
 					$scope.errorShown = false;
-					renderHandler.dispose();
+					//renderHandler.dispose();
 				});
 
 			$rootScope.$on('$stateChangeSuccess',
 				function (event, toState) {
 					$rootScope.loading = false;
-					renderHandler.load(toState.name);
+					//renderHandler.load(toState.name);
 					//$scope.manageTasks([]);
 				});
 
@@ -53,9 +73,5 @@ angular.module('caribbean-war')
 					$scope.errorType = 'ERROR_ROUT';
 					$scope.errorShown = true;
 				});
-
-			$rootScope.$on('exit', function (event) {
-
-			});
 		}
 	]);

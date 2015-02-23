@@ -1,53 +1,68 @@
 <div class="modal fade" id="settingsModal" ng-controller="settingsCtrl" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-sm">
 		<div class="modal-content primary-theme">
 			<div class="modal-body primary-theme">
-				<form class="form-horizontal" role="form">
-					<div class="form-group">
-						<div class="col-xs-12">
-							<a href="" class="pull-right" data-dismiss="modal" aria-hidden="true">
-								<span class="glyphicon glyphicon-remove-circle"></span>
-							</a>
-							<h3 class="text-center" id="myModalLabel" translate>{{:: 'SETTINGS_LABEL' }}</h3>
+				<p>
+					<h3 class="text-center">{{ 'MENU_LABEL' | translate }}</h3>
+				</p>
+				<p>
+					<button type="button" class="btn btn-primary btn-block" data-dismiss="modal">
+						{{ 'MENU_RESUME' | translate }}
+					</button>
+				</p>
+				<p>
+					<button type="button" class="btn btn-primary btn-block" data-toggle="collapse" data-target="#collapseInfo" aria-expanded="false" aria-controls="collapseInfo">
+						{{ 'MENU_INFO' | translate}}
+					</button>
+				</p>
+				<div class="collapse" id="collapseInfo">
+					<p>^_^</p>
+				</div>
+				<p>
+					<button type="button" class="btn btn-primary btn-block" data-toggle="collapse" data-target="#collapseSettings" aria-expanded="false" aria-controls="collapseSettings">
+						{{ 'MENU_SETTINGS' | translate}}
+					</button>
+				</p>
+				<div class="collapse" id="collapseSettings">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<label for="inputMusic" class="control-label col-xs-4" translate>{{:: 'SETTINGS_MUSIC' }}:</label>
+							<div class="col-xs-8">
+								<input id="inputMusic" class="form-control" type="range" ng-model="musicVolume" ng-change="changeVolume('music')">
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label for="inputMusic" class="control-label col-xs-4" translate>{{:: 'SETTINGS_MUSIC' }}:</label>
-						<div class="col-xs-6">
-							<input id="inputMusic" class="form-control" type="range" ng-model="musicVolume" ng-change="changeVolume('music')">
+						<div class="form-group">
+							<label for="inputEffects" class="control-label col-xs-4" translate>{{:: 'SETTINGS_EFFECTS' }}:</label>
+							<div class="col-xs-8">
+								<input id="inputEffects" class="form-control" type="range" ng-model="effectsVolume" ng-change="changeVolume('effects')">
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label for="inputEffects" class="control-label col-xs-4" translate>{{:: 'SETTINGS_EFFECTS' }}:</label>
-						<div class="col-xs-6">
-							<input id="inputEffects" class="form-control" type="range" ng-model="effectsVolume" ng-change="changeVolume('effects')">
+						<div class="form-group">
+							<label for="langSelect" class="control-label col-xs-4" translate>{{:: 'SETTINGS_LANGUAGE' }}:</label>
+							<div class="col-xs-8">
+								<select id="langSelect" ng-model="locale" class="form-control  col-xs-10" ng-options="item.code as item.label for item in languages"> </select>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label for="langSelect" class="control-label col-xs-4" translate>{{:: 'SETTINGS_LANGUAGE' }}:</label>
-						<div class="col-xs-6">
-							<select id="langSelect" ng-model="locale" class="form-control  col-xs-10" ng-options="item.code as item.label for item in languages"> </select>
+						<div class="form-group">
+							<label for="serverSelect" class="control-label col-xs-4" translate>{{:: 'SETTINGS_SERVERS' }}:</label>
+							<div class="col-xs-8">
+								<select id="serverSelect" ng-model="server" class="form-control" ng-options="item.url as item.label for item in servers"> </select>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label for="serverSelect" class="control-label col-xs-4" translate>{{:: 'SETTINGS_SERVERS' }}:</label>
-						<div class="col-xs-6">
-							<select id="serverSelect" ng-model="server" class="form-control" ng-options="item.url as item.label for item in servers"> </select>
+						<div class="form-group">
+							<div class="col-xs-12 text-center">
+								<button type="button" class="btn btn-default btn-block" ng-click="saveConfigurations()" data-dismiss="modal">
+									{{ 'SETTINGS_SAVE' | translate }}
+								</button>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-xs-4">
-							<button type="button" class="btn btn-default pull-right" ng-click="exitHandler()" data-dismiss="modal">
-								{{ 'SETTINGS_EXIT' | translate }}
-							</button>
-						</div>
-						<div class="col-xs-6">
-							<button type="button" class="btn btn-primary" ng-click="saveConfigurations()" data-dismiss="modal">
-								{{ 'SETTINGS_SAVE' | translate }}
-							</button>
-						</div>
-					</div>
-				</form>
+					</form>
+				</div>
+				<p>
+					<button type="button" class="btn btn-primary btn-block" ng-click="exitHandler()" data-dismiss="modal">
+						{{ 'MENU_EXIT' | translate }}
+					</button>
+				</p>
 			</div>
 		</div>
 	</div>

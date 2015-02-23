@@ -36,9 +36,9 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $root
 
 	$scope.toWorld = function () {
 		if ($scope.selectedShip.id) {
-			/*$rootScope.$emit('send', ['enterWorld', {
+			/*$rootScope.$emit('send', {action:'enterWorld', details:{
 				shipId: +$scope.selectedShip.id
-			}, true]);*/
+			}});*/
 			$rootScope.loading = true;
 			connection.send("enterWorld", {
 				shipId: +$scope.selectedShip.id

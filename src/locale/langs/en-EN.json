@@ -8,13 +8,20 @@
 	"LOGIN_REGISTRATION": "Registration link",
 	"LOGIN_ENTER": "Enter",
 
-	"SETTINGS_LABEL": "Settings",
+	"HARBOR_CASH": "",
+	"HARBOR_OCEAN": "",
+	"HARBOR_SHOP": "",
+
+	"MENU_INFO":"Info",
+	"MENU_LABEL": "Menu",
+	"MENU_SETTINGS": "Settings",
+	"MENU_EXIT": "Exit",
+	"MENU_RESUME": "Resume",
+
 	"SETTINGS_MUSIC": "Music",
 	"SETTINGS_EFFECTS": "Effects",
 	"SETTINGS_LANGUAGE": "Language",
 	"SETTINGS_SAVE": "Save changes",
-	"SETTINGS_CLOSE": "Close",
-	"SETTINGS_EXIT": "Exit",
 	"SETTINGS_SERVERS": "Server",
 
 	"CHAT_LOGS": "Events Log",
@@ -24,5 +31,6 @@
 	"ERRORS_AUTH": "Wrong login or password",
 	"ERRORS_ROUT": "Loading fail",
 	"ERRORS_UNKNOWN_ACTION": "Bad command",
-	"ERRORS_NOT_READY": "Feature does not suppoted yet"
+	"ERRORS_NOT_READY": "Feature does not suppoted yet",
+	"ERRORS_SEND": "Can't send command"
 }

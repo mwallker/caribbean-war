@@ -6,7 +6,7 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 	$rootScope.loading = false;
 
 	if (connection.status()) {
-		$rootScope.$broadcast("close", "");
+		$rootScope.$broadcast('close', "");
 	}
 
 	$scope.connect = function () {
@@ -18,13 +18,7 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 			password: new jsSHA(($scope.password).toString(), 'TEXT').getHash('SHA-256', 'HEX')
 		};
 
-		connection.open(credits).then(
-			function () {
-				connection.send("auth", credits);
-			},
-			function () {
-				$rootScope.$emit('error', 'ERRORS_CONN');
-			});
+		$rootScope.$emit('open', credits);
 	};
 
 	$scope.authorize = function (event, data) {
@@ -44,6 +38,6 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 		$state.go('login');
 	};
 
-	$rootScope.$on("auth", $scope.authorize);
-	$rootScope.$on("close", $scope.close);
+	$rootScope.$on('auth', $scope.authorize);
+	$rootScope.$on('close', $scope.close);
 });

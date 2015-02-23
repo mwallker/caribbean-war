@@ -102,3 +102,26 @@ var timeFormat = function (timestamp) {
 		seconds = (time.getSeconds() > 9 ? '' : '0') + time.getSeconds()
 	return hours + ':' + minutes + ':' + seconds;
 }
+
+var messageFormat = function (text) {
+	if (text) {
+		var dict = text.split('/\s+/');
+		var maxLength = 34;
+		for (var word in dict) {
+			if (dict[word].length > maxLength) {
+				var trimedText = '';
+				var untrimedText = dict[word];
+				do {
+					trimedText += untrimedText.substr(0, maxLength) + ' ';
+					untrimedText = untrimedText.slice(maxLength);
+				}
+				while (untrimedText.length > maxLength);
+				trimedText += untrimedText.substr(0, untrimedText.length);
+				dict[word] = trimedText;
+			}
+		}
+		return dict.join(' ');
+	} else {
+		return '';
+	}
+}

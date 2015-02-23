@@ -8,19 +8,20 @@
 	"LOGIN_REGISTRATION": "Knil noitartsiger",
 	"LOGIN_ENTER": "Retne",
 
-	"HARBOR_CASH":"",
-	"HARBOR":"",
-	"HARBOR":"",
-	"HARBOR":"",
-	"HARBOR":"",
+	"HARBOR_CASH": "",
+	"HARBOR_OCEAN": "",
+	"HARBOR_SHOP": "",
 
-	"SETTINGS_LABEL": "Sgnittes",
+	"MENU_INFO":"Ofni",
+	"MENU_LABEL": "Anga banga",
+	"MENU_SETTINGS": "Sgnittes",
+	"MENU_EXIT": "Tixe",
+	"MENU_RESUME": "Emuser",
+
 	"SETTINGS_MUSIC": "Cisum",
 	"SETTINGS_EFFECTS": "Stceffe",
 	"SETTINGS_LANGUAGE": "Egaugnal",
 	"SETTINGS_SAVE": "Segnahc evas",
-	"SETTINGS_CLOSE": "Esolc",
-	"SETTINGS_EXIT": "Tixe",
 	"SETTINGS_SERVERS": "Revres",
 
 	"CHAT_LOGS": "Gol stneve",
@@ -30,5 +31,6 @@
 	"ERRORS_AUTH": "Wrong login or password",
 	"ERRORS_ROUT": "Load fail",
 	"ERRORS_UNKNOWN_ACTION": "Bad command",
-	"ERRORS_NOT_READY": "O_o"
+	"ERRORS_NOT_READY": "O_o",
+	"ERRORS_SEND": "Ooops"
 }
