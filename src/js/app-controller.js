@@ -43,8 +43,12 @@ angular.module('caribbean-war')
 			});
 
 			$rootScope.$on('send', function (event, data) {
-				$rootScope.loading = true;
-
+				try {
+					$rootScope.loading = true;
+					//connection.send(data[0], data[1]);
+				} catch (e) {
+					$rootScope.$emit('error', 'ERRORS_SEND_FAIL');
+				}
 			});
 
 			$rootScope.$on('exit', function (event) {

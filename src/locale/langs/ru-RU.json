@@ -8,13 +8,20 @@
 	"LOGIN_REGISTRATION": "Зарегистрироваться",
 	"LOGIN_ENTER": "Войти",
 
-	"SETTINGS_LABEL": "Настройки",
+	"HARBOR_CASH": "",
+	"HARBOR_OCEAN": "",
+	"HARBOR_SHOP": "",
+
+	"MENU_INFO": "Информация",
+	"MENU_LABEL": "Меню",
+	"MENU_SETTINGS": "Настройки",
+	"MENU_EXIT": "Выйти",
+	"MENU_RESUME": "Продолжить",
+
 	"SETTINGS_MUSIC": "Музыка",
 	"SETTINGS_EFFECTS": "Эффекты",
 	"SETTINGS_LANGUAGE": "Язык",
 	"SETTINGS_SAVE": "Сохранить изменения",
-	"SETTINGS_CLOSE": "Закрыть",
-	"SETTINGS_EXIT": "Выйти",
 	"SETTINGS_SERVERS": "Сервер",
 
 	"CHAT_LOGS": "События",
@@ -24,5 +31,6 @@
 	"ERRORS_AUTH": "Неверный адресс электронной почты или пароль",
 	"ERRORS_ROUT": "Во время загрузки произошла ошибка",
 	"ERRORS_UNKNOWN_ACTION": "Чет не то было нажато",
-	"ERRORS_NOT_READY": "Это часть функцианала еще не реализована"
+	"ERRORS_NOT_READY": "Это часть функцианала еще не реализована",
+	"ERRORS_SEND": "Отправить эту команду не реально"
 }
