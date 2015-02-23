@@ -36,6 +36,7 @@
 #chat-layer .chat-content {
   height: 230px;
   background: #eee;
+  overflow-x: hidden;
   overflow-y: scroll;
 }
 #chat-layer .chat-content ul {
@@ -92,6 +93,7 @@ li {
 }
 .progress {
   margin: 0;
+  width: 50%;
 }
 #tooltip-panel {
   position: fixed;
@@ -212,12 +214,14 @@ li {
   font-size: 0.9em;
   height: 200px;
   width: 200px;
+  display: none;
 }
 #map-layer .map-content {
+  height: inherit;
   border-radius: 100px;
   border: 2px solid #333;
   background: #eee;
-  overflow: hiden;
+  overflow: hidden;
 }
 
 #renderCanvas {

@@ -7,7 +7,7 @@ angular.module('caribbean-war')
 				controller: function ($scope, $rootScope) {
 					var content = $('.chat-content ul');
 					var history = [];
-					var chatBuffer = 42;
+					var chatBuffer = 4;
 					var message = {
 						sender: '',
 						senderId: '',
@@ -19,10 +19,14 @@ angular.module('caribbean-war')
 					$scope.chatCollapsed = false;
 
 					function prepareTemplate(msg) {
-						return '<li><span>[' + timeFormat(msg.timestamp) + ']</span><a href="" data-sender="' + msg.senderId + '"><span> [' + msg.sender + '] </span></a>:<span> ' + msg.message + ' </span></li>'
+						return '<li><span>[' + timeFormat(msg.timestamp) + ']</span><a href="" data-sender="' + msg.senderId + '"> <span>[' + msg.sender + ']</span></a> : <span>' + messageFormat(msg.message) + '</span></li>'
 					}
 
-					content.on('click', 'a', function (){console.log($(this).data("sender"));});
+					content.on('click', 'a', function () {
+						if(userStorage.get().id != $(this).data('sender')){
+							$scope.message = $(this).children()[0].innerText;
+						}
+					});
 
 					$scope.clearChatHistory = function () {
 						$scope.unreaded = 0;
@@ -31,7 +35,9 @@ angular.module('caribbean-war')
 					};
 
 					$scope.recieveChatMessage = function (event, data) {
-						if (history.length >= chatBuffer) history.shift();
+						if (history.length >= chatBuffer) {
+							history.shift();
+						}
 
 						content.parent().animate({
 							scrollTop: content.height()
@@ -67,5 +73,5 @@ angular.module('caribbean-war')
 					$rootScope.$on("chat", $scope.recieveChatMessage);
 				}
 			};
-    }
+	}
 ]);
