@@ -7,7 +7,23 @@ angular.module('caribbean-war')
 			$scope.musicVolume = localStorage.musicVolume || 100;
 			$scope.effectsVolume = localStorage.effectsVolume || 100;
 			$scope.locale = localStorage.locale || appConfig.languages[0].code;
-			$scope.server = localStorage.server || $scope.servers[0].url;
+			$scope.server = localStorage.server ? localStorage.server : localStorage.server = $scope.servers[0].url;
+
+			$rootScope.devInfo = getDevInfo(appConfig);
+
+			function getDevInfo (config) {
+				return {
+					version: '0.2.12',
+					environment: (function (servers) {
+						for (var i in servers) {
+							if (localStorage.server === servers[i].url) {
+								return servers[i].label;
+							}
+						}
+						return 'unknown';
+					})(config.servers)
+				}
+			}
 
 			var menuReady = true;
 
@@ -17,9 +33,10 @@ angular.module('caribbean-war')
 				localStorage.server = $scope.server;
 				localStorage.musicVolume = $scope.musicVolume;
 				localStorage.effectsVolume = $scope.effectsVolume;
+				$rootScope.devInfo = getDevInfo(appConfig);
 			};
 
-			$scope.exitHandler = function () {
+			$scope.exitHandler = function (appConfig) {
 				console.log();
 				switch ($state.current.name) {
 				case 'harborS':

@@ -2,6 +2,7 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 	var result = {};
 
 	var socket = null;
+	var socketUrl = '';
 
 	var deferred = null;
 
@@ -10,17 +11,22 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 	};
 
 	result.open = function () {
-		var socketUrl = localStorage.server || 'ws://warm-crag-3328.herokuapp.com/ws';
+		deferred = $q.defer();
+		if (localStorage.server) {
+			console.log(socketUrl);
+			socketUrl = localStorage.server;
+		} else {
+			deferred.reject();
+			$rootScope.$emit('error', 'ERRORS_CONN');
+			return deferred.promise;
+		}
 
 		if (!this.status()) {
-
-			deferred = $q.defer();
-
 			try {
 				socket = new WebSocket(socketUrl);
 
 				socket.onopen = function () {
-					console.log("Connection opened: " + socketUrl);
+					console.log('Connection opened: ' + socketUrl);
 					deferred.resolve();
 				};
 
@@ -35,10 +41,11 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 				socket.onerror = socket.onclose = function (e) {
 					console.log(e);
 					deferred.reject();
-					$rootScope.$emit("close", e);
+					$rootScope.$emit('close', e);
 				};
 			} catch (e) {
-				console.log(e);
+				console.log('Catch ' + e);
+				$rootScope.$emit('error', 'ERRORS_CONN');
 			}
 		}
 		return deferred.promise;
