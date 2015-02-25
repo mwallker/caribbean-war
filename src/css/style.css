@@ -102,6 +102,11 @@ li {
   z-index: 100;
   padding: 10px 25px;
 }
+#devInfo {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+}
 #error-layer {
   position: fixed;
   bottom: 0;
