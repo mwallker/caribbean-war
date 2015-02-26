@@ -1,12 +1,18 @@
 {
 	"LOADING": "Загрузка",
 
+	"LOGIN_AUTH": "Авторизация",
+	"LOGIN_REGIST": "Регистрация",
+	"LOGIN_NICKNAME": "Имя пользователя",
 	"LOGIN_EMAIL": "Адресс электронной почты",
 	"LOGIN_PASSWORD": "Пароль",
+	"LOGIN_CONFIRM_PASSWORD": "Подтвердить пароль",
 	"LOGIN_REMEMBER_USER": "Запомнить имя пользователя",
 	"LOGIN_FORGOT_PASSWORD": "Забыли пароль",
+	"LOGIN_AUTH_FORM": "Форма авторизации",
 	"LOGIN_REGISTRATION": "Зарегистрироваться",
 	"LOGIN_ENTER": "Войти",
+	"LOGIN_SUBMIT": "Подтвердить",
 
 	"HARBOR_CASH": "",
 	"HARBOR_OCEAN": "",

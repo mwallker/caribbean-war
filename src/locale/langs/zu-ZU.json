@@ -1,18 +1,24 @@
 {
 	"LOADING": "Gnidaol",
 
+	"LOGIN_AUTH": "Authorization",
+	"LOGIN_REGIST": "Registration",
+	"LOGIN_NICKNAME": "Eman resu",
 	"LOGIN_EMAIL": "Liame",
 	"LOGIN_PASSWORD": "Drowssap",
+	"LOGIN_CONFIRM_PASSWORD": "Confirm password",
 	"LOGIN_REMEMBER_USER": "Em rebmemer",
 	"LOGIN_FORGOT_PASSWORD": "Drowssap togrof",
-	"LOGIN_REGISTRATION": "Knil noitartsiger",
+	"LOGIN_AUTH_FORM": "Mrof htua",
+	"LOGIN_REGISTRATION": "Mrof noitartsiger",
 	"LOGIN_ENTER": "Retne",
+	"LOGIN_SUBMIT": "Timbus",
 
 	"HARBOR_CASH": "",
 	"HARBOR_OCEAN": "",
 	"HARBOR_SHOP": "",
 
-	"MENU_INFO":"Ofni",
+	"MENU_INFO": "Ofni",
 	"MENU_LABEL": "Anga banga",
 	"MENU_SETTINGS": "Sgnittes",
 	"MENU_EXIT": "Tixe",

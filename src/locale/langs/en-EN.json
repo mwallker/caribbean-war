@@ -1,18 +1,24 @@
 {
 	"LOADING": "Loading",
 
+	"LOGIN_AUTH": "Authorization",
+	"LOGIN_REGIST": "Registration",
+	"LOGIN_NICKNAME": "User name",
 	"LOGIN_EMAIL": "Email",
 	"LOGIN_PASSWORD": "Password",
+	"LOGIN_CONFIRM_PASSWORD": "Confirm password",
 	"LOGIN_REMEMBER_USER": "Remember me",
 	"LOGIN_FORGOT_PASSWORD": "Forgot password",
-	"LOGIN_REGISTRATION": "Registration link",
+	"LOGIN_AUTH_FORM": "Authorization form",
+	"LOGIN_REGISTRATION": "Registration form",
 	"LOGIN_ENTER": "Enter",
+	"LOGIN_SUBMIT": "Submit",
 
 	"HARBOR_CASH": "",
 	"HARBOR_OCEAN": "",
 	"HARBOR_SHOP": "",
 
-	"MENU_INFO":"Info",
+	"MENU_INFO": "Info",
 	"MENU_LABEL": "Menu",
 	"MENU_SETTINGS": "Settings",
 	"MENU_EXIT": "Exit",

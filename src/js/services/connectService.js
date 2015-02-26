@@ -13,8 +13,8 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 	result.open = function () {
 		deferred = $q.defer();
 		if (localStorage.server) {
-			console.log(socketUrl);
 			socketUrl = localStorage.server;
+			console.log(socketUrl);
 		} else {
 			deferred.reject();
 			$rootScope.$emit('error', 'ERRORS_CONN');

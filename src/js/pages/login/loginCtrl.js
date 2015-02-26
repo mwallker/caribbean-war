@@ -9,7 +9,7 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 		$rootScope.$broadcast('close', "");
 	}
 
-	$scope.connect = function () {
+	$scope.submit = function () {
 		localStorage.email = $scope.rememberUser ? $scope.email : '';
 		$rootScope.loading = true;
 
@@ -31,6 +31,30 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 			}
 		}
 	};
+
+	$scope.$watch('formDisplayed', function (value){
+		if(value){
+			$scope.email = localStorage.email || "";
+		}
+		else{
+			$scope.email = "";
+		}
+	});
+
+	$scope.resetPassword = function () {
+		$.ajax({
+			url: 'http://localhost:1337/caribbean/users',
+			type: 'GET',
+			crossDomain: true,
+			success: function (resp) {
+				console.log(resp);
+			}
+		});
+	}
+
+	$scope.registration = function () {
+
+	}
 
 	$scope.close = function (event, message) {
 		connection.close();
