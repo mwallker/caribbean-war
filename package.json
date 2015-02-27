@@ -1,31 +1,32 @@
 {
-  "name": "caribbean-war",
-  "version": "0.0.1",
-  "description": "Online game",
-  "main": "Gruntfile.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/VladimirMilanovich/caribbean-war"
-  },
-  "author": "Vladimir Milanovich",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/VladimirMilanovich/caribbean-war/issues"
-  },
-  "homepage": "https://github.com/VladimirMilanovich/caribbean-war",
-  "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-jshint": "^0.11.0",
-    "grunt-contrib-less": "^1.0.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-http-server": "^1.2.0",
-    "grunt-node-webkit-builder": "^1.0.0",
-    "load-grunt-tasks": "^3.1.0"
-  },
-  "dependencies": {
-    "grunt-template": "^0.2.3"
-  }
+	"name": "caribbean-war",
+	"version": "0.0.1",
+	"description": "Online game",
+	"main": "Gruntfile.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/VladimirMilanovich/caribbean-war"
+	},
+	"author": "Vladimir Milanovich",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/VladimirMilanovich/caribbean-war/issues"
+	},
+	"homepage": "https://github.com/VladimirMilanovich/caribbean-war",
+	"devDependencies": {
+		"grunt": "^0.4.5",
+		"grunt-contrib-jshint": "^0.11.0",
+		"grunt-contrib-less": "^1.0.0",
+		"grunt-contrib-watch": "^0.6.1",
+		"grunt-dev-update": "^1.1.0",
+		"grunt-http-server": "^1.2.0",
+		"grunt-node-webkit-builder": "^1.0.0",
+		"load-grunt-tasks": "^3.1.0"
+	},
+	"dependencies": {
+		"grunt-template": "^0.2.3"
+	}
 }

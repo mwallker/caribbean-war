@@ -1,7 +1,7 @@
 angular.module('caribbean-war')
 	.directive('chat', ['userStorage', 'connection', function (userStorage, connection) {
 			return {
-				templateUrl: 'js/modules/chat/chat-template.html',
+				templateUrl: 'templates/chat/chat-template.html',
 				restrict: 'E',
 				scope: {},
 				controller: function ($scope, $rootScope) {
@@ -19,11 +19,13 @@ angular.module('caribbean-war')
 					$scope.chatCollapsed = false;
 
 					function prepareTemplate(msg) {
-						return '<li><span>[' + timeFormat(msg.timestamp) + ']</span><a href="" data-sender="' + msg.senderId + '"> <span>[' + msg.sender + ']</span></a> : <span>' + messageFormat(msg.message) + '</span></li>'
+						return '<li><span>[' + timeFormat(msg.timestamp) + ']</span>' +
+							'<a href="" data-sender="' + msg.senderId + '"> <span>[' + msg.sender + ']</span></a>' +
+							'<span> : ' + msg.message + '</span></li>'
 					}
 
 					content.on('click', 'a', function () {
-						if(userStorage.get().id != $(this).data('sender')){
+						if (userStorage.get().id != $(this).data('sender')) {
 							$scope.message = $(this).children()[0].innerText;
 						}
 					});

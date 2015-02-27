@@ -59,19 +59,19 @@ caribbeanWarApp.config(function ($stateProvider, $urlRouterProvider) {
 	$stateProvider
 		.state('login', {
 			url: '/login',
-			templateUrl: 'js/pages/login/login-layer.html',
+			templateUrl: 'templates/login/login-template.html',
 			controller: "loginCtrl"
 		})
 
 	.state('harbor', {
 		url: '/harbor',
-		templateUrl: 'js/pages/harbor/harbor-layer.html',
+		templateUrl: 'templates/harbor/harbor-template.html',
 		controller: "harborCtrl"
 	})
 
 	.state('world', {
 		url: '/world',
-		templateUrl: 'js/pages/world/world-layer.html',
+		templateUrl: 'templates/world/world-template.html',
 		controller: "worldCtrl"
 	});
 });
