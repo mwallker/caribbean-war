@@ -6,7 +6,7 @@ module.exports = function (grunt) {
 		less: {
 			development: {
 				files: {
-					"src/css/style.css": ['src/templates/**/*.less', 'src/*.less']
+					"src/css/style.css": ['src/templates/**/*.less', 'src/shared/*.less']
 				}
 			}
 		},
@@ -15,7 +15,7 @@ module.exports = function (grunt) {
 				atBegin: true
 			},
 			less: {
-				files: ['src/templates/**/*.less', 'src/*.less'],
+				files: ['src/templates/**/*.less', 'src/shared/*.less'],
 				tasks: ['less']
 			} //,
 			//js: {

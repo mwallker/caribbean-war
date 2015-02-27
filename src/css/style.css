@@ -140,6 +140,7 @@ select.form-control {
   overflow: hidden;
 }
 
+
 /*common properties*/
 html,
 body {
@@ -249,4 +250,3 @@ li {
     -webkit-box-shadow: 0 0 15px #428bca;
   }
 }
-

@@ -13,10 +13,10 @@ caribbeanWarApp.service('audioControl', function ($q) {
 
 	var audioApi = {};
 
-	audioApi.loadSoundFile = function (url, type) {
+	audioApi.loadSoundFile = function (name, type) {
 		var deffered = $q.defer();
 		var request = new XMLHttpRequest();
-		request.open('GET', url, true);
+		request.open('GET', 'sound/samples/' + name + '.mp3', true);
 		request.responseType = 'arraybuffer';
 
 		// Decode asynchronously

@@ -43,7 +43,7 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 		});
 	}
 
-	$scope.registration = function () {
+	$scope.registRequest = function () {
 
 	}
 
