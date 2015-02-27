@@ -1,13 +1,14 @@
 <div id="login-layer" class="primary-theme">
-	<form ng-submit="submit()" role="form" ng-init="loginDisplayed = true">
+	<form ng-submit="submit()" role="form">
 		<div class="form-group">
+			j{{email}}j
 			<label for="inputEmail" class="control-label">{{'LOGIN_EMAIL' | translate}}: </label>
-			<input type="email" class="form-control" id="inputEmail" ng-model="email" placeholder="{{'LOGIN_EMAIL' | translate}}" required>
+			<input type="text" class="form-control" id="inputEmail" ng-model="email" placeholder="{{'LOGIN_EMAIL' | translate}}" ng-required>
 		</div>
 
 		<div class="form-group">
 			<label for="inputPassword" class="control-label">{{'LOGIN_PASSWORD' | translate}}: </label>
-			<input type="password" name="confirmPassword" class="form-control" id="inputPassword" placeholder="{{'LOGIN_PASSWORD' | translate}}" ng-model="password" required>
+			<input type="password" name="passwordEntry" class="form-control" id="inputPassword" placeholder="{{'LOGIN_PASSWORD' | translate}}" ng-model="password" required>
 		</div>
 
 		<div class="form-group">
@@ -20,14 +21,14 @@
 
 		<div class="form-group">
 			<button type="submit" ng-disabled="form.$invalid || loading" class="btn btn-primary">
-				{{ loginDisplayed ? 'LOGIN_ENTER' : 'LOGIN_SUBMIT' | translate }}
+				{{ 'LOGIN_ENTER' | translate }}
 			</button>
 		</div>
 		<div class="form-group">
 			<a href="" ng-click="resetPassword()">{{'LOGIN_FORGOT_PASSWORD' | translate}}</a> |
 			<a href="" ng-click="loginDisplayed = !loginDisplayed">
-				<span ng-show="loginDisplayed">{{'LOGIN_REGISTRATION' | translate}}</span>
-				<span ng-show="!loginDisplayed">{{'LOGIN_AUTH_FORM' | translate}}</span>
+				<span ng-show="!loginDisplayed">{{'LOGIN_REGISTRATION' | translate}}</span>
+				<span ng-show="loginDisplayed">{{'LOGIN_AUTH_FORM' | translate}}</span>
 			</a>
 		</div>
 

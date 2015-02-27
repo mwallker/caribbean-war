@@ -6,7 +6,7 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 	$rootScope.loading = false;
 
 	if (connection.status()) {
-		$rootScope.$broadcast('close', "");
+		$rootScope.$broadcast('close', '');
 	}
 
 	$scope.submit = function () {
