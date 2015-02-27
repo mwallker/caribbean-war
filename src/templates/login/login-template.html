@@ -1,9 +1,8 @@
 <div id="login-layer" class="primary-theme">
 	<form ng-submit="submit()" role="form">
 		<div class="form-group">
-			j{{email}}j
 			<label for="inputEmail" class="control-label">{{'LOGIN_EMAIL' | translate}}: </label>
-			<input type="text" class="form-control" id="inputEmail" ng-model="email" placeholder="{{'LOGIN_EMAIL' | translate}}" ng-required>
+			<input type="text" class="form-control" id="inputEmail" ng-model="email" placeholder="{{'LOGIN_EMAIL' | translate}}" required>
 		</div>
 
 		<div class="form-group">
@@ -27,14 +26,14 @@
 		<div class="form-group">
 			<a href="" ng-click="resetPassword()">{{'LOGIN_FORGOT_PASSWORD' | translate}}</a> |
 			<a href="" ng-click="loginDisplayed = !loginDisplayed">
-				<span ng-show="!loginDisplayed">{{'LOGIN_REGISTRATION' | translate}}</span>
-				<span ng-show="loginDisplayed">{{'LOGIN_AUTH_FORM' | translate}}</span>
+				<span>{{'LOGIN_REGISTRATION' | translate}}</span>
+				<span hidden>{{'LOGIN_AUTH_FORM' | translate}}</span>
 			</a>
 		</div>
 
 	</form>
 
-	<div class="text-center" ng-if="loading">
+	<div class="text-center" ng-show="loading">
 		<div class="loading-bar">
 			<span class="active-1"></span>
 			<span class="active-2"></span>
@@ -44,8 +43,7 @@
 		</div>
 	</div>
 
-	<div id="devInfo">
-		<!-- <a data-toggle="tooltip" data-placement="top" title="Tooltip on left"><span class="glyphicon glyphicon-info-sign"></span></a>-->
+	<div>
 		<p>Version: {{devInfo.version}}</p>
 		<p>Environment: {{devInfo.environment}}</p>
 	</div>

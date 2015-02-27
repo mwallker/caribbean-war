@@ -32,15 +32,6 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 		}
 	};
 
-	$scope.$watch('formDisplayed', function (value){
-		if(value){
-			$scope.email = localStorage.email || "";
-		}
-		else{
-			$scope.email = "";
-		}
-	});
-
 	$scope.resetPassword = function () {
 		$.ajax({
 			url: 'http://localhost:1337/caribbean/users',
