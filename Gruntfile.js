@@ -6,7 +6,7 @@ module.exports = function (grunt) {
 		less: {
 			development: {
 				files: {
-					"src/css/style.css": ['src/templates/**/*.less', 'src/shared/*.less']
+					"src/_css/style.css": ['src/templates/**/*.less', 'src/shared/*.less']
 				}
 			}
 		},
@@ -28,6 +28,19 @@ module.exports = function (grunt) {
 				src: ['src/**/*.js', '!src/js/libs/**/*']
 			}
 		},
+		'string-replace': {
+			dist: {
+				files: {
+					'src/': 'index.html'
+				},
+				options: {
+					replacements: [{
+						pattern: /<!-- @import libs -->/ig,
+						replacement: '<script src="_js/libs.min.js"></script>'
+					}]
+				}
+			}
+		},
 		'http-server': {
 			dev: {
 				root: 'src',
@@ -46,15 +59,15 @@ module.exports = function (grunt) {
 		devUpdate: {
 			main: {
 				options: {
-					updateType: 'force', //just report outdated packages
-					reportUpdated: false, //don't report up-to-date packages
-					semver: true, //stay within semver when updating
+					updateType: 'force',
+					reportUpdated: false,
+					semver: true,
 					packages: {
-						devDependencies: true, //only check for devDependencies
-						dependencies: false
+						devDependencies: true,
+						dependencies: true
 					},
-					packageJson: null, //use matchdep default findup to locate package.json
-					reportOnlyPkgs: [] //use updateType action on all packages
+					packageJson: null,
+					reportOnlyPkgs: []
 				}
 			}
 		}
@@ -66,6 +79,7 @@ module.exports = function (grunt) {
 	]);
 
 	grunt.registerTask('build', [
+		'devUpdate',
 		'less',
 		'nodewebkit'
 	]);

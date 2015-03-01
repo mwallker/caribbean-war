@@ -1,5 +1,6 @@
 node_modules/
-src/js/libs
 bin/
 cache/
-/src/css/style.css
+src/_css/
+src/_js/
+src/_libs/
