@@ -146,7 +146,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			var ship = null;
 			var shipMesh = null;
 
-			BABYLON.SceneLoader.ImportMesh("ship", "js/graphic/models/", "ship01.babylon", scene, function (meshes) {
+			BABYLON.SceneLoader.ImportMesh("ship", "graphic/models/", "ship01.babylon", scene, function (meshes) {
 				shipMesh = meshes[0];
 
 				if (details.location) {
