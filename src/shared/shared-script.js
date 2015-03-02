@@ -125,3 +125,15 @@ var messageFormat = function (text) {
 		return '';
 	}
 }
+
+var switchFullscreen = function (condition) {
+	if (!condition) {
+		if (document.webkitCancelFullScreen) {
+			document.webkitCancelFullScreen();
+		}
+	} else {
+		if (document.documentElement.webkitRequestFullScreen) {
+			document.documentElement.webkitRequestFullScreen();
+		}
+	}
+}
