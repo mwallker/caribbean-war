@@ -22,21 +22,21 @@ angular.module('caribbean-war')
 
 					function prepareTemplate(msg) {
 						return '<li> [' + timeFormat(msg.timestamp) + '] ' +
-							'<a href="" data-sender="' + msg.senderId + '"> <span>[' + msg.sender + '] </span>: </a>' +
+							'<a href="" data-sender="' + msg.senderId + '"> [' + msg.sender + '] </a>: ' +
 							(msg.receiverId ? '<span class="glyphicon glyphicon-user"></span>' : '') + msg.message +
 							'</li>'
 					}
 
-					content.on('click', 'a', function () {
-						if (userStorage.get().id != $(this).data('sender')) {
-							$scope.receiverId = $(this).data('sender') || 0;
-							$scope.message = $(this).children()[0].innerText + ', ';
+					content.on('click', 'li', function (event) {
+						if (event.target.localName == 'a') {
+							var senderId = $(this)[0].children[0].dataset['sender'] || 0;
+							if (userStorage.get().id != senderId) {
+								$scope.receiverId = senderId;
+								return;
+							}
 						}
-					});
-
-					content.on('click', 'li', function () {
-						console.log('drop');
 						$scope.receiverId = 0;
+						console.log($scope.receiverId);
 					});
 
 					$scope.clearChatHistory = function () {
