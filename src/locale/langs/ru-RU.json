@@ -27,8 +27,9 @@
 	"SETTINGS_MUSIC": "Музыка",
 	"SETTINGS_EFFECTS": "Эффекты",
 	"SETTINGS_LANGUAGE": "Язык",
-	"SETTINGS_SAVE": "Сохранить изменения",
+	"SETTINGS_SAVE": "Применить и сохранить изменения",
 	"SETTINGS_SERVERS": "Сервер",
+	"SETTINGS_LOGIN_IN_FULLSCREEN": "На весь экран",
 
 	"CHAT_LOGS": "События",
 	"CHAT_PUBLIC": "Океан",

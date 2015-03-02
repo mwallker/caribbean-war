@@ -112,7 +112,7 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		function () {
 			if (!holdenE && checkFocus()) {
 				holdenE = true;
-				if (holdenE && holdenQ) canvas.trigger('cameraAction', TargetingDirections.both) ;
+				if (holdenE && holdenQ) canvas.trigger('cameraAction', TargetingDirections.both);
 				else canvas.trigger('cameraAction', TargetingDirections.right);
 			}
 		},
@@ -136,13 +136,13 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		});
 
 	KeyboardJS.on('esc',
-		function () {
+		function (e) {
 			if (!holdenEsc && checkFocus()) {
 				holdenEsc = true;
 				$rootScope.$emit('toggleMenu');
 			}
 		},
-		function () {
+		function (e) {
 			if (holdenEsc) {
 				holdenEsc = false;
 			}

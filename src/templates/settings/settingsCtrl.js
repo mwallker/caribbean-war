@@ -6,14 +6,15 @@ angular.module('caribbean-war')
 
 			$scope.musicVolume = localStorage.musicVolume || 100;
 			$scope.effectsVolume = localStorage.effectsVolume || 100;
+			$scope.inFullscreen = false;
 			$scope.locale = localStorage.locale || appConfig.languages[0].code;
 			$scope.server = localStorage.server ? localStorage.server : localStorage.server = $scope.servers[0].url;
 
 			$rootScope.devInfo = getDevInfo(appConfig);
 
-			function getDevInfo (config) {
+			function getDevInfo(config) {
 				return {
-					version: '0.3.1',
+					version: '0.3.2',
 					environment: (function (servers) {
 						for (var i in servers) {
 							if (localStorage.server === servers[i].url) {
@@ -33,6 +34,7 @@ angular.module('caribbean-war')
 				localStorage.server = $scope.server;
 				localStorage.musicVolume = $scope.musicVolume;
 				localStorage.effectsVolume = $scope.effectsVolume;
+				$scope.switchFullscreen();
 				$rootScope.devInfo = getDevInfo(appConfig);
 			};
 
@@ -56,6 +58,18 @@ angular.module('caribbean-war')
 				audioControl.changeVolume($scope.musicVolume / 100, target);
 			};
 
+			$scope.switchFullscreen = function () {
+				if (!$scope.inFullscreen) {
+					if (document.webkitCancelFullScreen) {
+						document.webkitCancelFullScreen();
+					}
+				} else {
+					if (document.documentElement.webkitRequestFullScreen) {
+						document.documentElement.webkitRequestFullScreen();
+					}
+				}
+			}
+
 			$rootScope.$on('toggleMenu', function () {
 				if (menuReady) {
 					$('#settingsModal').modal('toggle');
@@ -69,6 +83,7 @@ angular.module('caribbean-war')
 			$('#settingsModal').on('hide.bs.modal show.bs.modal', function (e) {
 				menuReady = false;
 			});
+
 
 			(function () {
 				$scope.changeVolume('music');

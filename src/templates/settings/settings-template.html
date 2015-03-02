@@ -38,6 +38,14 @@
 							</div>
 						</div>
 						<div class="form-group">
+							<label for="inFullscreen" class="control-label col-xs-4" translate>{{:: 'SETTINGS_IN_FULLSCREEN'}}</label>
+							<div class="col-xs-8">
+								<label class="control-label">
+									<input id="inFullscreen" type="checkbox" ng-model="inFullscreen">
+								</label>
+							</div>
+						</div>
+						<div class="form-group">
 							<label for="langSelect" class="control-label col-xs-4" translate>{{:: 'SETTINGS_LANGUAGE' }}:</label>
 							<div class="col-xs-8">
 								<select id="langSelect" ng-model="locale" class="form-control  col-xs-10" ng-options="item.code as item.label for item in languages"> </select>

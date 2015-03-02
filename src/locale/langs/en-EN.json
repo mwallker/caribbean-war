@@ -27,8 +27,9 @@
 	"SETTINGS_MUSIC": "Music",
 	"SETTINGS_EFFECTS": "Effects",
 	"SETTINGS_LANGUAGE": "Language",
-	"SETTINGS_SAVE": "Save changes",
+	"SETTINGS_SAVE": "Apply & Save changes",
 	"SETTINGS_SERVERS": "Server",
+	"SETTINGS_IN_FULLSCREEN": "Fullscreen",
 
 	"CHAT_LOGS": "Events Log",
 	"CHAT_PUBLIC": "Ocean",
