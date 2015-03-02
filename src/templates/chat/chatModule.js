@@ -7,27 +7,36 @@ angular.module('caribbean-war')
 				controller: function ($scope, $rootScope) {
 					var content = $('.chat-content ul');
 					var history = [];
-					var chatBuffer = 4;
+					var chatBuffer = 42;
 					var message = {
 						sender: '',
 						senderId: '',
+						receiverId: '',
 						timestamp: '',
 						text: ''
 					}
 
 					$scope.unreaded = 0;
+					$scope.receiverId = 0;
 					$scope.chatCollapsed = false;
 
 					function prepareTemplate(msg) {
-						return '<li><span>[' + timeFormat(msg.timestamp) + ']</span>' +
-							'<a href="" data-sender="' + msg.senderId + '"> <span>[' + msg.sender + ']</span></a>' +
-							'<span> : ' + msg.message + '</span></li>'
+						return '<li> [' + timeFormat(msg.timestamp) + '] ' +
+							'<a href="" data-sender="' + msg.senderId + '"> <span>[' + msg.sender + '] </span>: </a>' +
+							(msg.receiverId ? '<span class="glyphicon glyphicon-user"></span>' : '') + msg.message +
+							'</li>'
 					}
 
 					content.on('click', 'a', function () {
 						if (userStorage.get().id != $(this).data('sender')) {
-							$scope.message = $(this).children()[0].innerText;
+							$scope.receiverId = $(this).data('sender') || 0;
+							$scope.message = $(this).children()[0].innerText + ', ';
 						}
+					});
+
+					content.on('click', 'li', function () {
+						console.log('drop');
+						$scope.receiverId = 0;
 					});
 
 					$scope.clearChatHistory = function () {
@@ -36,43 +45,47 @@ angular.module('caribbean-war')
 						history = [];
 					};
 
-					$scope.recieveChatMessage = function (event, data) {
-						if (history.length >= chatBuffer) {
-							history.shift();
+					$scope.receiveChatMessage = function (event, data) {
+						console.log(data);
+						var visiable = !!data.receiverId ? (data.receiverId == userStorage.get().id || data.senderId == userStorage.get().id) : true;
+						console.log(visiable);
+						if (visiable) {
+							if (history.length >= chatBuffer) {
+								history.shift();
+							}
+
+							content.parent().animate({
+								scrollTop: content.height()
+							}, 'slow');
+
+							content.append(prepareTemplate(data));
+
+							$scope.unreaded = $scope.chatCollapsed ? ++$scope.unreaded : 0;
+
+							history.push({
+								sender: data.sender,
+								message: data.message,
+								timestamp: data.timestamp,
+							});
+
+							$scope.$apply();
 						}
-
-						content.parent().animate({
-							scrollTop: content.height()
-						}, "slow");
-
-						content.append(prepareTemplate(data));
-
-						$scope.unreaded = $scope.chatCollapsed ? ++$scope.unreaded : 0;
-
-						history.push({
-							sender: data.sender,
-							message: data.message,
-							timestamp: data.timestamp,
-						});
-
-						$scope.$apply();
 					};
 
 					$scope.sendChatMessage = function () {
-						var text = $scope.message;
-
-						if (text) {
-							connection.send("chat", {
+						if ($scope.message) {
+							connection.send('chat', {
 								sender: userStorage.get().nick,
 								senderId: userStorage.get().id,
+								receiverId: $scope.receiverId,
 								timestamp: Date.now(),
-								message: text
+								message: $scope.message
 							});
 							$scope.message = '';
 						}
 					};
 
-					$rootScope.$on("chat", $scope.recieveChatMessage);
+					$rootScope.$on('chat', $scope.receiveChatMessage);
 				}
 			};
 	}
