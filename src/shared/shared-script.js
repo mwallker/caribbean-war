@@ -64,7 +64,7 @@ var calculateCurve = function (position, options) {
 			dzU = 0,
 			dzD = 0;
 
-		//Count of lines steps
+		//Count of steps
 		var n = 5;
 
 		for (var i = 0; i < angles.length; i++) {
@@ -101,29 +101,6 @@ var timeFormat = function (timestamp) {
 		minutes = (time.getMinutes() > 9 ? '' : '0') + time.getMinutes(),
 		seconds = (time.getSeconds() > 9 ? '' : '0') + time.getSeconds()
 	return hours + ':' + minutes + ':' + seconds;
-}
-
-var messageFormat = function (text) {
-	if (text) {
-		var dict = text.split('/\s+/');
-		var maxLength = 34;
-		for (var word in dict) {
-			if (dict[word].length > maxLength) {
-				var trimedText = '';
-				var untrimedText = dict[word];
-				do {
-					trimedText += untrimedText.substr(0, maxLength) + ' ';
-					untrimedText = untrimedText.slice(maxLength);
-				}
-				while (untrimedText.length > maxLength);
-				trimedText += untrimedText.substr(0, untrimedText.length);
-				dict[word] = trimedText;
-			}
-		}
-		return dict.join(' ');
-	} else {
-		return '';
-	}
 }
 
 var switchFullscreen = function (condition) {

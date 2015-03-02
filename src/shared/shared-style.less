@@ -55,13 +55,22 @@ li {
 	bottom: 0;
 	right: 0;
 	z-index: 10;
+	border-top: 2px solid #ddd;
+	span {
+		&.up{
+			color: #1c6c1c;
+		}
+		&.down{
+			color: #b12121;
+		}
+	}
 }
 
 #error-layer {
 	position: fixed;
 	bottom: 0;
-	margin: 5px 5px;
-	width: 99%;
+	margin: 1%;
+	width: 98%;
 	z-index: @error-depth;
 }
 
