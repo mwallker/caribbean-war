@@ -14,9 +14,9 @@
 	"LOGIN_ENTER": "Retne",
 	"LOGIN_SUBMIT": "Timbus",
 
-	"HARBOR_CASH": "",
-	"HARBOR_OCEAN": "",
-	"HARBOR_SHOP": "",
+	"HARBOR_CASH": "Uz",
+	"HARBOR_OCEAN": "Naeco",
+	"HARBOR_SHOP": "Pohs",
 
 	"MENU_INFO": "Ofni",
 	"MENU_LABEL": "Anga banga",
@@ -29,7 +29,7 @@
 	"SETTINGS_LANGUAGE": "Egaugnal",
 	"SETTINGS_SAVE": "Segnahc evas dna ylppa",
 	"SETTINGS_SERVERS": "Revres",
-	"SETTINGS_LOGIN_IN_FULLSCREEN": "Neercslluf",
+	"SETTINGS_IN_FULLSCREEN": "Neercslluf",
 
 	"CHAT_LOGS": "Gol stneve",
 	"CHAT_PUBLIC": "Naeco",

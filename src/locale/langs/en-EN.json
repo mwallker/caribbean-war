@@ -14,9 +14,9 @@
 	"LOGIN_ENTER": "Enter",
 	"LOGIN_SUBMIT": "Submit",
 
-	"HARBOR_CASH": "",
-	"HARBOR_OCEAN": "",
-	"HARBOR_SHOP": "",
+	"HARBOR_CASH": "$",
+	"HARBOR_OCEAN": "Ocean",
+	"HARBOR_SHOP": "Shop",
 
 	"MENU_INFO": "Info",
 	"MENU_LABEL": "Menu",

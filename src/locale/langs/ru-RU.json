@@ -14,9 +14,9 @@
 	"LOGIN_ENTER": "Войти",
 	"LOGIN_SUBMIT": "Подтвердить",
 
-	"HARBOR_CASH": "",
-	"HARBOR_OCEAN": "",
-	"HARBOR_SHOP": "",
+	"HARBOR_CASH": "Пиастры",
+	"HARBOR_OCEAN": "Океания",
+	"HARBOR_SHOP": "Магазин",
 
 	"MENU_INFO": "Информация",
 	"MENU_LABEL": "Меню",
@@ -29,7 +29,7 @@
 	"SETTINGS_LANGUAGE": "Язык",
 	"SETTINGS_SAVE": "Применить и сохранить изменения",
 	"SETTINGS_SERVERS": "Сервер",
-	"SETTINGS_LOGIN_IN_FULLSCREEN": "На весь экран",
+	"SETTINGS_IN_FULLSCREEN": "На весь экран",
 
 	"CHAT_LOGS": "События",
 	"CHAT_PUBLIC": "Океан",
