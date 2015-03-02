@@ -3,6 +3,7 @@ module.exports = function (grunt) {
 	require('load-grunt-tasks')(grunt);
 
 	grunt.initConfig({
+		pkg: grunt.file.readJSON('package.json'),
 		less: {
 			development: {
 				files: {
@@ -28,15 +29,29 @@ module.exports = function (grunt) {
 				src: ['src/**/*.js', '!src/js/libs/**/*']
 			}
 		},
+		concat: {
+			options: {
+				separator: ';'
+			},
+			dist: {
+				src: ['src/_libs/**/*.js'],
+				dest: 'src/dist/libs-min.js'
+			}
+		},
 		'string-replace': {
 			dist: {
 				files: {
-					'src/': 'index.html'
+					'src/': 'src/index.html',
+					'dest/': 'dist/index.html'
 				},
 				options: {
 					replacements: [{
-						pattern: /<!-- @import libs -->/ig,
-						replacement: '<script src="_js/libs.min.js"></script>'
+							pattern: '<!-- @import libs -->',
+							replacement: ''
+					},
+						{
+							pattern: /<!-- @START libs --> (.*?) <!-- @END libs -->/ig,
+							replacement: '<script src="_js/libs.min.js"></script>'
 					}]
 				}
 			}
