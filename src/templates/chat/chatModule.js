@@ -36,7 +36,6 @@ angular.module('caribbean-war')
 							}
 						}
 						$scope.receiverId = 0;
-						console.log($scope.receiverId);
 					});
 
 					$scope.clearChatHistory = function () {
