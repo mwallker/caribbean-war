@@ -346,7 +346,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				for (var i in ships) {
 					if (ships[i].getId() == details.id) {
 						ships[i].changeState(details.type);
-						console.log(ships[i].getId());
 						break;
 					}
 				}
