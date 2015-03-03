@@ -50,7 +50,7 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 
 	KeyboardJS.on('left, a',
 		function () {
-			if (!holdenLeft) {
+			if (!holdenLeft && checkFocus()) {
 				holdenLeft = true;
 				if (connection.status() && userId) {
 					connection.send('move', {
@@ -72,7 +72,7 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 
 	KeyboardJS.on('right, d',
 		function () {
-			if (!holdenRight) {
+			if (!holdenRight && checkFocus()) {
 				holdenRight = true;
 				if (connection.status() && userId) {
 					connection.send('move', {
