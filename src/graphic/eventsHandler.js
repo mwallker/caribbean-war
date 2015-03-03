@@ -137,7 +137,7 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 
 	KeyboardJS.on('esc',
 		function (e) {
-			if (!holdenEsc && checkFocus()) {
+			if (!holdenEsc) {
 				holdenEsc = true;
 				$rootScope.$emit('toggleMenu');
 			}
