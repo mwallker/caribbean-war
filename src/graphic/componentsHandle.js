@@ -182,7 +182,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				changeState: function (type) {
 					switch (type) {
 					case 'upward':
-						self.sailsMode = math.Min(self.sailsMode + 1, 4);
+						self.sailsMode = Math.Min(self.sailsMode + 1, 4);
 						break;
 					case 'backward':
 						self.sailsMode = Math.max(self.sailsMode - 1, 0);
