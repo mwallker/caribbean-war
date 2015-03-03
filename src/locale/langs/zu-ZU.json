@@ -36,6 +36,7 @@
 
 	"ERRORS_CONN": "Cannot establish connection",
 	"ERRORS_AUTH": "Wrong login or password",
+	"ERRORS_IN_GAME": "Emag in ydaerla",
 	"ERRORS_ROUT": "Load fail",
 	"ERRORS_UNKNOWN_ACTION": "Bad command",
 	"ERRORS_NOT_READY": "O_o",

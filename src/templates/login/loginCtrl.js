@@ -27,7 +27,12 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 				userStorage.set(data);
 				$state.go('harbor');
 			} else {
-				$rootScope.$emit('error', 'ERRORS_AUTH');
+				if (data.inGame) {
+					$rootScope.$emit('error', 'ERRORS_IN_GAME');
+				} else {
+					$rootScope.$emit('error', 'ERRORS_AUTH');
+				}
+
 			}
 		}
 	};
