@@ -182,10 +182,10 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				changeState: function (type) {
 					switch (type) {
 					case 'upward':
-						self.sailsMode = Math.min(self.sailsMode + 1, 4);
+						sailsMode = Math.min(sailsMode + 1, 3);
 						break;
 					case 'backward':
-						self.sailsMode = Math.max(self.sailsMode - 1, 0);
+						sailsMode = Math.max(sailsMode - 1, 0);
 						break;
 					case 'right':
 						wheelMode = 1;
@@ -216,7 +216,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						timer = timer + delay % (2 * Math.PI);
 						obs = lerp(obs, randomRange(-0.3, 0.3), 0.03);
 
-						ship.speed = lerp(ship.speed, sailsMode * ship.maxSpeed * delay / 4, _velocity);
+						ship.speed = lerp(ship.speed, sailsMode * ship.maxSpeed * delay / 4, 0.01);
 
 						//Movement
 						ship.position.x += Math.cos(ship.rotation.y) * ship.speed;
@@ -224,7 +224,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						ship.position.y += Math.sin(timer * 1.2) / (ship.weight * 0.3);
 
 						//Rotation
-						ship.rotation.y = (ship.rotation.y + (wheelMode * ship.speed * _angleSpeed) / (sailsMode + 1)) % (2 * Math.PI);
+						ship.rotation.y = (ship.rotation.y + (wheelMode * ship.speed * 0.075) / (sailsMode + 1)) % (2 * Math.PI);
 						ship.rotation.x = lerp(ship.rotation.x, wheelMode * ship.speed * 0.7 + obs, 0.02);
 						ship.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.06;
 					}
@@ -298,8 +298,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			var ocean = BaseComponents.createOcean(scene);
 			var ships = [];
 
-			var test = BaseComponents.test(scene);
-
 			var user = userStorage.get();
 			var ship = BaseComponents.createShip(scene, {
 				id: user.id
@@ -348,6 +346,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				for (var i in ships) {
 					if (ships[i].getId() == details.id) {
 						ships[i].changeState(details.type);
+						console.log(ships[i].getId());
 						break;
 					}
 				}
