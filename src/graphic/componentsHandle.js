@@ -151,10 +151,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				if (details.location) {
 					shipMesh.position = new BABYLON.Vector3(details.location.x, 0, details.location.y);
 				}
-
-				if (details.alpha) {
-					shipMesh.rotation = new BABYLON.Vector3(0, 0, details.alpha);
-				}
+				shipMesh.rotation = new BABYLON.Vector3(0, (details.alpha || 0) + Math.PI, 0);
 
 				var shipMaterial = new BABYLON.StandardMaterial("shipMaterial", scene);
 
@@ -222,14 +219,15 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						ship.speed = lerp(ship.speed, sailsMode * ship.maxSpeed * delay / 4, _velocity);
 
 						//Movement
-						ship.position.x += Math.cos(ship.rotation.y) * ship.speed;
+						ship.position.x += Math.cos(ship.rotation.y + Math.PI) * ship.speed;
 						ship.position.z += Math.sin(-ship.rotation.y) * ship.speed;
 						ship.position.y += Math.sin(timer * 1.2) / (ship.weight * 0.3);
 
-						$('#coordX').text(ship.position.x.toFixed(1));
-						$('#coordY').text(ship.position.z.toFixed(1));
+						$('#coordXL').text(ship.position.x.toFixed(1));
+						$('#coordYL').text(ship.position.z.toFixed(1));
 
-
+						$('#coordXS').text(ship.position.x.toFixed(1));
+						$('#coordYS').text(ship.position.z.toFixed(1));
 
 						//Rotation
 						ship.rotation.y = (ship.rotation.y + (wheelMode * ship.speed * _angleSpeed) / (sailsMode + 1)) % (2 * Math.PI);
@@ -253,9 +251,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			return {
 				target: box,
 				move: function (delay) {
-					box.rotation.y += delay;
+					//box.rotation.y += delay;
 					//box.position.x += delay;
-					box.position.z -= delay;
+					//box.position.z -= delay;
 				}
 			};
 		},
