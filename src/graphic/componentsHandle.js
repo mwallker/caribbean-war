@@ -1,5 +1,4 @@
 angular.module('render').factory('Components', function ($rootScope, KeyEvents, userStorage) {
-
 	function CameraController(bindedCamera, options) {
 		var camera = {};
 
@@ -216,15 +215,20 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						timer = timer + delay % (2 * Math.PI);
 						obs = lerp(obs, randomRange(-0.3, 0.3), 0.03);
 
-						ship.speed = lerp(ship.speed, sailsMode * ship.maxSpeed * delay / 4, 0.01);
+						ship.speed = lerp(ship.speed, sailsMode * ship.maxSpeed * delay / 4, _velocity);
 
 						//Movement
 						ship.position.x += Math.cos(ship.rotation.y) * ship.speed;
 						ship.position.z += Math.sin(-ship.rotation.y) * ship.speed;
 						ship.position.y += Math.sin(timer * 1.2) / (ship.weight * 0.3);
 
+						$('#coordX').text(ship.position.x.toFixed(1));
+						$('#coordY').text(ship.position.z.toFixed(1));
+
+
+
 						//Rotation
-						ship.rotation.y = (ship.rotation.y + (wheelMode * ship.speed * 0.075) / (sailsMode + 1)) % (2 * Math.PI);
+						ship.rotation.y = (ship.rotation.y + (wheelMode * ship.speed * _angleSpeed) / (sailsMode + 1)) % (2 * Math.PI);
 						ship.rotation.x = lerp(ship.rotation.x, wheelMode * ship.speed * 0.7 + obs, 0.02);
 						ship.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.06;
 					}
@@ -300,7 +304,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 			var user = userStorage.get();
 			var ship = BaseComponents.createShip(scene, {
-				id: user.id
+				id: user.id,
+				location: user.location
 			})
 			ships.push(ship);
 			KeyEvents.bind(user.id);
@@ -313,7 +318,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			for (var n in neighbors) {
 				console.log(neighbors[n]);
 				ships.push(BaseComponents.createShip(scene, {
-					id: neighbors[n].id
+					id: neighbors[n].id,
+					location: neighbors[n].location
 				}));
 			}
 
@@ -324,7 +330,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						for (var i in users.added) {
 							if (users.added[i].id != user.id) {
 								ships.push(BaseComponents.createShip(scene, {
-									id: users.added[i].id
+									id: users.added[i].id,
+									location: neighbors[n].location
 								}));
 							}
 						}

@@ -13,7 +13,8 @@ module.exports = function (grunt) {
 		},
 		watch: {
 			options: {
-				atBegin: true
+				atBegin: true,
+				livereload: 1337
 			},
 			less: {
 				files: ['src/templates/**/*.less', 'src/shared/*.less'],
