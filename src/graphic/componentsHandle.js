@@ -152,6 +152,10 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					shipMesh.position = new BABYLON.Vector3(details.location.x, 0, details.location.y);
 				}
 
+				if (details.alpha) {
+					shipMesh.rotation = new BABYLON.Vector3(0, 0, details.alpha);
+				}
+
 				var shipMaterial = new BABYLON.StandardMaterial("shipMaterial", scene);
 
 				shipMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
@@ -309,6 +313,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			});
 			ships.push(ship);
 			KeyEvents.bind(user.id);
+
+			BaseComponents.test(scene);
 
 			var cameraControl = new CameraController(camera, {
 				target: ship.getPosition()
