@@ -92,8 +92,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				$('#renderCanvas').off('cameraAction');
 				$(document).off('mouseup');
 			}
-		}
-	};
+		};
+	}
 
 	var BaseComponents = {
 		//Envirement
@@ -138,7 +138,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				alive: function (delay) {
 
 				}
-			}
+			};
 		},
 		//Ship
 		createShip: function (scene, details) {
@@ -208,7 +208,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						x: ship ? ship.position.x : 0,
 						z: ship ? ship.position.z : 0,
 						alpha: ship ? ship.rotation.y : 0
-					}
+					};
 				},
 				move: function (delay) {
 					if (ship) {
@@ -253,7 +253,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					//box.position.x += delay;
 					box.position.z -= delay;
 				}
-			}
+			};
 		},
 		//Targeting Curve(s)
 		getCurves: function (scene, collection) {
@@ -281,7 +281,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					cameraControl.removeEvents();
 					return null;
 				}
-			}
+			};
 		},
 		'harbor': function (scene, camera) {
 			var ocean = BaseComponents.createOcean(scene);
@@ -296,7 +296,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					cameraControl.removeEvents();
 					return null;
 				}
-			}
+			};
 		},
 		'world': function (scene, camera) {
 			var ocean = BaseComponents.createOcean(scene);
@@ -306,7 +306,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			var ship = BaseComponents.createShip(scene, {
 				id: user.id,
 				location: user.location
-			})
+			});
 			ships.push(ship);
 			KeyEvents.bind(user.id);
 
@@ -373,7 +373,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					onMoveCallback();
 					cameraControl.removeEvents();
 				}
-			}
+			};
 		}
-	}
+	};
 });

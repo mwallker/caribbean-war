@@ -23,7 +23,7 @@ angular.module('caribbean-war')
 						}
 						return 'unknown';
 					})(config.servers)
-				}
+				};
 			}
 
 			var menuReady = true;
@@ -52,7 +52,7 @@ angular.module('caribbean-war')
 					$rootScope.$emit('error', 'ERRORS_NOT_READY');
 					break;
 				}
-			}
+			};
 
 			$scope.changeVolume = function (target) {
 				audioControl.changeVolume($scope.musicVolume / 100, target);

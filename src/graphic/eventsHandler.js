@@ -168,5 +168,5 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		unbind: function () {
 			userId = null;
 		}
-	}
+	};
 });

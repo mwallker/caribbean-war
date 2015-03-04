@@ -20,7 +20,7 @@ angular.module('caribbean-war')
 			$scope.errorHide = function () {
 				$scope.errorType = '';
 				$scope.errorShown = false;
-			}
+			};
 
 			$rootScope.$on('error', function (event, type) {
 				$rootScope.loading = false;

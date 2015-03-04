@@ -4,7 +4,7 @@ caribbeanWarApp.service('audioControl', function ($q) {
 	var gainNodes = {
 		music: context.createGain(),
 		effects: context.createGain()
-	}
+	};
 	var destination = context.destination;
 	var sources = [];
 

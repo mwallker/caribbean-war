@@ -99,9 +99,9 @@ var timeFormat = function (timestamp) {
 	var time = new Date(timestamp);
 	var hours = (time.getHours() > 9 ? '' : '0') + time.getHours(),
 		minutes = (time.getMinutes() > 9 ? '' : '0') + time.getMinutes(),
-		seconds = (time.getSeconds() > 9 ? '' : '0') + time.getSeconds()
+		seconds = (time.getSeconds() > 9 ? '' : '0') + time.getSeconds();
 	return hours + ':' + minutes + ':' + seconds;
-}
+};
 
 var switchFullscreen = function (condition) {
 	if (!condition) {
@@ -113,4 +113,4 @@ var switchFullscreen = function (condition) {
 			document.documentElement.webkitRequestFullScreen();
 		}
 	}
-}
+};

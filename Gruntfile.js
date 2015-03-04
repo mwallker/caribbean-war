@@ -19,15 +19,15 @@ module.exports = function (grunt) {
 			less: {
 				files: ['src/templates/**/*.less', 'src/shared/*.less'],
 				tasks: ['less']
-			} //,
-			//js: {
-			//	files: ["src/**/*.js", "!src/js/libs/**/*"],
-			//	tasks: ["jshint"]
-			//}*/
+			},
+			js: {
+				files: ['src/**/*.js', '!src/_libs/**/*', '!src/graphic/babylon_1.14.js'],
+				tasks: ['jshint']
+			}
 		},
 		jshint: {
 			all: {
-				src: ['src/**/*.js', '!src/js/libs/**/*']
+				src: ['src/**/*.js', '!src/_libs/**/*', '!src/graphic/babylon_1.14.js']
 			}
 		},
 		concat: {

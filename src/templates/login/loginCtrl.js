@@ -46,11 +46,11 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 				console.log(resp);
 			}
 		});
-	}
+	};
 
 	$scope.registRequest = function () {
 
-	}
+	};
 
 	$scope.close = function (event, message) {
 		connection.close();

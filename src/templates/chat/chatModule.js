@@ -14,7 +14,7 @@ angular.module('caribbean-war')
 						receiverId: '',
 						timestamp: '',
 						text: ''
-					}
+					};
 
 					$scope.unreaded = 0;
 					$scope.receiverId = 0;
@@ -24,12 +24,12 @@ angular.module('caribbean-war')
 						return '<li> [' + timeFormat(msg.timestamp) + '] ' +
 							'<a href="" data-sender="' + msg.senderId + '"> [' + msg.sender + '] </a>: ' +
 							(msg.receiverId ? '<span class="glyphicon glyphicon-user"></span>' : '') + msg.message +
-							'</li>'
+							'</li>';
 					}
 
 					content.on('click', 'li', function (event) {
 						if (event.target.localName == 'a') {
-							var senderId = $(this)[0].children[0].dataset['sender'] || 0;
+							var senderId = $(this)[0].children[0].dataset.sender || 0;
 							if (userStorage.get().id != senderId) {
 								$scope.receiverId = senderId;
 								return;
