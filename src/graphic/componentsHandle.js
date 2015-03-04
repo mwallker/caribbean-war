@@ -151,8 +151,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				if (details.location) {
 					shipMesh.position = new BABYLON.Vector3(details.location.x, 0, details.location.y);
 				}
-				shipMesh.rotation = new BABYLON.Vector3(0, (details.alpha || 0) + Math.PI, 0);
-
+				shipMesh.rotation.y = (details.alpha || 0) + Math.PI;
+				console.log(shipMesh);
 				var shipMaterial = new BABYLON.StandardMaterial("shipMaterial", scene);
 
 				shipMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
@@ -223,11 +223,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						ship.position.z += Math.sin(-ship.rotation.y) * ship.speed;
 						ship.position.y += Math.sin(timer * 1.2) / (ship.weight * 0.3);
 
-						$('#coordXL').text(ship.position.x.toFixed(1));
-						$('#coordYL').text(ship.position.z.toFixed(1));
-
-						$('#coordXS').text(ship.position.x.toFixed(1));
-						$('#coordYS').text(ship.position.z.toFixed(1));
+						$('#coordXL').text(ship.position.x.toFixed(3));
+						$('#coordYL').text(ship.position.z.toFixed(3));
 
 						//Rotation
 						ship.rotation.y = (ship.rotation.y + (wheelMode * ship.speed * _angleSpeed) / (sailsMode + 1)) % (2 * Math.PI);
@@ -307,7 +304,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			var user = userStorage.get();
 			var ship = BaseComponents.createShip(scene, {
 				id: user.id,
-				location: user.location
+				location: user.location,
+				alpha: user.alpha
 			});
 			ships.push(ship);
 			KeyEvents.bind(user.id);
@@ -323,9 +321,15 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				console.log(neighbors[n]);
 				ships.push(BaseComponents.createShip(scene, {
 					id: neighbors[n].id,
-					location: neighbors[n].location
+					location: neighbors[n].location,
+					alpha: neighbors[n].alpha
 				}));
 			}
+
+			$rootScope.$on('position', function (event, details) {
+				$('#coordXS').text(details.locationX.toFixed(3));
+				$('#coordYS').text(details.locationY.toFixed(3));
+			});
 
 			var onNeigboursCallback = $rootScope.$on('neighbours', function (event, details) {
 				var users = details;
@@ -335,7 +339,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 							if (users.added[i].id != user.id) {
 								ships.push(BaseComponents.createShip(scene, {
 									id: users.added[i].id,
-									location: neighbors[n].location
+									location: users.added[i].location,
+									alpha: users.added[i].alpha
 								}));
 							}
 						}
