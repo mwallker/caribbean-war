@@ -43,7 +43,8 @@
 	</div>
 </div>
 
-<div id="status-bar" class="primary-theme" ng-init="status = false">Version: {{devInfo.version}} | Server: {{devInfo.environment}} | Status:
-	<span class="up glyphicon glyphicon-ok-circle" ng-if="status"></span>
-	<span class="down glyphicon glyphicon-ban-circle" ng-if="!status"></span>
+<div id="status-bar" class="primary-theme">Version: {{::devInfo.version}} | Server: {{::devInfo.environment}} | Status:
+	<span class="up glyphicon glyphicon-ok-circle" ng-show="status == 1"></span>
+	<span class="down glyphicon glyphicon-ban-circle" ng-show="status == 0"></span>
+	<span class="refresh glyphicon glyphicon-refresh" ng-show="status == -1"></span>
 </div>

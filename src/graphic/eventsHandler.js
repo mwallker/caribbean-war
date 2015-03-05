@@ -52,6 +52,7 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		function () {
 			if (!holdenLeft && checkFocus()) {
 				holdenLeft = true;
+				//canvas.trigger('movementKey', TargetingDirections.left);
 				if (connection.status() && userId) {
 					connection.send('move', {
 						type: 'left'
@@ -96,15 +97,15 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		function () {
 			if (!holdenQ && checkFocus()) {
 				holdenQ = true;
-				if (holdenE && holdenQ) canvas.trigger('cameraAction', TargetingDirections.both);
-				else canvas.trigger('cameraAction', TargetingDirections.left);
+				if (holdenE && holdenQ) canvas.trigger('directionKey', TargetingDirections.both);
+				else canvas.trigger('directionKey', TargetingDirections.left);
 			}
 		},
 		function () {
 			if (holdenQ) {
 				holdenQ = false;
-				if (!holdenE) canvas.trigger('cameraAction', TargetingDirections.none);
-				else canvas.trigger('cameraAction', TargetingDirections.right);
+				if (!holdenE) canvas.trigger('directionKey', TargetingDirections.none);
+				else canvas.trigger('directionKey', TargetingDirections.right);
 			}
 		});
 
@@ -112,15 +113,15 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		function () {
 			if (!holdenE && checkFocus()) {
 				holdenE = true;
-				if (holdenE && holdenQ) canvas.trigger('cameraAction', TargetingDirections.both);
-				else canvas.trigger('cameraAction', TargetingDirections.right);
+				if (holdenE && holdenQ) canvas.trigger('directionKey', TargetingDirections.both);
+				else canvas.trigger('directionKey', TargetingDirections.right);
 			}
 		},
 		function () {
 			if (holdenE) {
 				holdenE = false;
-				if (!holdenQ) canvas.trigger('cameraAction', TargetingDirections.none);
-				else canvas.trigger('cameraAction', TargetingDirections.left);
+				if (!holdenQ) canvas.trigger('directionKey', TargetingDirections.none);
+				else canvas.trigger('directionKey', TargetingDirections.left);
 			}
 		});
 

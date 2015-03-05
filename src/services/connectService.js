@@ -14,7 +14,6 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 		deferred = $q.defer();
 		if (localStorage.server) {
 			socketUrl = localStorage.server;
-			console.log(socketUrl);
 		} else {
 			deferred.reject();
 			$rootScope.$emit('error', 'ERRORS_CONN');
@@ -33,7 +32,7 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 				socket.onmessage = function (event) {
 					var data = angular.fromJson(event.data);
 					if (data && data.action) {
-						console.log(data);
+						if (data.action != 'position') console.log(data);
 						$rootScope.$emit(data.action, data.details);
 					}
 				};
@@ -42,6 +41,7 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 					console.log(e);
 					deferred.reject();
 					$rootScope.$emit('close', e);
+					$rootScope.$emit('error', 'ERRORS_CONN_CLOSE');
 				};
 			} catch (e) {
 				console.log('Catch ' + e);
@@ -61,6 +61,23 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 	result.close = function () {
 		if (this.status()) {
 			socket.close();
+		}
+	};
+
+	result.testConnection = function () {
+		try {
+			if (localStorage.server) {
+				var conn = new WebSocket(localStorage.server);
+				conn.onopen = function () {
+					$rootScope.$emit('status', 1);
+					conn.close();
+				};
+				conn.onerror = function () {
+					$rootScope.$emit('status', 0);
+				};
+			}
+		} catch (e) {
+			$rootScope.$emit('status', 0);
 		}
 	};
 

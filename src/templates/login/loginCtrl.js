@@ -1,9 +1,16 @@
-angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootScope, $state, connection, userStorage) {
+angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootScope, $interval, $state, connection, userStorage) {
 	$scope.email = localStorage.email || "";
 	$scope.rememberUser = !!localStorage.email;
-	$rootScope.authorized = false;
+	$scope.status = -1;
 
+	$rootScope.authorized = false;
 	$rootScope.loading = false;
+
+
+	connection.testConnection();
+	var stopConnectionUpdate = $interval(function () {
+		connection.testConnection();
+	}, 3000);
 
 	if (connection.status()) {
 		$rootScope.$broadcast('close', '');
@@ -25,6 +32,7 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 		if (data) {
 			if (data.authorize) {
 				userStorage.set(data);
+				$interval.cancel(stopConnectionUpdate);
 				$state.go('harbor');
 			} else {
 				if (data.inGame) {
@@ -48,6 +56,10 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 		});
 	};
 
+	$scope.setStatus = function (event, value) {
+		$scope.status = value;
+	}
+
 	$scope.registRequest = function () {
 
 	};
@@ -58,6 +70,7 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 		$state.go('login');
 	};
 
+	$rootScope.$on('status', $scope.setStatus);
 	$rootScope.$on('auth', $scope.authorize);
 	$rootScope.$on('close', $scope.close);
 });

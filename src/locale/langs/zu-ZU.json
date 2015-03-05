@@ -35,6 +35,7 @@
 	"CHAT_PUBLIC": "Naeco",
 
 	"ERRORS_CONN": "Cannot establish connection",
+	"ERRORS_CONN_CLOSE": "Connection was closed by server",
 	"ERRORS_AUTH": "Wrong login or password",
 	"ERRORS_IN_GAME": "Emag in ydaerla",
 	"ERRORS_ROUT": "Load fail",
