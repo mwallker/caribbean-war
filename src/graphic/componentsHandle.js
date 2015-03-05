@@ -65,7 +65,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						camera.beta = lerp(camera.beta, minBeta, lerpFactor);
 					} else {
 						console.log(direction);
-						camera.alpha = lerp(camera.alpha, targetAlpha - direction * Math.PI/2, lerpFactor);
+						camera.alpha = lerp(camera.alpha, -(Math.PI + targetAlpha) % (2 * Math.PI) - direction * Math.PI, lerpFactor);
 						camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
 					}
 				}
@@ -241,7 +241,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		axis: function (scene) {
 			var _axis = [];
 			var count = 30,
-				velocity = 0.3;
+				velocity = 0.6;
 			var materials = [
 				new BABYLON.StandardMaterial('xMaterial', scene),
 				new BABYLON.StandardMaterial('yMaterial', scene),
@@ -282,7 +282,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		},
 		//Targeting Curve(s)
 		getCurves: function (scene) {
-			var lines = scene.getMeshByName('lines');
+			var lines = scene.getMeshByName('lines') || new BABYLON.Mesh.CreateLines('lines', [], scene);
 
 			return {
 				update: function (collection) {
@@ -292,7 +292,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						lines = new BABYLON.Mesh.CreateLines('lines', collection, scene);
 					}
 				}
-			}
+			};
 		}
 	};
 
@@ -344,6 +344,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 			var curves = BaseComponents.getCurves(scene);
 
+			var targetDirection = TargetingDirections.none;
+
 			var axis = BaseComponents.axis(scene);
 
 			var cameraControl = new CameraController(camera, {
@@ -360,14 +362,13 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				}));
 			}
 
-
 			var onPositionCallback = $rootScope.$on('position', function (event, details) {
 				$('#coordXS').text(details.locationX.toFixed(5));
 				$('#coordYS').text(details.locationY.toFixed(5));
 			});
 
 			var onDirectionCallback = $rootScope.$on('directionKey', function (event, data) {
-				targettingDirection = !!data ? data : TargetingDirections.none;
+				targetDirection = !!data ? data : TargetingDirections.none;
 			});
 
 			var onNeigboursCallback = $rootScope.$on('neighbours', function (event, details) {

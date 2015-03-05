@@ -1,12 +1,12 @@
 //Smoothing value's changes
 function lerp(start, end, delta) {
 	return (start + (delta || 0.01) * (end - start));
-};
+}
 
 //Get random value from range
 function randomRange(min, max) {
 	return Math.random() * (max - min) + min;
-};
+}
 
 //Common objects
 var TargetingDirections = {
@@ -18,7 +18,7 @@ var TargetingDirections = {
 
 function checkFocus() {
 	return !$("input").is(':focus');
-};
+}
 
 function correctDistance(dist, max, min) {
 	if (dist > max) {
@@ -30,7 +30,7 @@ function correctDistance(dist, max, min) {
 			return dist;
 		}
 	}
-};
+}
 
 function resolveAngles(angle, direction) {
 	var normalAngle = -(Math.PI + angle);
@@ -39,7 +39,7 @@ function resolveAngles(angle, direction) {
 	} else {
 		return [normalAngle + direction * Math.PI / 2];
 	}
-};
+}
 
 //TODO remove "magic numbers" with constants
 /**
@@ -101,17 +101,17 @@ function calculateCurve(position, options) {
 		}
 		return curve;
 	}
-};
+}
 
-var timeFormat = function (timestamp) {
+function timeFormat(timestamp) {
 	var time = new Date(timestamp);
 	var hours = (time.getHours() > 9 ? '' : '0') + time.getHours(),
 		minutes = (time.getMinutes() > 9 ? '' : '0') + time.getMinutes(),
 		seconds = (time.getSeconds() > 9 ? '' : '0') + time.getSeconds();
 	return hours + ':' + minutes + ':' + seconds;
-};
+}
 
-var switchFullscreen = function (condition) {
+function witchFullscreen(condition) {
 	if (!condition) {
 		if (document.webkitCancelFullScreen) {
 			document.webkitCancelFullScreen();
@@ -121,4 +121,4 @@ var switchFullscreen = function (condition) {
 			document.documentElement.webkitRequestFullScreen();
 		}
 	}
-};
+}
