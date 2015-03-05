@@ -1,7 +1,6 @@
-angular.module('render').factory('KeyEvents', function ($rootScope, connection) {
+angular.module('render').factory('KeyEvents', function ($rootScope) {
 
-	var userId = null;
-
+	var canvas = $('#renderCanvas');
 	var checkFocus = function () {
 		return !$("input").is(':focus');
 	};
@@ -16,17 +15,11 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		holdenEsc = false,
 		holdenM = false;
 
-	var canvas = $('#renderCanvas');
-
 	KeyboardJS.on('up, w',
 		function (event) {
 			if (!holdenUp && checkFocus()) {
 				holdenUp = true;
-				if (connection.status() && userId) {
-					connection.send('move', {
-						type: 'upward'
-					});
-				}
+				$rootScope.$emit('movementKey', 'upward');
 			}
 		},
 		function () {
@@ -37,11 +30,7 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		function (event) {
 			if (!holdenDown && checkFocus()) {
 				holdenDown = true;
-				if (connection.status() && userId) {
-					connection.send('move', {
-						type: 'backward'
-					});
-				}
+				$rootScope.$emit('movementKey', 'backward');
 			}
 		},
 		function () {
@@ -52,22 +41,13 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		function () {
 			if (!holdenLeft && checkFocus()) {
 				holdenLeft = true;
-				//canvas.trigger('movementKey', TargetingDirections.left);
-				if (connection.status() && userId) {
-					connection.send('move', {
-						type: 'left'
-					});
-				}
+				$rootScope.$emit('movementKey', 'left');
 			}
 		},
 		function () {
 			if (holdenLeft) {
 				holdenLeft = false;
-				if (connection.status() && userId) {
-					connection.send('move', {
-						type: 'none'
-					});
-				}
+				$rootScope.$emit('movementKey', 'none');
 			}
 		});
 
@@ -75,21 +55,13 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		function () {
 			if (!holdenRight && checkFocus()) {
 				holdenRight = true;
-				if (connection.status() && userId) {
-					connection.send('move', {
-						type: 'right'
-					});
-				}
+				$rootScope.$emit('movementKey', 'right');
 			}
 		},
 		function () {
 			if (holdenRight) {
 				holdenRight = false;
-				if (connection.status() && userId) {
-					connection.send('move', {
-						type: 'none'
-					});
-				}
+				$rootScope.$emit('movementKey', 'none');
 			}
 		});
 
@@ -163,11 +135,8 @@ angular.module('render').factory('KeyEvents', function ($rootScope, connection) 
 		});
 
 	return {
-		bind: function (id) {
-			userId = id;
-		},
-		unbind: function () {
-			userId = null;
+		get: function () {
+			return 'KeyEvents';
 		}
 	};
 });

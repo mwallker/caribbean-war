@@ -1,6 +1,5 @@
 caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'connection', 'userStorage',
 	function ($scope, $state, $rootScope, connection, userStorage) {
-		//var canvas = $('#renderCanvas');
 
 		if (!userStorage.status()) {
 			connection.close();
@@ -9,10 +8,14 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 		}
 
 		$scope.user = userStorage.get();
-		/*
-				canvas.on('movementKey', function (event, data) {
 
+		$rootScope.$on('movementKey', function (event, command) {
+			if (connection.status() && $scope.user.id) {
+				connection.send('move', {
+					type: command
 				});
-		*/
+			}
+		});
+
 	}
 ]);

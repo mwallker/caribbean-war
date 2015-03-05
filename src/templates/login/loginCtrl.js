@@ -40,7 +40,6 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 				} else {
 					$rootScope.$emit('error', 'ERRORS_AUTH');
 				}
-
 			}
 		}
 	};
@@ -58,7 +57,7 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 
 	$scope.setStatus = function (event, value) {
 		$scope.status = value;
-	}
+	};
 
 	$scope.registRequest = function () {
 

@@ -1,10 +1,10 @@
 //Smoothing value's changes
-var lerp = function (start, end, delta) {
+function lerp(start, end, delta) {
 	return (start + (delta || 0.01) * (end - start));
 };
 
 //Get random value from range
-var randomRange = function (min, max) {
+function randomRange(min, max) {
 	return Math.random() * (max - min) + min;
 };
 
@@ -16,11 +16,11 @@ var TargetingDirections = {
 	both: 2
 };
 
-var checkFocus = function () {
+function checkFocus() {
 	return !$("input").is(':focus');
 };
 
-var correctDistance = function (dist, max, min) {
+function correctDistance(dist, max, min) {
 	if (dist > max) {
 		return max;
 	} else {
@@ -32,7 +32,7 @@ var correctDistance = function (dist, max, min) {
 	}
 };
 
-var resolveAngles = function (angle, direction) {
+function resolveAngles(angle, direction) {
 	var normalAngle = -(Math.PI + angle);
 	if (direction == targetingDirection.both) {
 		return [normalAngle - Math.PI / 2, normalAngle + Math.PI / 2];
@@ -42,7 +42,15 @@ var resolveAngles = function (angle, direction) {
 };
 
 //TODO remove "magic numbers" with constants
-var calculateCurve = function (position, options) {
+/**
+ * Calculate targetting curves
+ * @param {Object} position - Position of central point
+ * @param {number} position.x - X coord
+ * @param {number} position.y - Y coord
+ * @param {Object} options - Options
+ * @param {string} options - Options
+ */
+function calculateCurve(position, options) {
 	if (options.direction == targetingDirection.none) {
 		return [];
 	} else {

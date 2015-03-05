@@ -38,7 +38,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		});
 
 		$('#renderCanvas').on('directionKey', function (event, data) {
-			console.log(data);
 			if (data) direction = data;
 			else direction = TargetingDirections.none;
 		});
@@ -59,13 +58,14 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					if (camera.radius < minDist) camera.radius = minDist;
 				}
 			},
-			targetingCorrection: function (direction) {
+			targetingCorrection: function () {
 				if (direction !== TargetingDirections.none) {
 					if (direction == TargetingDirections.both) {
 						camera.alpha = lerp(camera.alpha, -(Math.PI + targetAlpha), lerpFactor);
 						camera.beta = lerp(camera.beta, minBeta, lerpFactor);
 					} else {
-						camera.alpha = lerp(camera.alpha, -(Math.PI + targetAlpha) - direction * Math.PI, lerpFactor);
+						console.log(direction);
+						camera.alpha = lerp(camera.alpha, targetAlpha - direction * Math.PI/2, lerpFactor);
 						camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
 					}
 				}
@@ -77,7 +77,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					targetAlpha = target.alpha || 0;
 				}
 				if (!locked) {
-					camera.alpha = lerp(camera.alpha, -targetAlpha + normalAlpha, lerpFactor);
+					camera.alpha = lerp(camera.alpha, (-targetAlpha + normalAlpha) % (2 * Math.PI), lerpFactor);
 					camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
 				}
 			},
@@ -89,8 +89,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			},
 			removeEvents: function () {
 				$('#renderCanvas').off('mousedown');
-				$('#renderCanvas').off('directionKey');
 				$(document).off('mouseup');
+				$('#renderCanvas').off('directionKey');
 			}
 		};
 	}
@@ -281,13 +281,17 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			};
 		},
 		//Targeting Curve(s)
-		getCurves: function (scene, collection) {
+		getCurves: function (scene) {
 			var lines = scene.getMeshByName('lines');
 
-			if (lines) lines.dispose();
+			return {
+				update: function (collection) {
+					if (lines) lines.dispose();
 
-			if (collection.length) {
-				lines = new BABYLON.Mesh.CreateLines('lines', collection, scene);
+					if (collection && collection.length) {
+						lines = new BABYLON.Mesh.CreateLines('lines', collection, scene);
+					}
+				}
 			}
 		}
 	};
@@ -337,7 +341,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				alpha: user.alpha
 			});
 			ships.push(ship);
-			KeyEvents.bind(user.id);
+
+			var curves = BaseComponents.getCurves(scene);
 
 			var axis = BaseComponents.axis(scene);
 
@@ -355,9 +360,14 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				}));
 			}
 
-			$rootScope.$on('position', function (event, details) {
-				$('#coordXS').text(details.locationX.toFixed(3));
-				$('#coordYS').text(details.locationY.toFixed(3));
+
+			var onPositionCallback = $rootScope.$on('position', function (event, details) {
+				$('#coordXS').text(details.locationX.toFixed(5));
+				$('#coordYS').text(details.locationY.toFixed(5));
+			});
+
+			var onDirectionCallback = $rootScope.$on('directionKey', function (event, data) {
+				targettingDirection = !!data ? data : TargetingDirections.none;
 			});
 
 			var onNeigboursCallback = $rootScope.$on('neighbours', function (event, details) {
@@ -401,6 +411,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					cameraControl.baseCorrection();
 					cameraControl.trackingCorrection(ship.getPosition());
 					cameraControl.targetingCorrection();
+
+					curves.update();
+
 					axis.move();
 					for (var item in ships) {
 						ships[item].move(delay);
@@ -409,6 +422,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				unsubscribe: function () {
 					onNeigboursCallback();
 					onMoveCallback();
+					onDirectionCallback();
 					cameraControl.removeEvents();
 				}
 			};
