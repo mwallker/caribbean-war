@@ -205,11 +205,14 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					return shipId;
 				},
 				correctPosition: function (next) {
-					if (correctionTimer > 5) {
+					if (correctionTimer < 5) {
 						ship.position.x = lerp(ship.position.x, next.x, _velocity * 10);
 						ship.position.z = lerp(ship.position.z, next.z, _velocity * 10);
+						correctionTimer += 1000 / 60;
+
+					}else{
+						correctionTimer = 0;
 					}
-					correctionTimer += 1000 / 60;
 				},
 				getPosition: function () {
 					return {
