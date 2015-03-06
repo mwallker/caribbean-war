@@ -175,7 +175,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			var _velocity = 0.01;
 
 			var obs = 0,
-				timer = 0;
+				timer = 0,
+				correctionTimer = 0;
 
 			return {
 				changeState: function (type) {
@@ -202,6 +203,13 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				},
 				getId: function () {
 					return shipId;
+				},
+				correctPosition: function (next) {
+					if (correctionTimer > 5) {
+						ship.position.x = lerp(ship.position.x, next.x, _velocity * 10);
+						ship.position.z = lerp(ship.position.z, next.z, _velocity * 10);
+					}
+					correctionTimer += 1000 / 60;
 				},
 				getPosition: function () {
 					return {
@@ -378,6 +386,11 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			var onPositionCallback = $rootScope.$on('position', function (event, details) {
 				$('#coordXS').text(details.locationX.toFixed(5));
 				$('#coordYS').text(details.locationY.toFixed(5));
+				ship.correctPosition({
+					x: details.locationX,
+					z: details.locationY
+				});
+
 			});
 
 			$('#renderCanvas').on('directionKey', function (event, data) {

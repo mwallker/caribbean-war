@@ -1,7 +1,13 @@
 <div id="world-layer">
-	<div class="progress">
-		<div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+	<div class="progress ">
+		<div class="progress-bar" role="progressbar" aria-valuemin="3" aria-valuemax="100" style="width: 60%;">
 			60%
+		</div>
+	</div>
+
+	<div class="progress">
+		<div class="progress-bar" role="progressbar" aria-valuemin="3" aria-valuemax="100" style="width: {{sailsMode*25 + 3}}%;">
+			{{sailsMode}}
 		</div>
 	</div>
 
@@ -12,12 +18,8 @@
 	</div>
 
 	<div>
-		<p>Local</p>
-		X: <span id="coordXL"></span>;
-		Y: <span id="coordYL"></span>;
-		<p>Server</p>
-		X: <span id="coordXS"></span>;
-		Y: <span id="coordYS"></span>;
+		<p>Local - X: <span id="coordXL"></span>; Y: <span id="coordYL"></span>;</p>
+		<p>Server - X: <span id="coordXS"></span>; Y: <span id="coordYS"></span>;</p>
 	</div>
 </div>
 </div>
