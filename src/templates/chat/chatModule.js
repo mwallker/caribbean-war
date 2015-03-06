@@ -7,7 +7,7 @@ angular.module('caribbean-war')
 				controller: function ($scope, $rootScope) {
 					var content = $('.chat-content ul');
 					var history = [];
-					var chatBuffer = 42;
+					var chatBuffer = 4;
 					var message = {
 						sender: '',
 						senderId: '',
@@ -18,7 +18,7 @@ angular.module('caribbean-war')
 
 					$scope.unreaded = 0;
 					$scope.receiverId = 0;
-					$scope.chatCollapsed = false;
+					$scope.chatCollapsed = true;
 
 					function prepareTemplate(msg) {
 						return '<li> [' + timeFormat(msg.timestamp) + '] ' +
@@ -45,9 +45,7 @@ angular.module('caribbean-war')
 					};
 
 					$scope.receiveChatMessage = function (event, data) {
-						console.log(data);
 						var visiable = !!data.receiverId ? (data.receiverId == userStorage.get().id || data.senderId == userStorage.get().id) : true;
-						console.log(visiable);
 						if (visiable) {
 							if (history.length >= chatBuffer) {
 								history.shift();

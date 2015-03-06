@@ -59,13 +59,12 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				}
 			},
 			targetingCorrection: function () {
-				if (direction !== TargetingDirections.none) {
+				if (!locked && direction !== TargetingDirections.none) {
 					if (direction == TargetingDirections.both) {
 						camera.alpha = lerp(camera.alpha, -(Math.PI + targetAlpha), lerpFactor);
 						camera.beta = lerp(camera.beta, minBeta, lerpFactor);
 					} else {
-						console.log(direction);
-						camera.alpha = lerp(camera.alpha, -(Math.PI + targetAlpha) % (2 * Math.PI) - direction * Math.PI, lerpFactor);
+						camera.alpha = lerp(camera.alpha, -(Math.PI + targetAlpha) % (2 * Math.PI) - direction * Math.PI, lerpFactor) % (2 * Math.PI);
 						camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
 					}
 				}
@@ -282,14 +281,28 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		},
 		//Targeting Curve(s)
 		getCurves: function (scene) {
+			var reffer = scene;
 			var lines = scene.getMeshByName('lines') || new BABYLON.Mesh.CreateLines('lines', [], scene);
+			var hit = reffer.pick(0, 0);
+			var collection = [];
 
 			return {
-				update: function (collection) {
+				update: function (point, direction) {
 					if (lines) lines.dispose();
 
-					if (collection && collection.length) {
-						lines = new BABYLON.Mesh.CreateLines('lines', collection, scene);
+					if (direction !== TargetingDirections.none) {
+						hit = reffer.pick(reffer.pointerX, reffer.pointerY);
+						collection = calculateCurve(point, {
+							angle: point.alpha,
+							scatter: Math.PI / 8,
+							direction: direction,
+							distance: correctDistance(point, hit.pickedPoint)
+						});
+						if (collection.length) {
+							lines = new BABYLON.Mesh.CreateLines('lines', collection, reffer);
+						}
+					} else {
+						collection = [];
 					}
 				}
 			};
@@ -367,7 +380,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				$('#coordYS').text(details.locationY.toFixed(5));
 			});
 
-			var onDirectionCallback = $rootScope.$on('directionKey', function (event, data) {
+			$('#renderCanvas').on('directionKey', function (event, data) {
 				targetDirection = !!data ? data : TargetingDirections.none;
 			});
 
@@ -413,9 +426,10 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					cameraControl.trackingCorrection(ship.getPosition());
 					cameraControl.targetingCorrection();
 
-					curves.update();
+					curves.update(ship.getPosition(), targetDirection);
 
 					axis.move();
+
 					for (var item in ships) {
 						ships[item].move(delay);
 					}
@@ -423,7 +437,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				unsubscribe: function () {
 					onNeigboursCallback();
 					onMoveCallback();
-					onDirectionCallback();
+					//onDirectionCallback();
 					cameraControl.removeEvents();
 				}
 			};

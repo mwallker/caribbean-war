@@ -20,7 +20,9 @@ function checkFocus() {
 	return !$("input").is(':focus');
 }
 
-function correctDistance(dist, max, min) {
+function correctDistance(pointA, pointB) {
+	var dist = Math.sqrt((pointA.x - pointB.x)*(pointA.x - pointB.x) + (pointA.z - pointB.z)*(pointA.z - pointB.z));
+	var min = 10, max = 50;
 	if (dist > max) {
 		return max;
 	} else {
@@ -34,7 +36,7 @@ function correctDistance(dist, max, min) {
 
 function resolveAngles(angle, direction) {
 	var normalAngle = -(Math.PI + angle);
-	if (direction == targetingDirection.both) {
+	if (direction == TargetingDirections.both) {
 		return [normalAngle - Math.PI / 2, normalAngle + Math.PI / 2];
 	} else {
 		return [normalAngle + direction * Math.PI / 2];
@@ -51,13 +53,13 @@ function resolveAngles(angle, direction) {
  * @param {string} options - Options
  */
 function calculateCurve(position, options) {
-	if (options.direction == targetingDirection.none) {
+	if (options.direction == TargetingDirections.none) {
 		return [];
 	} else {
 		var curve = [];
 
 		var angles = resolveAngles(options.angle, options.direction);
-		var distance = options.distance;
+		var distance = options.distance || 0;
 		var scatter = options.scatter || 0;
 
 		//Cashing values

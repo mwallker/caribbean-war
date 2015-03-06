@@ -16,7 +16,6 @@ angular.module('caribbean-war')
 
 			$scope.manageTasks([ /*audioControl.loadSoundFile('theme', 'music'), audioControl.loadSoundFile('ocean', 'effects')*/ ]);
 
-
 			$scope.errorHide = function () {
 				$scope.errorType = '';
 				$scope.errorShown = false;
@@ -24,10 +23,10 @@ angular.module('caribbean-war')
 
 			$rootScope.$on('error', function (event, type) {
 				$rootScope.loading = false;
-				if (type) {
+				if (!$scope.errorShown && type) {
 					$scope.errorType = type;
 					$scope.errorShown = true;
-					$timeout($scope.errorHide, 3000);
+					$timeout($scope.errorHide, 5000);
 				}
 			});
 
