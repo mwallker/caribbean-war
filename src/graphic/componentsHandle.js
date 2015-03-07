@@ -209,9 +209,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					$('#coordXS').text(next.x.toFixed(5));
 					$('#coordYS').text(next.z.toFixed(5));
 					if (correctionTimer > 3) {
-						console.log(correctionTimer);
-						ship.position.x = lerp(ship.position.x, next.x, 0.3);
-						ship.position.z = lerp(ship.position.z, next.z, 0.3);
+						ship.position.x = lerp(ship.position.x, next.x, 0.5);
+						ship.position.z = lerp(ship.position.z, next.z, 0.5);
 						correctionTimer = 0;
 					} else {
 						correctionTimer += (1 / 60);
@@ -433,6 +432,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				for (var i in ships) {
 					if (ships[i].getId() == details.id) {
 						ships[i].changeState(details.type);
+						//ships[i].correctPosition(details.location);
 						break;
 					}
 				}
