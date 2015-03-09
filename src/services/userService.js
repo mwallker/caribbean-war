@@ -1,7 +1,8 @@
 caribbeanWarApp.service('userStorage', function () {
-	var user = {
-		authorize: false
-	};
+	var ship = {},
+		user = {
+			authorize: false
+		};
 
 	var neighbors = [];
 
@@ -17,6 +18,14 @@ caribbeanWarApp.service('userStorage', function () {
 
 		get: function () {
 			return user;
+		},
+
+		setShip: function (data) {
+			ship = data.shipInfo;
+		},
+
+		getShip: function () {
+			return ship;
 		},
 
 		setNeighbors: function (data) {

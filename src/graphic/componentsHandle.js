@@ -64,7 +64,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						camera.alpha = lerp(camera.alpha, -(Math.PI + targetAlpha), lerpFactor);
 						camera.beta = lerp(camera.beta, minBeta, lerpFactor);
 					} else {
-						camera.alpha = lerp(camera.alpha, -(Math.PI + targetAlpha) % (2 * Math.PI) - direction * Math.PI, lerpFactor) % (2 * Math.PI);
+						camera.alpha = lerp(camera.alpha, -(Math.PI + targetAlpha) % (2 * Math.PI) - (direction * Math.PI), lerpFactor);
 						camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
 					}
 				}
@@ -205,13 +205,15 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					return shipId;
 				},
 				correctPosition: function (next) {
-					if (correctionTimer < 5) {
-						ship.position.x = lerp(ship.position.x, next.x, _velocity * 10);
-						ship.position.z = lerp(ship.position.z, next.z, _velocity * 10);
-						correctionTimer += 1000 / 60;
-
-					}else{
+					if (!ship) return;
+					$('#coordXS').text(next.x.toFixed(5));
+					$('#coordYS').text(next.z.toFixed(5));
+					if (correctionTimer > 3) {
+						ship.position.x = lerp(ship.position.x, next.x, 0.5);
+						ship.position.z = lerp(ship.position.z, next.z, 0.5);
 						correctionTimer = 0;
+					} else {
+						correctionTimer += (1 / 60);
 					}
 				},
 				getPosition: function () {
@@ -223,23 +225,23 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				},
 				move: function (delay) {
 					if (ship) {
-						//timer = timer + delay % (2 * Math.PI);
-						//obs = lerp(obs, randomRange(-0.3, 0.3), 0.03);
+						timer = timer + delay % (2 * Math.PI);
+						obs = lerp(obs, randomRange(-0.3, 0.3), 0.03);
 
 						ship.speed = lerp(ship.speed, sailsMode * ship.maxSpeed * delay / 4, _velocity);
 
 						//Movement
 						ship.position.x += Math.cos(ship.rotation.y) * ship.speed;
 						ship.position.z += Math.sin(-ship.rotation.y) * ship.speed;
-						//ship.position.y += Math.sin(timer * 1.2) / (ship.weight * 0.3);
+						ship.position.y += Math.sin(timer * 1.2) / (ship.weight * 0.3);
 
 						$('#coordXL').text(ship.position.x.toFixed(5));
 						$('#coordYL').text(ship.position.z.toFixed(5));
 
 						//Rotation
 						ship.rotation.y = (ship.rotation.y + (wheelMode * ship.speed * _angleSpeed) / (sailsMode + 1)) % (2 * Math.PI);
-						//ship.rotation.x = lerp(ship.rotation.x, wheelMode * ship.speed * 0.7 + obs, 0.02);
-						//ship.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.06;
+						ship.rotation.x = lerp(ship.rotation.x, wheelMode * ship.speed * 0.7 + obs, 0.02);
+						ship.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.06;
 					}
 				},
 				remove: function () {
@@ -250,8 +252,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		//Box
 		axis: function (scene) {
 			var _axis = [];
-			var count = 30,
-				velocity = 0.6;
+			var count = 20,
+				ratio = 0.2,
+				velocity = 10;
 			var materials = [
 				new BABYLON.StandardMaterial('xMaterial', scene),
 				new BABYLON.StandardMaterial('yMaterial', scene),
@@ -264,7 +267,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			for (var d = 0; d < 3; d++) {
 				var temp = [];
 				for (var i = 0; i < count; i++) {
-					var obj = BABYLON.Mesh.CreateBox('ax_' + d + '_' + i, 0.1, scene);
+					var obj = BABYLON.Mesh.CreateBox('ax_' + d + '_' + i, 2, scene);
 					obj.material = materials[d];
 					if (d === 0) obj.position.x = velocity * i;
 					if (d === 1) obj.position.y = velocity * i;
@@ -282,9 +285,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				move: function () {
 					for (var d = 0; d < 3; d++) {
 						for (var i = 0; i < count; i++) {
-							if (d === 0) _axis[d][i].position.x = (_axis[d][i].position.x < count * velocity) ? _axis[d][i].position.x + 0.05 : 0;
-							if (d === 1) _axis[d][i].position.y = (_axis[d][i].position.y < count * velocity) ? _axis[d][i].position.y + 0.05 : 0;
-							if (d === 2) _axis[d][i].position.z = (_axis[d][i].position.z < count * velocity) ? _axis[d][i].position.z + 0.05 : 0;
+							if (d === 0) _axis[d][i].position.x = (_axis[d][i].position.x < count * velocity) ? _axis[d][i].position.x + ratio : 0;
+							if (d === 1) _axis[d][i].position.y = (_axis[d][i].position.y < count * velocity) ? _axis[d][i].position.y + ratio : 0;
+							if (d === 2) _axis[d][i].position.z = (_axis[d][i].position.z < count * velocity) ? _axis[d][i].position.z + ratio : 0;
 						}
 					}
 				}
@@ -305,7 +308,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						hit = reffer.pick(reffer.pointerX, reffer.pointerY);
 						collection = calculateCurve(point, {
 							angle: point.alpha,
-							scatter: Math.PI / 8,
+							scatter: Math.PI / 9,
 							direction: direction,
 							distance: correctDistance(point, hit.pickedPoint)
 						});
@@ -387,11 +390,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			}
 
 			var onPositionCallback = $rootScope.$on('position', function (event, details) {
-				$('#coordXS').text(details.locationX.toFixed(5));
-				$('#coordYS').text(details.locationY.toFixed(5));
 				ship.correctPosition({
-					x: details.locationX,
-					z: details.locationY
+					x: details.x,
+					z: details.y
 				});
 
 			});
@@ -431,6 +432,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				for (var i in ships) {
 					if (ships[i].getId() == details.id) {
 						ships[i].changeState(details.type);
+						//ships[i].correctPosition(details.location);
 						break;
 					}
 				}

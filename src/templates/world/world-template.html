@@ -1,13 +1,14 @@
 <div id="world-layer">
-	<div class="progress ">
-		<div class="progress-bar" role="progressbar" aria-valuemin="3" aria-valuemax="100" style="width: 60%;">
-			60%
+	<div class="primary-theme">
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuemin="3" aria-valuemax="100" style="width: {{(currentHealth/baseHealth)*100}}%;" ng-click="hit()">
+				{{currentHealth}}
+			</div>
 		</div>
-	</div>
 
-	<div class="progress">
-		<div class="progress-bar" role="progressbar" aria-valuemin="3" aria-valuemax="100" style="width: {{sailsMode*25 + 3}}%;">
-			{{sailsMode}}
+		<div class="progress">
+			<div class="progress-bar" role="progressbar" aria-valuemin="3" aria-valuemax="100" style="width: {{sailsMode*100/3}}%;">
+			</div>
 		</div>
 	</div>
 

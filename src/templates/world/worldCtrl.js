@@ -11,6 +11,12 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 
 		$scope.sailsMode = 0;
 		$scope.wheelMode = 0;
+		$scope.baseHealth = userStorage.getShip().hp || 0;
+		$scope.currentHealth = $scope.baseHealth;
+
+		$scope.hit = function () {
+			$scope.currentHealth -= 10;
+		};
 
 		$rootScope.$on('movementKey', function (event, command) {
 			if (connection.status() && $scope.user.id) {
