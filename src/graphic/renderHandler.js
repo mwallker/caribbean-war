@@ -8,10 +8,6 @@ angular.module('render').factory('renderHandler', ['Components', function (Compo
 
 	var content = null;
 
-	//Timer setup
-	var deltaTime = 0;
-	var delay = 0;
-
 	//Render events
 	window.addEventListener('resize', function () {
 		if (engine) {
@@ -23,23 +19,16 @@ angular.module('render').factory('renderHandler', ['Components', function (Compo
 	function createScene(label) {
 		engine = new BABYLON.Engine(canvas, true);
 		scene = new BABYLON.Scene(engine);
-		camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, BABYLON.Vector3.Zero(), scene);
+		camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 0, BABYLON.Vector3.Zero(), scene);
 
 		content = Components[label](scene, camera);
 
 		scene.activeCamera = camera;
 		camera.attachControl(canvas);
 
-		deltaTime = Date.now();
-
 		var update = function () {
-			delay = Math.abs(deltaTime - Date.now()) * 0.001;
-
-			content.onUpdate(delay);
-
-			deltaTime = Date.now();
+			content.onUpdate(engine.getDeltaTime() * 0.001);
 		};
-
 		scene.registerBeforeRender(update);
 
 		engine.runRenderLoop(function () {
