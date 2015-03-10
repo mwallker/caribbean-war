@@ -455,7 +455,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				unsubscribe: function () {
 					onNeigboursCallback();
 					onMoveCallback();
-					//onDirectionCallback();
 					cameraControl.removeEvents();
 				}
 			};
