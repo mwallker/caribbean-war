@@ -113,7 +113,7 @@ function timeFormat(timestamp) {
 	return hours + ':' + minutes + ':' + seconds;
 }
 
-function witchFullscreen(condition) {
+function switchFullscreen(condition) {
 	if (!condition) {
 		if (document.webkitCancelFullScreen) {
 			document.webkitCancelFullScreen();

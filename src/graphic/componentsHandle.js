@@ -376,7 +376,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 			var targetDirection = TargetingDirections.none;
 
-			var axis = BaseComponents.axis(scene);
+			//var axis = BaseComponents.axis(scene);
 
 			var cameraControl = new CameraController(camera, {
 				target: ship.getPosition()
@@ -450,7 +450,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 					curves.update(ship.getPosition(), targetDirection);
 
-					axis.move();
+					//axis.move();
 
 					for (var item in ships) {
 						ships[item].move(delay);
