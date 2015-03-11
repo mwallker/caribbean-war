@@ -61,6 +61,10 @@ angular.module('caribbean-war')
 
 			});
 
+			$rootScope.$on('fuckup', function (){
+				$rootScope.$emit('error', 'ERRORS_FUCKUP');
+			});
+
 			$rootScope.$on('$stateChangeStart',
 				function (event, toState) {
 					$scope.errorShown = false;
