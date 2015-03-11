@@ -23,6 +23,7 @@
 	"MENU_SETTINGS": "Настройки",
 	"MENU_EXIT": "Выйти",
 	"MENU_RESUME": "Продолжить",
+	"MENU_BACK": "Навзад",
 
 	"SETTINGS_MUSIC": "Музыка",
 	"SETTINGS_EFFECTS": "Эффекты",
@@ -41,5 +42,7 @@
 	"ERRORS_ROUT": "Во время загрузки произошла ошибка",
 	"ERRORS_UNKNOWN_ACTION": "Чет не то было нажато",
 	"ERRORS_NOT_READY": "Это часть функцианала еще не реализована",
-	"ERRORS_SEND": "Отправить эту команду не реально"
+	"ERRORS_SEND": "Отправить эту команду не реально",
+
+	"ERRORS_FUCKUP":"Пипяка"
 }

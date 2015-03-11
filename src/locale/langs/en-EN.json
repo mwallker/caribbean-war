@@ -23,6 +23,7 @@
 	"MENU_SETTINGS": "Settings",
 	"MENU_EXIT": "Exit",
 	"MENU_RESUME": "Resume",
+	"MENU_BACK": "Back",
 
 	"SETTINGS_MUSIC": "Music",
 	"SETTINGS_EFFECTS": "Effects",
@@ -41,5 +42,7 @@
 	"ERRORS_ROUT": "Loading fail",
 	"ERRORS_UNKNOWN_ACTION": "Bad command",
 	"ERRORS_NOT_READY": "Feature does not suppoted yet",
-	"ERRORS_SEND": "Can't send command"
+	"ERRORS_SEND": "Can't send command",
+
+	"ERRORS_FUCKUP":"Fuckup"
 }

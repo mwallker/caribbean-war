@@ -23,6 +23,7 @@
 	"MENU_SETTINGS": "Sgnittes",
 	"MENU_EXIT": "Tixe",
 	"MENU_RESUME": "Emuser",
+	"MENU_BACK": "Back",
 
 	"SETTINGS_MUSIC": "Cisum",
 	"SETTINGS_EFFECTS": "Stceffe",
@@ -41,5 +42,7 @@
 	"ERRORS_ROUT": "Load fail",
 	"ERRORS_UNKNOWN_ACTION": "Bad command",
 	"ERRORS_NOT_READY": "O_o",
-	"ERRORS_SEND": "Ooops"
+	"ERRORS_SEND": "Ooops",
+
+	"ERRORS_FUCKUP":"Mimimi"
 }
