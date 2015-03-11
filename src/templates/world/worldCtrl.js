@@ -29,7 +29,7 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 		});
 
 		$rootScope.$on('exitWorld', function (event){
-			//connection.send('exitWorld', '');
+			connection.send('exitWorld', '');
 			$state.go('harbor');
 		});
 

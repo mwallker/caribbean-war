@@ -206,11 +206,17 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				},
 				correctPosition: function (next) {
 					if (!ship) return;
+					$('#coordXL').text(ship.position.x.toFixed(5));
+					$('#coordYL').text(ship.position.z.toFixed(5));
+					$('#coordAlphaL').text(ship.rotation.y.toFixed(5));
+
 					$('#coordXS').text(next.x.toFixed(5));
 					$('#coordYS').text(next.z.toFixed(5));
+					$('#coordAlphaS').text(next.alpha.toFixed(5));
 					if (correctionTimer > 3) {
 						ship.position.x = lerp(ship.position.x, next.x, 0.5);
 						ship.position.z = lerp(ship.position.z, next.z, 0.5);
+						ship.rotation.y = lerp(ship.rotation.y, next.alpha, 0.5);
 						correctionTimer = 0;
 					} else {
 						correctionTimer += (1 / 60);
@@ -234,9 +240,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						ship.position.x += Math.cos(ship.rotation.y) * ship.speed;
 						ship.position.z += Math.sin(-ship.rotation.y) * ship.speed;
 						ship.position.y += Math.sin(timer * 1.2) / (ship.weight * 0.3);
-
-						$('#coordXL').text(ship.position.x.toFixed(5));
-						$('#coordYL').text(ship.position.z.toFixed(5));
 
 						//Rotation
 						ship.rotation.y = (ship.rotation.y + (wheelMode * ship.speed * _angleSpeed) / (sailsMode + 1)) % (2 * Math.PI);
@@ -392,7 +395,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			var onPositionCallback = $rootScope.$on('position', function (event, details) {
 				ship.correctPosition({
 					x: details.x,
-					z: details.y
+					z: details.y,
+					alpha: details.alpha
 				});
 
 			});
