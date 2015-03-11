@@ -67,6 +67,11 @@
 					</form>
 				</div>
 				<p>
+					<button type="button" class="btn btn-primary btn-block" ng-click="backHandler()" data-dismiss="modal" ng-show="canGoBack">
+						{{ 'MENU_BACK' | translate }}
+					</button>
+				</p>
+				<p>
 					<button type="button" class="btn btn-primary btn-block" ng-click="exitHandler()" data-dismiss="modal">
 						{{ 'MENU_EXIT' | translate }}
 					</button>

@@ -1,9 +1,7 @@
 angular.module('caribbean-war').controller('harborCtrl', function ($scope, $rootScope, $state, connection, userStorage) {
 	//SCENE INIT
 	if (!userStorage.status()) {
-		connection.close();
-		userStorage.reset();
-		$state.go('login');
+		$rootScope.$emit("close", false);
 	} else {
 		$scope.user = userStorage.get();
 		$scope.ships = userStorage.get().ships;
@@ -28,10 +26,6 @@ angular.module('caribbean-war').controller('harborCtrl', function ($scope, $root
 			$scope.ships[index].selected = true;
 			$scope.selectedShip = $scope.ships[index];
 		}
-	};
-
-	$scope.exit = function () {
-		$rootScope.$emit("close", "Exit");
 	};
 
 	$scope.toWorld = function () {

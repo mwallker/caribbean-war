@@ -1,6 +1,6 @@
 angular.module('caribbean-war')
-	.controller('appCtrl', ['$scope', '$rootScope', '$q', '$state', '$timeout', 'audioControl', 'connection', 'renderHandler',
-		function ($scope, $rootScope, $q, $state, $timeout, audioControl, connection, renderHandler) {
+	.controller('appCtrl', ['$scope', '$rootScope', '$q', '$state', '$timeout', 'audioControl', 'connection', 'renderHandler', 'userStorage',
+		function ($scope, $rootScope, $q, $state, $timeout, audioControl, connection, renderHandler, userStorage) {
 
 			$scope.appLoading = true;
 			$scope.errorShown = false;
@@ -48,6 +48,13 @@ angular.module('caribbean-war')
 				} catch (e) {
 					$rootScope.$emit('error', 'ERRORS_SEND_FAIL');
 				}
+			});
+
+			$rootScope.$on('close', function (event, wasClean) {
+				connection.close();
+				userStorage.reset();
+				$state.go('login');
+				if(!wasClean) $rootScope.$emit('error', 'ERRORS_ROUT');
 			});
 
 			$rootScope.$on('exit', function (event) {

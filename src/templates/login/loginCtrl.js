@@ -63,13 +63,6 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 
 	};
 
-	$scope.close = function (event, message) {
-		connection.close();
-		userStorage.reset();
-		$state.go('login');
-	};
-
 	$rootScope.$on('status', $scope.setStatus);
 	$rootScope.$on('auth', $scope.authorize);
-	$rootScope.$on('close', $scope.close);
 });

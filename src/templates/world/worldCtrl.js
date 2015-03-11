@@ -2,9 +2,7 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 	function ($scope, $state, $rootScope, connection, userStorage) {
 
 		if (!userStorage.status()) {
-			connection.close();
-			userStorage.reset();
-			$state.go('login');
+			$rootScope.$emit("close", false);
 		}
 
 		$scope.user = userStorage.get();
@@ -17,6 +15,23 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 		$scope.hit = function () {
 			$scope.currentHealth -= 10;
 		};
+
+		$rootScope.$on('hit', function (event, details){
+			$scope.hit();
+		});
+
+		$rootScope.$on('miss', function (event, details){
+			//miss actions
+		});
+
+		$rootScope.$on('shoot', function (event, details){
+			//some shoot actions
+		});
+
+		$rootScope.$on('exitWorld', function (event){
+			//connection.send('exitWorld', '');
+			$state.go('harbor');
+		});
 
 		$rootScope.$on('movementKey', function (event, command) {
 			if (connection.status() && $scope.user.id) {

@@ -7,6 +7,7 @@ angular.module('caribbean-war')
 			$scope.musicVolume = localStorage.musicVolume || 100;
 			$scope.effectsVolume = localStorage.effectsVolume || 100;
 			$scope.inFullscreen = false;
+			$scope.canGoBack = true;
 			$scope.locale = localStorage.locale || appConfig.languages[0].code;
 			$scope.server = localStorage.server ? localStorage.server : localStorage.server = $scope.servers[0].url;
 
@@ -14,7 +15,7 @@ angular.module('caribbean-war')
 
 			function getDevInfo(config) {
 				return {
-					version: '0.3.2',
+					version: '0.3.3',
 					environment: (function (servers) {
 						for (var i in servers) {
 							if (localStorage.server === servers[i].url) {
@@ -38,15 +39,17 @@ angular.module('caribbean-war')
 				$rootScope.devInfo = getDevInfo(appConfig);
 			};
 
-			$scope.exitHandler = function (appConfig) {
-				console.log();
+			$scope.exitHandler = function () {
+				$rootScope.$emit('error', 'ERRORS_NOT_READY');
+			};
+
+			$scope.backHandler = function () {
 				switch ($state.current.name) {
-				case 'harborS':
-					//connection.close();
-					userStorage.reset();
-					$state.go('login');
+				case 'harbor':
+					$rootScope.$emit('close', true);
 					break;
-				case 'worldS':
+				case 'world':
+					$rootScope.$emit('exitWorld');
 					break;
 				default:
 					$rootScope.$emit('error', 'ERRORS_NOT_READY');
@@ -71,6 +74,12 @@ angular.module('caribbean-war')
 			$('#settingsModal').on('hide.bs.modal show.bs.modal', function (e) {
 				menuReady = false;
 			});
+
+			$rootScope.$on('$stateChangeSuccess',
+				function (event, toState) {
+					if (toState.name == 'login') $scope.canGoBack = false;
+					else $scope.canGoBack = true;
+				});
 
 			(function () {
 				$scope.changeVolume('music');
