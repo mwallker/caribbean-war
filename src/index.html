@@ -23,20 +23,20 @@
 	<!-- @import libs -->
 </head>
 
-<body ng-app="caribbean-war">
+<body ng-app="caribbean-war" ng-controller="appCtrl">
 
-	<div ng-controller="appCtrl">
+	<div ng-controller="eventsCtrl">
 		<div class="cloak" ng-show="appLoading"></div>
 
 		<div ng-include="'templates/settings/settings-template.html'"></div>
 
-		<canvas id='renderCanvas'></canvas>
+		<canvas id="renderCanvas"></canvas>
 
 		<div ui-view></div>
 
 		<div id="error-layer">
 			<div class="alert alert-danger" role="alert" ng-show="errorShown">
-				<a class="close" aria-label="Close" ng-click="errorHide()">
+				<a class="close" aria-label="Close" ng-click="errorHandler()">
 					<span aria-hidden="true">&times;</span>
 				</a>
 				<p>
@@ -50,6 +50,7 @@
 
 	<script src="app.js"></script>
 	<script src="app-controller.js"></script>
+	<script src="events-controller.js"></script>
 
 	<script src="shared/shared-script.js"></script>
 	<script src="services/connectService.js"></script>
