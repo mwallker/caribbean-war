@@ -28,11 +28,6 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 			//some shoot actions
 		});
 
-		$rootScope.$on('exitWorld', function (event){
-			connection.send('exitWorld', '');
-			$state.go('harbor');
-		});
-
 		$rootScope.$on('movementKey', function (event, command) {
 			if (connection.status() && $scope.user.id) {
 				connection.send('move', {

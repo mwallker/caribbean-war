@@ -44,7 +44,7 @@ angular.module('caribbean-war')
 			$rootScope.$on('send', function (event, data) {
 				try {
 					$rootScope.loading = true;
-					//connection.send(data[0], data[1]);
+					connection.send(data.action, data.details);
 				} catch (e) {
 					$rootScope.$emit('error', 'ERRORS_SEND_FAIL');
 				}
@@ -54,15 +54,28 @@ angular.module('caribbean-war')
 				connection.close();
 				userStorage.reset();
 				$state.go('login');
-				if(!wasClean) $rootScope.$emit('error', 'ERRORS_ROUT');
+				if (!wasClean) $rootScope.$emit('error', 'ERRORS_ROUT');
 			});
 
 			$rootScope.$on('exit', function (event) {
 
 			});
 
-			$rootScope.$on('fuckup', function (){
+			$rootScope.$on('fuckup', function () {
 				$rootScope.$emit('error', 'ERRORS_FUCKUP');
+			});
+
+			$rootScope.$on('exitWorld', function (event) {
+				connection.send('exitWorld', {});
+				$state.go('harbor');
+			});
+
+			$rootScope.$on('enterWorld', function (event, details) {
+				if (details.success === true) {
+					userStorage.setNeighbors(details);
+					userStorage.setShip(details);
+					$state.go('world');
+				}
 			});
 
 			$rootScope.$on('$stateChangeStart',

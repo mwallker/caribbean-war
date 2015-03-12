@@ -41,7 +41,7 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 					console.log(e);
 					deferred.reject();
 					$rootScope.$emit('close', e);
-					$rootScope.$emit('error', 'ERRORS_CONN_CLOSE');
+					if (!e.wasClean) $rootScope.$emit('error', 'ERRORS_CONN_CLOSE');
 				};
 			} catch (e) {
 				console.log('Catch ' + e);
