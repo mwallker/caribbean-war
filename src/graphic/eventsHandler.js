@@ -101,7 +101,9 @@ angular.module('render').factory('KeyEvents', function ($rootScope) {
 		function () {
 			if (!holdenSpace && checkFocus()) {
 				holdenSpace = true;
-				if ((holdenE || holdenQ) && holdenSpace) holdenSpace = true;
+				if (holdenE || holdenQ) {
+					canvas.trigger('shootKey');
+				}
 			}
 		},
 		function () {

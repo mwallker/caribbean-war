@@ -300,7 +300,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		getCurves: function (scene) {
 			var reffer = scene;
 			var lines = scene.getMeshByName('lines') || new BABYLON.Mesh.CreateLines('lines', [], scene);
-			var hit = reffer.pick(0, 0);
+			//var hit = reffer.pick(0, 0);
 			var collection = [];
 
 			return {
@@ -308,12 +308,12 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					if (lines) lines.dispose();
 
 					if (direction !== TargetingDirections.none) {
-						hit = reffer.pick(reffer.pointerX, reffer.pointerY);
+						//hit = reffer.pick(reffer.pointerX, reffer.pointerY);
 						collection = calculateCurve(point, {
-							angle: point.alpha,
+							alpha: point.alpha,
+							angle: (1 - reffer.pointerX / window.height) * (Math.PI / 36),
 							scatter: Math.PI / 9,
-							direction: direction,
-							distance: correctDistance(point, hit.pickedPoint)
+							direction: direction
 						});
 						if (collection.length) {
 							lines = new BABYLON.Mesh.CreateLines('lines', collection, reffer);
@@ -403,6 +403,10 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 			$('#renderCanvas').on('directionKey', function (event, data) {
 				targetDirection = !!data ? data : TargetingDirections.none;
+			});
+
+			$('#renderCanvas').on('shootKey', function (event) {
+				console.log('Shoot!');
 			});
 
 			var onNeigboursCallback = $rootScope.$on('neighbours', function (event, details) {

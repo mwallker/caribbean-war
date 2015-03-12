@@ -20,16 +20,16 @@ function checkFocus() {
 	return !$("input").is(':focus');
 }
 
-function correctDistance(pointA, pointB) {
-	var dist = Math.sqrt((pointA.x - pointB.x)*(pointA.x - pointB.x) + (pointA.z - pointB.z)*(pointA.z - pointB.z));
-	var min = 10, max = 50;
-	if (dist > max) {
+function correctAngle(angle) {
+	var min = Math.PI / 90,
+		max = Math.PI / 36;
+	if (angle > max) {
 		return max;
 	} else {
-		if (dist < min) {
+		if (angle < min) {
 			return min;
 		} else {
-			return dist;
+			return angle;
 		}
 	}
 }
@@ -58,8 +58,8 @@ function calculateCurve(position, options) {
 	} else {
 		var curve = [];
 
-		var angles = resolveAngles(options.angle, options.direction);
-		var distance = options.distance || 0;
+		var angles = resolveAngles(options.alpha , options.direction);
+		var distance = getDistance(100, correctAngle(options.angle || 0));
 		var scatter = options.scatter || 0;
 
 		//Cashing values
@@ -89,20 +89,28 @@ function calculateCurve(position, options) {
 			for (var j = 0; j <= n; j++) {
 				curve.push({
 					x: position.x + dxU * j / n - sinA,
-					y: Math.sin(Math.PI * j / n) * distance * 0.03,
+					y: Math.sin(Math.PI * j / n) * getHeight(100, correctAngle(options.alpha)),
 					z: position.z + dzU * j / n + cosA
 				});
 			}
 			for (var k = n; k >= 0; k--) {
 				curve.push({
 					x: position.x + dxD * k / n + sinA,
-					y: Math.sin(Math.PI * k / n) * distance * 0.03,
+					y: Math.sin(Math.PI * k / n) * getHeight(100, correctAngle(options.alpha)),
 					z: position.z + dzD * k / n - cosA
 				});
 			}
 		}
 		return curve;
 	}
+}
+
+function getDistance(speed, alpha) {
+	return speed * speed * Math.sin(2 * alpha) / 9.8;
+}
+
+function getHeight(speed, alpha) {
+	return (speed * speed * Math.sin(alpha) * Math.sin(alpha)) / (2 * 9.8);
 }
 
 function timeFormat(timestamp) {
