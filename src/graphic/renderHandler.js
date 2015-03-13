@@ -1,6 +1,7 @@
 angular.module('render').factory('renderHandler', ['Components', function (Components) {
 
 	//Find canvas
+	BABYLON.Engine.ShadersRepository = '';
 	var canvas = $('#renderCanvas')[0];
 	var engine = null;
 	var scene = null;
@@ -19,7 +20,7 @@ angular.module('render').factory('renderHandler', ['Components', function (Compo
 	function createScene(label) {
 		engine = new BABYLON.Engine(canvas, true);
 		scene = new BABYLON.Scene(engine);
-		camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 0, BABYLON.Vector3.Zero(), scene);
+		camera = new BABYLON.ArcRotateCamera('Camera', 0, 0, 0, BABYLON.Vector3.Zero(), scene);
 
 		content = Components[label](scene, camera);
 
