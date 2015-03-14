@@ -28,7 +28,7 @@ caribbeanWarApp.constant('appConfig', {
 	servers: [
 		{
 			id: 0,
-			url: 'ws://warm-crag-3328.herokuapp.com/ws',
+			url: 'wss://warm-crag-3328.herokuapp.com/ws',
 			label: 'Heroku Warm Crag'
 		},
 		{

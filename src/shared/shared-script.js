@@ -21,8 +21,8 @@ function checkFocus() {
 }
 
 function correctAngle(angle) {
-	var min = Math.PI / 90,
-		max = Math.PI / 36;
+	var min = Math.PI / 180,
+		max = Math.PI / 24;
 	if (angle > max) {
 		return max;
 	} else {
@@ -86,17 +86,18 @@ function calculateCurve(position, options) {
 			dzU = sinA * cosS + cosA * sinS;
 			dzD = sinA * cosS - cosA * sinS;
 
+			var h = getHeight(100, correctAngle(options.alpha)) * 4;
 			for (var j = 0; j <= n; j++) {
 				curve.push({
 					x: position.x + dxU * j / n - sinA,
-					y: Math.sin(Math.PI * j / n) * getHeight(100, correctAngle(options.alpha)),
+					y: Math.sin(Math.PI * j / n) * h,
 					z: position.z + dzU * j / n + cosA
 				});
 			}
 			for (var k = n; k >= 0; k--) {
 				curve.push({
 					x: position.x + dxD * k / n + sinA,
-					y: Math.sin(Math.PI * k / n) * getHeight(100, correctAngle(options.alpha)),
+					y: Math.sin(Math.PI * k / n) * h,
 					z: position.z + dzD * k / n - cosA
 				});
 			}

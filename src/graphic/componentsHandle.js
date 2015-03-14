@@ -9,7 +9,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		var minDist = 5,
 			maxDist = 20,
 			normalAlpha = -Math.PI,
-			normalBeta = 1.2,
+			normalBeta = 1.35,
 			minBeta = 0.2,
 			maxBeta = (Math.PI / 2) * 0.9,
 			lerpFactor = 0.1,
@@ -108,31 +108,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			light.specular = new BABYLON.Color3(1, 1, 1);
 			light.intensity = 1;
 
-			//Water
-			/*
-			var water = BABYLON.Mesh.CreateGround("water", 2000, 2000, 200, scene);
-			var waterMaterial = new BABYLON.StandardMaterial("water", scene);
-
-			waterMaterial.bumpTexture = new BABYLON.Texture("images/water.png", scene);
-			waterMaterial.bumpTexture.uOffset = 10;
-			waterMaterial.bumpTexture.vOffset = 10;
-			waterMaterial.bumpTexture.uScale = 10;
-			waterMaterial.bumpTexture.vScale = 10;
-			waterMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-			waterMaterial.diffuseColor = new BABYLON.Color3(0.653, 0.780, 0.954);
-			waterMaterial.alpha = 0.62;
-			water.material = waterMaterial;
-*/
-			var extraGround = BABYLON.Mesh.CreateGround('extraGround', 1000, 1000, 1, scene, false);
-			var extraGroundMaterial = new BABYLON.StandardMaterial('extraGround', scene);
-			extraGroundMaterial.diffuseColor = new BABYLON.Color3(0.1, 0.3, 0.5);
-			extraGroundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-			//extraGroundMaterial.uScale = 60;
-			//extraGroundMaterial.vScale = 60;
-			extraGround.position.y = -10;
-			extraGround.material = extraGroundMaterial;
-
-
 			// Skybox
 			var skybox = BABYLON.Mesh.CreateBox('skyBox', 1000, scene);
 			var skyboxMaterial = new BABYLON.StandardMaterial('skyBox', scene);
@@ -145,13 +120,17 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 			skybox.material = skyboxMaterial;
 
+			//Water
+			var extraGround = BABYLON.Mesh.CreateGround('extraGround', 1000, 1000, 1, scene, false);
+			var extraGroundMaterial = new BABYLON.StandardMaterial('extraGround', scene);
 
+			extraGroundMaterial.diffuseColor = new BABYLON.Color3(0.1, 0.3, 0.5);
+			extraGroundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+			extraGround.position.y = -10;
+			extraGround.material = extraGroundMaterial;
 			var water = BABYLON.Mesh.CreateGround('water', 1000, 1000, 1, scene, false);
 			var waterMaterial = new WORLDMONGER.WaterMaterial('water', scene, light);
-			//waterMaterial.refractionTexture.renderList.push(skybox);
 			waterMaterial.refractionTexture.renderList.push(extraGround);
-
-			//waterMaterial.reflectionTexture.renderList.push(ground);
 			waterMaterial.reflectionTexture.renderList.push(skybox);
 
 			water.isPickable = false;
@@ -240,7 +219,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					$('#coordXS').text(next.x.toFixed(5));
 					$('#coordYS').text(next.z.toFixed(5));
 					$('#coordAlphaS').text(next.alpha.toFixed(5));
-					if (correctionTimer > 3) {
+					if (correctionTimer > 1) {
 						ship.position.x = lerp(ship.position.x, next.x, 0.5);
 						ship.position.z = lerp(ship.position.z, next.z, 0.5);
 						ship.rotation.y = lerp(ship.rotation.y, next.alpha, 0.5);
@@ -259,19 +238,19 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				move: function (delay) {
 					if (ship) {
 						timer = timer + delay % (2 * Math.PI);
-						obs = lerp(obs, randomRange(-0.3, 0.3), 0.03);
+						obs = lerp(obs, randomRange(-0.7, 0.7), 0.001);
 
 						ship.speed = lerp(ship.speed, sailsMode * ship.maxSpeed * delay / 4, _velocity);
 
 						//Movement
 						ship.position.x += Math.cos(ship.rotation.y) * ship.speed;
 						ship.position.z += Math.sin(-ship.rotation.y) * ship.speed;
-						ship.position.y += Math.sin(timer * 1.2) / (ship.weight * 0.3);
+						ship.position.y += Math.sin(timer * 1.2) * 0.0007;
 
 						//Rotation
 						ship.rotation.y = (ship.rotation.y + (wheelMode * ship.speed * _angleSpeed) / (sailsMode + 1)) % (2 * Math.PI);
-						ship.rotation.x = lerp(ship.rotation.x, wheelMode * ship.speed * 0.7 + obs, 0.02);
-						ship.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.06;
+						ship.rotation.x = lerp(ship.rotation.x, wheelMode * ship.speed + obs, 0.02);
+						ship.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.02;
 					}
 				},
 				remove: function () {
@@ -327,19 +306,18 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		getCurves: function (scene) {
 			var reffer = scene;
 			var lines = scene.getMeshByName('lines') || new BABYLON.Mesh.CreateLines('lines', [], scene);
-			//var hit = reffer.pick(0, 0);
+			var ratio = 0;
 			var collection = [];
 
 			return {
 				update: function (point, direction) {
 					if (lines) lines.dispose();
-
 					if (direction !== TargetingDirections.none) {
-						//hit = reffer.pick(reffer.pointerX, reffer.pointerY);
+						ratio = 3 - (reffer.pointerY / window.innerHeight) * 6;
 						collection = calculateCurve(point, {
 							alpha: point.alpha,
-							angle: (1 - reffer.pointerX / window.height) * (Math.PI / 36),
-							scatter: Math.PI / 9,
+							angle: ratio * Math.PI / 24,
+							scatter: Math.PI / 18,
 							direction: direction
 						});
 						if (collection.length) {
@@ -364,8 +342,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			ocean.addObject(ship);
 			return {
 				onUpdate: function (delay) {
-					cameraControl.observeCorrection();
-					//axis.move();
+					//cameraControl.observeCorrection();
+					cameraControl.baseCorrection();
+					ship.move(delay);
 				},
 				unsubscribe: function () {
 					cameraControl.removeEvents();
@@ -448,7 +427,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 									id: users.added[i].id,
 									location: users.added[i].location,
 									alpha: users.added[i].alpha
-								})
+								});
 								ocean.addObject(newShip);
 								ships.push(newShip);
 							}

@@ -1,0 +1,12 @@
+{
+	"firebase": "caribbean-war-2",
+	"public": "src",
+	"ignore": [
+		"firebase.json",
+		"**/.*",
+		"**/node_modules/**",
+		"bin/",
+		"cache/",
+		"**/tests/"
+	]
+}

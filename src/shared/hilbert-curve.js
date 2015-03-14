@@ -1,69 +1,60 @@
-//convert (x,y) to d
-/*
-int xy2d (int n, int x, int y) {
-    int rx, ry, s, d=0;
-    for (s=n/2; s>0; s/=2) {
-        rx = (x & s) > 0;
-        ry = (y & s) > 0;
-        d += s * s * ((3 * rx) ^ ry);
-        rot(s, &x, &y, rx, ry);
-    }
-    return d;
-}
-//convert d to (x,y)
-void d2xy(int n, int d, int * x, int * y) {
-	int rx, ry, s, t = d; * x = * y = 0;
-	for (s = 1; s < n; s *= 2) {
-		rx = 1 & (t / 2);
-		ry = 1 & (t ^ rx);
-		rot(s, x, y, rx, ry); * x += s * rx; * y += s * ry;
-		t /= 4;
-	}
-}
-
-//rotate/flip a quadrant appropriately
-void rot(int n, int * x, int * y, int rx, int ry) {
-	if (ry == 0) {
-		if (rx == 1) { * x = n - 1 - * x; * y = n - 1 - * y;
-		}
-
-		//Swap x and y
-		int t = * x; * x = * y; * y = t;
-	}
-}
-*/
-
 function d2(value) {
 	return +(value / 2 - 0.0001).toFixed();
 }
 
-function xy2d(n, x, y) {
-	var rx, ry, d = 0;
-	for (var s = d2(s); s > 0; s = d2(s)) {
-		rx = (x & s) > 0 ? 1 : 0;
-		ry = (y & s) > 0 ? 1 : 0;
-		d += s * s * ((3 * rx) ^ ry);
-		var k = rot(s, x, y, rx, ry);
-		x = k.x;
-		y = k.y;
-	}
-	return d;
+var Point = function (x, y) {
+	var _x = x,
+		_y = y;
+
+	return {
+		x: _x,
+		y: _y,
+		swap: function () {
+			var t = _y;
+			_x = _y;
+			_y = _x;
+		}
+	};
 };
 
-
-function rot(n, x, y, rx, ry) {
-	if (ry == 0) {
-		if (rx == 1) {
-			x = n - 1 - x;
-			y = n - 1 - y;
-		}
-		return {
-			x: y,
-			y: x
-		}
+function point2d(p, n) {
+	var rx, ry, t, d = 0;
+	for (var s = n; s > 0; s = d2(s)) {
+		rx = +((p.x & s) > 0);
+		ry = +((p.y & s) > 0);
+		d += s * s * ((3 * rx) ^ ry);
+		p = rot(n, p, rx, ry);
 	}
-	return {
-		x: x,
-		y: y
-	}
+	return d;
 }
+
+
+function rot(n, p, rx, ry) {
+	if (ry === 0) {
+		if (rx == 1) {
+			p.x = n - 1 - p.x;
+			p.y = n - 1 - p.y;
+		}
+		p.swap();
+	}
+	return p;
+}
+
+
+function d2point(d, n) {
+	var rx, ry, s, t = d,
+		p = new Point(0, 0);
+	for (s = 1; s < n; s *= 2) {
+		rx = 1 & (t / 2);
+		ry = 1 & (t ^ rx);
+		rot(s, p, rx, ry);
+		p.x += s * rx;
+		p.y += s * ry;
+		t /= 4;
+	}
+	return p;
+}
+
+console.log(point2d(new Point(0, 2), 32));
+console.log(d2point(4, 32));
+console.log(Math.sqrt(Math.pow(2, 32)));

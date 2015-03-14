@@ -52,7 +52,7 @@ angular.module('caribbean-war')
 					$scope.errorType = '';
 					$scope.errorShown = false;
 				}
-			}
+			};
 
 			//TODO: bad event, remove it later on
 			$rootScope.$on('fuckup', function () {
