@@ -125,7 +125,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 */
 			var extraGround = BABYLON.Mesh.CreateGround('extraGround', 1000, 1000, 1, scene, false);
 			var extraGroundMaterial = new BABYLON.StandardMaterial('extraGround', scene);
-			extraGroundMaterial.diffuseColor = new BABYLON.Color3(0.4, 0.4, 0.4);
+			extraGroundMaterial.diffuseColor = new BABYLON.Color3(0.1, 0.3, 0.5);
 			extraGroundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
 			//extraGroundMaterial.uScale = 60;
 			//extraGroundMaterial.vScale = 60;
@@ -162,9 +162,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 				},
 				addObject: function (obj) {
-					//waterMaterial.reflectionTexture.renderList.push(obj);
-					//console.log(waterMaterial.reflectionTexture.renderList.push(obj));
-					//water.material = waterMaterial;
+
 				}
 			};
 		},
@@ -400,7 +398,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				location: user.location,
 				alpha: user.alpha
 			});
-			ocean.addObject(newShip);
+			ocean.addObject(ship);
 			ships.push(ship);
 
 			var curves = BaseComponents.getCurves(scene);

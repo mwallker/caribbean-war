@@ -27,13 +27,13 @@ void main(void) {
 
 	// Wave
 	vec3 bumpNormal = 2.0 * texture2D(bumpSampler, vBumpUV).rgb - 1.0;
-	vec2 perturbation = waveData.y * bumpNormal.rg;
+	vec2 perturbation = (waveData.y + 0.5) * bumpNormal.rg;
 
 	// diffuse
 	float ndl = max(0., dot(vNormalW, lightVectorW));
 
 	// Specular
-	vec3 angleW = normalize(viewDirectionW + lightVectorW);
+	vec3 angleW = normalize(viewDirectionW + lightVectorW -3.20);
 	float specComp = dot(normalize(vNormalW), angleW);
 	specComp = pow(abs(specComp), 256.);
 
