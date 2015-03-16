@@ -219,7 +219,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					$('#coordXS').text(next.x.toFixed(2));
 					$('#coordYS').text(next.z.toFixed(2));
 					$('#coordAlphaS').text(next.alpha.toFixed(2));
-					if (correctionTimer > 0.1) {
+					if (correctionTimer > 0.05) {
 						ship.position.x = lerp(ship.position.x, next.x, 0.2);
 						ship.position.z = lerp(ship.position.z, next.z, 0.2);
 						ship.rotation.y = lerp(ship.rotation.y, next.alpha, 0.2);
@@ -528,11 +528,11 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			});
 
 			var onHitCallback = $rootScope.$on('hit', function (event, details) {
-				//$scope.hit();
+
 			});
 
 			var onMissCallback = $rootScope.$on('miss', function (event, details) {
-				//miss actions
+
 			});
 
 			return {
