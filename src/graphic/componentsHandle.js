@@ -446,10 +446,10 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					angle: curves.angle(),
 					direction: targetDirection
 				};
-				/*$rootScope.$emit('send', {
+				$rootScope.$emit('send', {
 					action: 'shoot',
 					details: options
-				});*/
+				});
 				if (targetDirection == TargetingDirections.Both) {
 					options.direction = TargetingDirections.left;
 					BaseComponents.cannonBall(scene, options);
