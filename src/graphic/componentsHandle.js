@@ -237,7 +237,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				},
 				move: function (delay) {
 					if (ship) {
-						timer = timer + delay % (2 * Math.PI);
+						timer += delay % (2 * Math.PI);
 						obs = lerp(obs, randomRange(-0.7, 0.7), 0.001);
 
 						ship.speed = lerp(ship.speed, sailsMode * ship.maxSpeed * delay / 4, _velocity);
@@ -266,14 +266,15 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			ballMaterial.specularColor = new BABYLON.Color3(0.9, 0.7, 0.1);
 			ball.material = ballMaterial;
 			var t = 0;
+			var alpha = details.alpha;
 			var intervalId = setInterval(function () {
 				t += (scene.getEngine().getDeltaTime() * 0.001);
 				if (ball.position.y <= -2) {
 					ball.dispose();
 					clearInterval(intervalId);
 				} else {
-					ball.position.x = details.location.x + 100 * t * Math.cos(details.angle) * Math.cos(details.alpha);
-					ball.position.z = details.location.z + 100 * t * Math.cos(details.angle) * Math.sin(details.alpha);
+					ball.position.x = details.location.x + 100 * t * Math.cos(details.angle) * Math.cos(alpha);
+					ball.position.z = details.location.z + 100 * t * Math.cos(details.angle) * Math.sin(alpha);
 					ball.position.y = details.location.y + 100 * t * Math.sin(details.angle) - (9.8 * t * t) / 2;
 				}
 			}, 16);
@@ -437,23 +438,25 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			});
 
 			$('#renderCanvas').on('shootKey', function (event) {
+				var shipAlpha = ship.getPosition().alpha + targetDirection * Math.PI / 2;
 				var options = {
+					id: ship.getId,
 					location: {
 						x: ship.getPosition().x,
 						y: 0.6,
 						z: ship.getPosition().z
 					},
 					angle: curves.angle(),
-					direction: targetDirection
+					alpha: shipAlpha
 				};
-				$rootScope.$emit('send', {
+				/*$rootScope.$emit('send', {
 					action: 'shoot',
 					details: options
-				});
+				});*/
 				if (targetDirection == TargetingDirections.Both) {
-					options.direction = TargetingDirections.left;
+					options.alpha = ship.getPosition().alpha + TargetingDirections.left * Math.PI / 2;
 					BaseComponents.cannonBall(scene, options);
-					options.direction = TargetingDirections.right;
+					options.alpha = ship.getPosition().alpha + TargetingDirections.right * Math.PI / 2;
 					BaseComponents.cannonBall(scene, options);
 				} else {
 					BaseComponents.cannonBall(scene, options);
