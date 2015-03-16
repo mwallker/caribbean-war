@@ -15,7 +15,7 @@ angular.module('caribbean-war')
 
 			function getDevInfo(config) {
 				return {
-					version: '0.3.3',
+					version: '0.3.5',
 					environment: (function (servers) {
 						for (var i in servers) {
 							if (localStorage.server === servers[i].url) {

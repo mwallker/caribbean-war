@@ -33,12 +33,12 @@ caribbeanWarApp.constant('appConfig', {
 		},
 		{
 			id: 1,
-			url: 'wss://localhost:80/ws',
+			url: 'ws://localhost:80/ws',
 			label: 'Local Go Server'
 		},
 		{
 			id: 2,
-			url: 'wss://localhost:1337/ws',
+			url: 'ws://localhost:1337/ws',
 			label: 'Node Echo One (NEO)'
 		}
 	]
