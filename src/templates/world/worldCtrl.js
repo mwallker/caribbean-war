@@ -16,16 +16,12 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 			$scope.currentHealth -= 10;
 		};
 
-		$rootScope.$on('hit', function (event, details){
+		$rootScope.$on('hit', function (event, details) {
 			$scope.hit();
 		});
 
-		$rootScope.$on('miss', function (event, details){
+		$rootScope.$on('miss', function (event, details) {
 			//miss actions
-		});
-
-		$rootScope.$on('shoot', function (event, details){
-			//some shoot actions
 		});
 
 		$rootScope.$on('movementKey', function (event, command) {
@@ -40,9 +36,11 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 			switch (command.type) {
 			case 'upward':
 				$scope.sailsMode = Math.min($scope.sailsMode + 1, 3);
+				$('#sails').width(($scope.sailsMode * 100 / 3) + '%');
 				break;
 			case 'backward':
 				$scope.sailsMode = Math.max($scope.sailsMode - 1, 0);
+				$('#sails').width(($scope.sailsMode * 100 / 3) + '%');
 				break;
 			case 'right':
 				$scope.wheelMode = 1;
