@@ -259,17 +259,24 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			};
 		},
 		cannonBall: function (scene, details) {
-			var ball = BABYLON.Mesh.CreateSphere('cannon_ball_' + details.id, 8.0, 0.5, scene);
+			var ball = BABYLON.Mesh.CreateSphere('cannon_ball_' + details.id, 8.0, 0.4, scene);
 			ball.position = new BABYLON.Vector3(details.location.x, details.location.y, details.location.z);
-			var ballMaterial = new BABYLON.StandardMaterial('shipMaterial', scene);
-			ballMaterial.diffuseColor = new BABYLON.Color3(0.9, 0.7, 0.1);
-			ballMaterial.specularColor = new BABYLON.Color3(0.9, 0.7, 0.1);
-			ball.material = ballMaterial;
+
+			var ballMaterialA = new BABYLON.StandardMaterial('shipMaterial', scene);
+			ballMaterialA.diffuseColor = new BABYLON.Color3(1, 1, 1);
+			ballMaterialA.specularColor = new BABYLON.Color3(1, 1, 1);
+
+			var ballMaterialB = new BABYLON.StandardMaterial('shipMaterial', scene);
+			ballMaterialB.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+			ballMaterialB.specularColor = new BABYLON.Color3(0, 0, 1);
+
+			ball.material = details.id ? ballMaterialA : ballMaterialB;
+
 			var t = 0;
 			var alpha = details.alpha;
 			var intervalId = setInterval(function () {
 				t += (scene.getEngine().getDeltaTime() * 0.001);
-				if (ball.position.y <= -2) {
+				if (ball.position.y < 0) {
 					ball.dispose();
 					clearInterval(intervalId);
 				} else {
@@ -438,28 +445,37 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			});
 
 			$('#renderCanvas').on('shootKey', function (event) {
-				var shipAlpha = ship.getPosition().alpha + targetDirection * Math.PI / 2;
-				var options = {
-					id: ship.getId,
+				var shootAlpha = -ship.getPosition().alpha - targetDirection * Math.PI / 2;
+				var optionsLocal = {
+					id: 0,
 					location: {
 						x: ship.getPosition().x,
-						y: 0.6,
+						y: 0.2,
 						z: ship.getPosition().z
 					},
 					angle: curves.angle(),
-					alpha: shipAlpha
+					alpha: shootAlpha
 				};
-				/*$rootScope.$emit('send', {
+				var optionsServer = {
+					location: {
+						x: ship.getPosition().x,
+						y: 0.2,
+						z: ship.getPosition().z
+					},
+					angle: curves.angle(),
+					direction: targetDirection
+				};
+				$rootScope.$emit('send', {
 					action: 'shoot',
-					details: options
-				});*/
+					details: optionsServer
+				});
 				if (targetDirection == TargetingDirections.Both) {
-					options.alpha = ship.getPosition().alpha + TargetingDirections.left * Math.PI / 2;
-					BaseComponents.cannonBall(scene, options);
-					options.alpha = ship.getPosition().alpha + TargetingDirections.right * Math.PI / 2;
-					BaseComponents.cannonBall(scene, options);
+					options.alpha = -ship.getPosition().alpha - TargetingDirections.left * Math.PI / 2;
+					BaseComponents.cannonBall(scene, optionsLocal);
+					options.alpha = -ship.getPosition().alpha - TargetingDirections.right * Math.PI / 2;
+					BaseComponents.cannonBall(scene, optionsLocal);
 				} else {
-					BaseComponents.cannonBall(scene, options);
+					BaseComponents.cannonBall(scene, optionsLocal);
 				}
 			});
 
@@ -505,16 +521,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			var onShootCallback = $rootScope.$on('shoot', function (event, details) {
 				for (var i in ships) {
 					if (ships[i].getId() == details.id) {
-						BaseComponents.cannonBall(scene, {
-							id: details.id,
-							location: {
-								x: details.location.x,
-								y: details.location.y,
-								z: details.location.z
-							},
-							angle: details.angle,
-							alpha: details.alpha
-						});
+						BaseComponents.cannonBall(scene, details);
 						return;
 					}
 				}
