@@ -469,10 +469,10 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					action: 'shoot',
 					details: optionsServer
 				});
-				if (targetDirection == TargetingDirections.Both) {
-					options.alpha = -ship.getPosition().alpha - TargetingDirections.left * Math.PI / 2;
+				if (targetDirection == TargetingDirections.both) {
+					optionsLocal.alpha = -ship.getPosition().alpha - TargetingDirections.left * Math.PI / 2;
 					BaseComponents.cannonBall(scene, optionsLocal);
-					options.alpha = -ship.getPosition().alpha - TargetingDirections.right * Math.PI / 2;
+					optionsLocal.alpha = -ship.getPosition().alpha - TargetingDirections.right * Math.PI / 2;
 					BaseComponents.cannonBall(scene, optionsLocal);
 				} else {
 					BaseComponents.cannonBall(scene, optionsLocal);
@@ -527,6 +527,14 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				}
 			});
 
+			var onHitCallback = $rootScope.$on('hit', function (event, details) {
+				//$scope.hit();
+			});
+
+			var onMissCallback = $rootScope.$on('miss', function (event, details) {
+				//miss actions
+			});
+
 			return {
 				onUpdate: function (delay) {
 					cameraControl.baseCorrection();
@@ -544,6 +552,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				unsubscribe: function () {
 					onNeigboursCallback();
 					onMoveCallback();
+					onShootCallback();
 					cameraControl.removeEvents();
 				}
 			};
