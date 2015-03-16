@@ -1,5 +1,5 @@
 function d2(value) {
-	return +(value / 2 - 0.0001).toFixed();
+	return (+value == 1) ? 0 : value / 2;
 }
 
 var Point = function (x, y) {
@@ -11,8 +11,8 @@ var Point = function (x, y) {
 		y: _y,
 		swap: function () {
 			var t = _y;
-			_x = _y;
 			_y = _x;
+			_x = t;
 		}
 	};
 };
@@ -55,6 +55,20 @@ function d2point(d, n) {
 	return p;
 }
 
-console.log(point2d(new Point(0, 2), 32));
-console.log(d2point(4, 32));
-console.log(Math.sqrt(Math.pow(2, 32)));
+var dim = Math.pow(2, 16);
+var points = [];
+var deltas = [];
+var out_points = [];
+
+console.time('init');
+for (var i = 0; i < 10000; i++) {
+	points[i] = new Point(Math.random() * (dim - 1), Math.random() * (dim - 1));
+	deltas[i] = point2d(points[i], dim);
+	out_points[i] = d2point(deltas[i], dim);
+}
+console.timeEnd('init');
+
+console.log('Dimension: ' + dim + 'x' + dim);
+/*console.log('Length: ' + delta);
+console.log('In. point: (' + point.x + ', ' + point.y + ')');
+console.log('Out. point: (' + out_point.x + ', ' + out_point.y + ')');*/

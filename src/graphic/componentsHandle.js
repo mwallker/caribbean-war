@@ -161,7 +161,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				var shipMaterial = new BABYLON.StandardMaterial('shipMaterial', scene);
 
 				shipMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-				shipMaterial.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+				shipMaterial.diffuseColor = new BABYLON.Color3(0.9, 0.7, 0.1);
 				shipMesh.material = shipMaterial;
 
 				ship = angular.extend(shipMesh, {
@@ -219,7 +219,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					$('#coordXS').text(next.x.toFixed(5));
 					$('#coordYS').text(next.z.toFixed(5));
 					$('#coordAlphaS').text(next.alpha.toFixed(5));
-					if (correctionTimer > 1) {
+					if (correctionTimer > 0.2) {
 						ship.position.x = lerp(ship.position.x, next.x, 0.5);
 						ship.position.z = lerp(ship.position.z, next.z, 0.5);
 						ship.rotation.y = lerp(ship.rotation.y, next.alpha, 0.5);
@@ -253,10 +253,34 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						ship.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.02;
 					}
 				},
+				shoot: function () {
+
+				},
 				remove: function () {
 					shipMesh.dispose();
 				}
 			};
+		},
+		cannonBall: function (scene, details) {
+			var ball = BABYLON.Mesh.CreateSphere('cannon_ball', 8.0, 0.5, scene);
+			ball.position = new BABYLON.Vector3(details.position.x, 1, details.position.z);
+			var ballMaterial = new BABYLON.StandardMaterial('shipMaterial', scene);
+			ballMaterial.diffuseColor = new BABYLON.Color3(0.9, 0.7, 0.1);
+			ballMaterial.specularColor = new BABYLON.Color3(0.9, 0.7, 0.1);
+			ball.material = ballMaterial;
+			var t = 0;
+			var intervalId = setInterval(function () {
+				t += (scene.getEngine().getDeltaTime() * 0.001);
+				if (ball.position.y <= -1) {
+					ball.dispose();
+					clearInterval(intervalId);
+				} else {
+					var alpha = (details.alpha + Math.PI / 2) - (details.direction * Math.PI / 2);
+					ball.position.x = details.position.x + 100 * t * Math.cos(details.angle) * Math.cos(alpha);
+					ball.position.z = details.position.z + 100 * t * Math.cos(details.angle) * Math.sin(alpha);
+					ball.position.y = 0.6 + 100 * t * Math.sin(details.angle) - (9.8 * t * t) / 2;
+				}
+			}, 16);
 		},
 		//Box
 		axis: function (scene) {
@@ -326,6 +350,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					} else {
 						collection = [];
 					}
+				},
+				angle: function () {
+					return correctAngle(ratio * Math.PI / 24);
 				}
 			};
 		}
@@ -414,7 +441,21 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			});
 
 			$('#renderCanvas').on('shootKey', function (event) {
-				console.log('Shoot!');
+				var options = {
+					id: 1314,
+					angle: curves.angle(),
+					alpha: ship.getPosition().alpha,
+					position: ship.getPosition(),
+					direction: targetDirection
+				};
+				if (targetDirection == TargetingDirections.Both) {
+					options.direction = TargetingDirections.left;
+					BaseComponents.cannonBall(scene, options);
+					options.direction = TargetingDirections.right;
+					BaseComponents.cannonBall(scene, options);
+				} else {
+					BaseComponents.cannonBall(scene, options);
+				}
 			});
 
 			var onNeigboursCallback = $rootScope.$on('neighbours', function (event, details) {
