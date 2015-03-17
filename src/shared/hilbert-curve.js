@@ -59,16 +59,49 @@ var dim = Math.pow(2, 16);
 var points = [];
 var deltas = [];
 var out_points = [];
+var count = 100000;
 
-console.time('init');
-for (var i = 0; i < 10000; i++) {
+function test() {
+	var b = 4,
+		v_min_x = [],
+		v_min_y = [],
+		v_max_x = [],
+		v_max_y = [];
+
+	function insert(point) {
+		if (v_min_x.length && point.x < v_min_x[v_min_x.length - 1].x) {
+			var t = 0;
+			for (p in v_min_x) {
+				if (point.x < v_min_x[p].x) {
+
+				}
+			}
+
+		} else {
+			v_min_x.push(point);
+		}
+	};
+}
+
+console.log('Adding ' + count + ' points:');
+for (var i = 0; i < count; i++) {
 	points[i] = new Point(Math.random() * (dim - 1), Math.random() * (dim - 1));
+}
+
+console.log('Calculating there Hilbert value:');
+
+console.time('h1');
+for (var i = 0; i < count; i++) {
 	deltas[i] = point2d(points[i], dim);
+}
+console.timeEnd('h1');
+
+console.log('Calculating points from Hilbert value:');
+
+console.time('h2');
+for (var i = 0; i < count; i++) {
 	out_points[i] = d2point(deltas[i], dim);
 }
-console.timeEnd('init');
+console.timeEnd('h2');
 
 console.log('Dimension: ' + dim + 'x' + dim);
-/*console.log('Length: ' + delta);
-console.log('In. point: (' + point.x + ', ' + point.y + ')');
-console.log('Out. point: (' + out_point.x + ', ' + out_point.y + ')');*/

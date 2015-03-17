@@ -273,18 +273,17 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			ball.material = details.id ? ballMaterialA : ballMaterialB;
 
 			var t = 0;
-			var alpha = details.alpha;
 			var intervalId = setInterval(function () {
 				t += (scene.getEngine().getDeltaTime() * 0.001);
 				if (ball.position.y < 0) {
 					ball.dispose();
 					clearInterval(intervalId);
 				} else {
-					ball.position.x = details.location.x + 100 * t * Math.cos(details.angle) * Math.cos(alpha);
-					ball.position.z = details.location.z + 100 * t * Math.cos(details.angle) * Math.sin(alpha);
+					ball.position.x = details.location.x + 100 * t * Math.cos(details.angle) * Math.cos(details.alpha);
+					ball.position.z = details.location.z + 100 * t * Math.cos(details.angle) * Math.sin(details.alpha);
 					ball.position.y = details.location.y + 100 * t * Math.sin(details.angle) - (9.8 * t * t) / 2;
 				}
-			}, 16);
+			}, 20);
 		},
 		//Box
 		axis: function (scene) {
@@ -431,14 +430,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				}));
 			}
 
-			var onPositionCallback = $rootScope.$on('position', function (event, details) {
-				ship.correctPosition({
-					x: details.x,
-					z: details.y,
-					alpha: details.alpha
-				});
 
-			});
 
 			$('#renderCanvas').on('directionKey', function (event, data) {
 				targetDirection = !!data ? data : TargetingDirections.none;
@@ -506,6 +498,15 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						}
 					}
 				}
+			});
+
+			var onPositionCallback = $rootScope.$on('position', function (event, details) {
+				ship.correctPosition({
+					x: details.x,
+					z: details.y,
+					alpha: details.alpha
+				});
+
 			});
 
 			var onMoveCallback = $rootScope.$on('move', function (event, details) {

@@ -2,7 +2,7 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 	function ($scope, $state, $rootScope, connection, userStorage) {
 
 		if (!userStorage.status()) {
-			$rootScope.$emit("close", false);
+			$rootScope.$emit('close', false);
 		}
 
 		$scope.user = userStorage.get();
@@ -12,12 +12,12 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 		$scope.baseHealth = userStorage.getShip().hp || 0;
 		$scope.currentHealth = $scope.baseHealth;
 
-		$scope.hit = function () {
-			$scope.currentHealth -= 10;
+		$scope.hit = function (damage) {
+			$scope.currentHealth -= damage || 100;
 		};
 
 		$rootScope.$on('hit', function (event, details) {
-			$scope.hit();
+			$scope.hit(details);
 		});
 
 		$rootScope.$on('miss', function (event, details) {
@@ -33,6 +33,7 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 		});
 
 		$rootScope.$on('move', function (event, command) {
+			if ($scope.user.id != command.id) return;
 			switch (command.type) {
 			case 'upward':
 				$scope.sailsMode = Math.min($scope.sailsMode + 1, 3);

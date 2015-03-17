@@ -38,8 +38,8 @@ angular.module('caribbean-war')
 
 			});
 
-			$rootScope.$on('error', $scope.errorHandler);
 			$scope.errorHandler = function (event, type) {
+				$rootScope.loading = false;
 				if (type) {
 					if ($scope.errorShown) return;
 					$scope.errorType = type;
@@ -53,6 +53,7 @@ angular.module('caribbean-war')
 					$scope.errorShown = false;
 				}
 			};
+			$rootScope.$on('error', $scope.errorHandler);
 
 			//TODO: bad event, remove it later on
 			$rootScope.$on('fuckup', function () {
