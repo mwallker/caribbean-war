@@ -162,6 +162,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 				shipMaterial.specularColor = new BABYLON.Color3(0, 0, 1);
 				shipMaterial.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+				shipMaterial.alpha = 0.5;
+
 				shipMesh.material = shipMaterial;
 
 				ship = angular.extend(shipMesh, {
@@ -258,6 +260,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				}
 			};
 		},
+		//Cannon Ball
 		cannonBall: function (scene, details) {
 			var ball = BABYLON.Mesh.CreateSphere('cannon_ball_' + details.id, 8.0, 0.4, scene);
 			ball.position = new BABYLON.Vector3(details.location.x, details.location.y, details.location.z);
@@ -429,8 +432,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					alpha: neighbors[n].alpha
 				}));
 			}
-
-
 
 			$('#renderCanvas').on('directionKey', function (event, data) {
 				targetDirection = !!data ? data : TargetingDirections.none;
