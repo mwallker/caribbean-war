@@ -261,7 +261,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		},
 		//Cannon Ball
 		cannonBall: function (scene, details) {
-			var ball = BABYLON.Mesh.CreateSphere('cannon_ball_' + details.id, 8.0, 0.4, scene);
+			var ball = new BABYLON.Mesh.CreateSphere('cannon_ball_' + details.id + Math.random().toFixed(2) * 100, 8.0, 0.4, scene);
 			ball.position = new BABYLON.Vector3(details.location.x, details.location.y, details.location.z);
 
 			var ballMaterialA = new BABYLON.StandardMaterial('shipMaterial', scene);
@@ -286,6 +286,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					ball.position.y = details.location.y + 100 * t * Math.sin(details.angle) - (9.8 * t * t) / 2;
 				}
 			}, 20);
+
+			return ball;
 		},
 		//Box
 		axis: function (scene) {
@@ -442,7 +444,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					id: 0,
 					location: {
 						x: ship.getPosition().x,
-						y: 0.2,
+						y: 0.001,
 						z: ship.getPosition().z
 					},
 					angle: curves.angle(),
@@ -451,23 +453,35 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				var optionsServer = {
 					location: {
 						x: ship.getPosition().x,
-						y: 0.2,
+						y: 0.001,
 						z: ship.getPosition().z
 					},
 					angle: curves.angle(),
 					direction: targetDirection
 				};
-				$rootScope.$emit('send', {
-					action: 'shoot',
-					details: optionsServer
-				});
+
 				if (targetDirection == TargetingDirections.both) {
 					optionsLocal.alpha = -ship.getPosition().alpha - TargetingDirections.left * Math.PI / 2;
+					optionsServer.direction = TargetingDirections.left;
+					$rootScope.$emit('send', {
+						action: 'shoot',
+						details: optionsServer
+					});
 					BaseComponents.cannonBall(scene, optionsLocal);
+
 					optionsLocal.alpha = -ship.getPosition().alpha - TargetingDirections.right * Math.PI / 2;
+					optionsServer.direction = TargetingDirections.right;
+					$rootScope.$emit('send', {
+						action: 'shoot',
+						details: optionsServer
+					});
 					BaseComponents.cannonBall(scene, optionsLocal);
 				} else {
 					BaseComponents.cannonBall(scene, optionsLocal);
+					$rootScope.$emit('send', {
+						action: 'shoot',
+						details: optionsServer
+					});
 				}
 			});
 
