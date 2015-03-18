@@ -71,7 +71,7 @@ function test() {
 	function insert(point) {
 		if (v_min_x.length && point.x < v_min_x[v_min_x.length - 1].x) {
 			var t = 0;
-			for (p in v_min_x) {
+			for (var p in v_min_x) {
 				if (point.x < v_min_x[p].x) {
 
 				}
@@ -80,7 +80,7 @@ function test() {
 		} else {
 			v_min_x.push(point);
 		}
-	};
+	}
 }
 
 console.log('Adding ' + count + ' points:');

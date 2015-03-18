@@ -186,6 +186,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				timer = 0,
 				correctionTimer = 0;
 
+			console.log(scene.activeCamera);
+
 			return {
 				changeState: function (type) {
 					switch (type) {
@@ -218,9 +220,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					$('#coordYL').text(ship.position.z.toFixed(2));
 					$('#coordAlphaL').text(ship.rotation.y.toFixed(2));
 
-					$('#coordXS').text(next.x.toFixed(2));
-					$('#coordYS').text(next.z.toFixed(2));
-					$('#coordAlphaS').text(next.alpha.toFixed(2));
 					if (correctionTimer > 0.05) {
 						ship.position.x = lerp(ship.position.x, next.x, 0.2);
 						ship.position.z = lerp(ship.position.z, next.z, 0.2);
@@ -530,11 +529,11 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			});
 
 			var onHitCallback = $rootScope.$on('hit', function (event, details) {
-
+				console.log('Boooooooooom!');
 			});
 
 			var onMissCallback = $rootScope.$on('miss', function (event, details) {
-
+				console.warn('Someone miss, MYAXAXAXAXAXA!');
 			});
 
 			return {

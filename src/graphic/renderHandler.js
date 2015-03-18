@@ -7,6 +7,8 @@ angular.module('render').factory('renderHandler', ['Components', function (Compo
 	var scene = null;
 	var camera = null;
 
+	var blur = null;
+
 	var content = null;
 
 	//Render events

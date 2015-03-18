@@ -5,7 +5,7 @@ var WORLDMONGER = WORLDMONGER || {};
 		BABYLON.Material.call(this, name, scene);
 		this.light = light;
 
-		this.bumpTexture = new BABYLON.Texture('graphic/shaders/water/water-texture.png', scene);
+		this.bumpTexture = new BABYLON.Texture('graphic/materials/water/water-texture.png', scene);
 		this.bumpTexture.uScale = 16;
 		this.bumpTexture.vScale = 16;
 		this.bumpTexture.wrapU = BABYLON.Texture.MIRROR_ADDRESSMODE;
@@ -65,7 +65,7 @@ var WORLDMONGER = WORLDMONGER || {};
 			return false;
 		}
 
-		this._effect = engine.createEffect('./graphic/shaders/water/water', ['position', 'normal', 'uv'], ['worldViewProjection', 'world', 'view', 'vLightPosition', 'vEyePosition', 'waterColor', 'vLevels', 'waveData', 'windMatrix'], ['reflectionSampler', 'refractionSampler', 'bumpSampler'],
+		this._effect = engine.createEffect('./graphic/materials/water/water', ['position', 'normal', 'uv'], ['worldViewProjection', 'world', 'view', 'vLightPosition', 'vEyePosition', 'waterColor', 'vLevels', 'waveData', 'windMatrix'], ['reflectionSampler', 'refractionSampler', 'bumpSampler'],
 			'');
 
 		if (!this._effect.isReady()) {
@@ -78,19 +78,19 @@ var WORLDMONGER = WORLDMONGER || {};
 	WORLDMONGER.WaterMaterial.prototype.bind = function (world, mesh) {
 		this._time += 0.0001 * this._scene.getAnimationRatio();
 
-		this._effect.setMatrix("world", world);
-		this._effect.setMatrix("worldViewProjection", world.multiply(this._scene.getTransformMatrix()));
-		this._effect.setVector3("vEyePosition", this._scene.activeCamera.position);
-		this._effect.setVector3("vLightPosition", this.light.position);
-		this._effect.setColor3("waterColor", this.waterColor);
-		this._effect.setFloat4("vLevels", this.waterColorLevel, this.fresnelLevel, this.reflectionLevel, this.refractionLevel);
-		this._effect.setFloat2("waveData", this.waveLength, this.waveHeight);
+		this._effect.setMatrix('world', world);
+		this._effect.setMatrix('worldViewProjection', world.multiply(this._scene.getTransformMatrix()));
+		this._effect.setVector3('vEyePosition', this._scene.activeCamera.position);
+		this._effect.setVector3('vLightPosition', this.light.position);
+		this._effect.setColor3('waterColor', this.waterColor);
+		this._effect.setFloat4('vLevels', this.waterColorLevel, this.fresnelLevel, this.reflectionLevel, this.refractionLevel);
+		this._effect.setFloat2('waveData', this.waveLength, this.waveHeight);
 
 		// Textures
-		this._effect.setMatrix("windMatrix", this.bumpTexture.getTextureMatrix().multiply(BABYLON.Matrix.Translation(this.waterDirection.x * this._time, this.waterDirection.y * this._time, 0)));
-		this._effect.setTexture("bumpSampler", this.bumpTexture);
-		this._effect.setTexture("reflectionSampler", this.reflectionTexture);
-		this._effect.setTexture("refractionSampler", this.refractionTexture);
+		this._effect.setMatrix('windMatrix', this.bumpTexture.getTextureMatrix().multiply(BABYLON.Matrix.Translation(this.waterDirection.x * this._time, this.waterDirection.y * this._time, 0)));
+		this._effect.setTexture('bumpSampler', this.bumpTexture);
+		this._effect.setTexture('reflectionSampler', this.reflectionTexture);
+		this._effect.setTexture('refractionSampler', this.refractionTexture);
 	};
 
 	WORLDMONGER.WaterMaterial.prototype.dispose = function () {

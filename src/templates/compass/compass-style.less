@@ -1,0 +1,58 @@
+#compass {
+	position: fixed;
+	bottom: 10px;
+	right: 10px;
+	z-index: 10;
+	background-color: #333;
+	color: #ddd;
+	height: 200px;
+	width: 200px;
+	padding: 3px;
+	border: 3px solid #ddd;
+	border-radius: 150px;
+	will-change: transform;
+	div {
+		&.axes-vertical {
+			height: 33%;
+			width: 100%;
+			text-align: center;
+		}
+		&.axes-horizontal {
+			height: 33%;
+			width: 48%;
+			text-align: center;
+			display: inline-block;
+			&.right {
+				text-align: right;
+			}
+			&.left {
+				text-align: left;
+			}
+		}
+		span {
+			&.node {
+				display: inline-block;
+			}
+			&.north {
+				vertical-align: top;
+				transform: rotate(0deg);
+			}
+			&.east {
+				transform: rotate(90deg);
+			}
+			&.south {
+				vertical-align: bottom;
+				transform: rotate(180deg);
+			}
+			&.west {
+				transform: rotate(270deg);
+			}
+			&.helper {
+				display: inline-block;
+				vertical-align: middle;
+				height: 100%;
+				width: 0px;
+			}
+		}
+	}
+}

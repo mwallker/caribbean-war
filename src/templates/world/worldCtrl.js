@@ -17,7 +17,7 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 		};
 
 		$rootScope.$on('hit', function (event, details) {
-			$scope.hit(details);
+			$scope.hit(details.damage);
 		});
 
 		$rootScope.$on('miss', function (event, details) {
@@ -57,5 +57,12 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 			}
 		});
 
+		$rootScope.$on('position', function (event, details) {
+			$('#coordXS').text(details.x.toFixed(2));
+			$('#coordYS').text(details.y.toFixed(2));
+			$('#coordAlphaS').text(details.alpha.toFixed(2));
+		});
+
+		//TODO make it directive!!!
 	}
 ]);
