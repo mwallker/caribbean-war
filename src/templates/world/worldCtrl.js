@@ -61,6 +61,10 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 			$('#coordXS').text(details.x.toFixed(2));
 			$('#coordYS').text(details.y.toFixed(2));
 			$('#coordAlphaS').text(details.alpha.toFixed(2));
+
+			$('#compass').css({
+				'transform': 'rotate(' + details.alpha + 'rad)'
+			})
 		});
 
 		//TODO make it directive!!!
