@@ -60,14 +60,9 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 		});
 
 		$rootScope.$on('position', function (event, details) {
-			$('#coordXS').text(details.x.toFixed(2));
-			$('#coordYS').text(details.y.toFixed(2));
-			$('#coordAlphaS').text(details.alpha.toFixed(2));
-
 			update(function () {
 				$scope.position = details;
 			});
-
 		});
 
 		function update(fn) {

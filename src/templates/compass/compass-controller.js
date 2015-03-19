@@ -7,9 +7,14 @@ angular.module('caribbean-war')
 				location: "="
 			},
 			link: function (scope, element, attrs) {
+				scope.positionX = '';
+				scope.positionY = '';
+
 				scope.$watch('location', function (value) {
 					if (!value) return;
-					element.find('#compass').css({
+					scope.positionX = Math.abs(value.x.toFixed(1)) + '°' + (value.x > 0 ? 'N' : 'S')
+					scope.positionY = Math.abs(value.y.toFixed(1)) + '°' + (value.y > 0 ? 'E' : 'W');
+					element.find('.compass-axes').css({
 						'transform': 'rotate(' + value.alpha + 'rad)'
 					});
 				});

@@ -1,18 +1,25 @@
 <div id="compass">
-	<div class="axes-vertical">
-		<span class="node north">N</span>
-		<span class="helper"></span>
+	<div class="compass-axes">
+		<div class="axes-vertical">
+			<span class="node north">N</span>
+			<span class="helper"></span>
+		</div>
+		<div class="axes-horizontal left">
+			<span class="node west">W</span>
+			<span class="helper"></span>
+		</div>
+		<div class="axes-horizontal right">
+			<span class="node east">E</span>
+			<span class="helper"></span>
+		</div>
+		<div class="axes-vertical">
+			<span class="node south">S</span>
+			<span class="helper"></span>
+		</div>
 	</div>
-	<div class="axes-horizontal left">
-		<span class="node west">W</span>
-		<span class="helper"></span>
-	</div>
-	<div class="axes-horizontal right">
-		<span class="node east">E</span>
-		<span class="helper"></span>
-	</div>
-	<div class="axes-vertical">
-		<span class="node south">S</span>
+	<div class="compass-content">
+		<span class="node">{{positionX}}</span>
+		<span class="node">{{positionY}}</span>
 		<span class="helper"></span>
 	</div>
 </div>
