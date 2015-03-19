@@ -12,9 +12,7 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 		$scope.baseHealth = userStorage.getShip().hp || 0;
 		$scope.currentHealth = $scope.baseHealth;
 
-		$scope.position = {
-			value: undefined
-		};
+		$scope.position = {};
 
 		$scope.hit = function (damage) {
 			$scope.currentHealth -= damage || 100;
@@ -65,13 +63,23 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 			$('#coordXS').text(details.x.toFixed(2));
 			$('#coordYS').text(details.y.toFixed(2));
 			$('#coordAlphaS').text(details.alpha.toFixed(2));
-			$scope.position.value = details;
-/*
-			$('#compass').css({
-				'transform': 'rotate(' + details.alpha + 'rad)'
-			})*/
+
+			update(function () {
+				$scope.position = details;
+			});
+
 		});
 
-		//TODO make it directive!!!
+		function update(fn) {
+			var phase = $scope.$root.$$phase;
+
+			if (phase == '$apply' || phase == '$digest') {
+				if (fn && (typeof (fn) === 'function')) {
+					fn();
+				}
+			} else {
+				$scope.$apply(fn);
+			}
+		}
 	}
 ]);
