@@ -105,6 +105,6 @@ var WORLDMONGER = WORLDMONGER || {};
 		if (this.refractionTexture) {
 			this.refractionTexture.dispose();
 		}
-		BABYLON.Material.dispose.call(this);
+		BABYLON.Material.prototype.dispose.call(this);
 	};
 })();

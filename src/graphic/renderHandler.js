@@ -6,8 +6,7 @@ angular.module('render').factory('renderHandler', ['Components', function (Compo
 	var engine = null;
 	var scene = null;
 	var camera = null;
-
-	var blur = null;
+	var materials = null;
 
 	var content = null;
 

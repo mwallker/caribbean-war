@@ -42,7 +42,7 @@ angular.module('caribbean-war')
 				$rootScope.loading = false;
 				if (type) {
 					if ($scope.errorShown) return;
-					$scope.errorType = type && !(type.indexOf('ERROR') + 1) ? type : 'ERRORS_UNKNOWN_ACTION';
+					$scope.errorType = type && (type.indexOf('ERROR') + 1) ? type : 'ERRORS_UNKNOWN_ACTION';
 					$scope.errorShown = true;
 					$timeout(function () {
 						$scope.errorType = '';
