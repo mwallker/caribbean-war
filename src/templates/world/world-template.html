@@ -1,7 +1,7 @@
 <div id="world-layer">
 	<div class="primary-theme">
-		<div class="progress">
-			<div class="progress-bar" role="progressbar" aria-valuemin="3" aria-valuemax="100" style="width: {{(currentHealth/baseHealth)*100}}%;" ng-click="hit()">
+		<div class="progress" ng-click="hit()">
+			<div class="progress-bar" role="progressbar" aria-valuemin="3" aria-valuemax="100" style="width: {{(currentHealth/baseHealth)*100}}%;">
 				{{currentHealth}}
 			</div>
 		</div>

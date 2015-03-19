@@ -186,8 +186,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				timer = 0,
 				correctionTimer = 0;
 
-			console.log(scene.activeCamera);
-
 			return {
 				changeState: function (type) {
 					switch (type) {
