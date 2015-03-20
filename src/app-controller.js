@@ -17,13 +17,13 @@ angular.module('caribbean-war')
 			$rootScope.$on('$stateChangeStart',
 				function (event, toState) {
 					$rootScope.$emit('error', false);
-					//renderHandler.dispose();
+					renderHandler.dispose();
 				});
 
 			$rootScope.$on('$stateChangeSuccess',
 				function (event, toState) {
 					$rootScope.loading = false;
-					//renderHandler.load(toState.name);
+					renderHandler.load(toState.name);
 					//$scope.manageTasks([]);
 				});
 

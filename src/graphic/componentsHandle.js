@@ -13,7 +13,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			light.intensity = 1;
 
 			// Skybox
-			var skybox = BABYLON.Mesh.CreateBox('skyBox', 1000, scene);
+			var skybox = BABYLON.Mesh.CreateBox('skyBox', 800, scene);
 			var skyboxMaterial = new BABYLON.StandardMaterial('skyBox', scene);
 
 			skyboxMaterial.backFaceCulling = false;
@@ -25,27 +25,59 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			skybox.material = skyboxMaterial;
 
 			//Water
-			var extraGround = BABYLON.Mesh.CreateGround('extraGround', 1000, 1000, 1, scene, false);
+			var extraGround = BABYLON.Mesh.CreateGround('extraGround', 1024, 1024, 2, scene, false);
 			var extraGroundMaterial = new BABYLON.StandardMaterial('extraGround', scene);
 
 			extraGroundMaterial.diffuseColor = new BABYLON.Color3(0.1, 0.3, 0.5);
 			extraGroundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-			extraGround.position.y = -10;
 			extraGround.material = extraGroundMaterial;
-			var water = BABYLON.Mesh.CreateGround('water', 1000, 1000, 1, scene, false);
+			extraGround.position.y = -10;
+
 			var waterMaterial = new WORLDMONGER.WaterMaterial('water', scene, light);
 			waterMaterial.refractionTexture.renderList.push(extraGround);
 			waterMaterial.reflectionTexture.renderList.push(skybox);
 
-			water.isPickable = false;
-			water.material = waterMaterial;
+			var planeSize = 50;
+
+			var verticalPlanes = [];
+			for (var i = 0; i < 2; i++) {
+				verticalPlanes[i] = BABYLON.Mesh.CreateGround('water_v_' + i, planeSize, planeSize, 1, scene, false);
+				verticalPlanes[i].isPickable = false;
+				verticalPlanes[i].material = waterMaterial;
+			}
+			verticalPlanes[1].position = new BABYLON.Vector3(planeSize, 0, 0) //coordinateOrigin(origin).add(new BABYLON.Vector3(planeSize, 0, 0));
+			console.log(origin);
+
+			var horizontalPlanes = [];
+			for (var i = 0; i < 2; i++) {
+				horizontalPlanes[i] = BABYLON.Mesh.CreateGround('water_h_' + i, planeSize, planeSize, 1, scene, false);
+				horizontalPlanes[i].isPickable = false;
+				horizontalPlanes[i].material = waterMaterial;
+			}
+			horizontalPlanes[0].position = new BABYLON.Vector3(0, 0, -planeSize);
+			horizontalPlanes[1].position = new BABYLON.Vector3(0, 0, planeSize);
 
 			return {
-				alive: function (delay) {
+				alive: function (origin) {
+					skybox.position.x = lerp(skybox.position.x, origin.x, 0.2);
+					skybox.position.z = lerp(skybox.position.z, origin.z, 0.2);
 
-				},
-				addObject: function (obj) {
+					extraGround.position.x = lerp(extraGround.position.x, origin.x, 0.2);
+					extraGround.position.z = lerp(extraGround.position.z, origin.z, 0.2);
 
+					for (var i in verticalPlanes) {
+						var deltaX = origin.x - verticalPlanes[i].position.x;
+						if (Math.abs(deltaX) > 50) {
+							verticalPlanes[i].position.x += planeSize * Math.sign(deltaX);
+						}
+					}
+
+					for (var j in horizontalPlanes) {
+						var deltaZ = origin.z - horizontalPlanes[j].position.z;
+						if (Math.abs(deltaZ) > 50) {
+							horizontalPlanes[j].position.z += planeSize * Math.sign(deltaZ);
+						}
+					}
 				}
 			};
 		},
@@ -269,13 +301,10 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 	return {
 		'login': function (scene, camera) {
-			var ocean = BaseComponents.createOcean(scene);
 			var ship = BaseComponents.createShip(scene, {});
+			var ocean = BaseComponents.createOcean(scene);
 			var cameraControl = new CameraController(camera, {});
 
-			//var axis = BaseComponents.axis(scene);
-
-			ocean.addObject(ship);
 			return {
 				onUpdate: function (delay) {
 					//cameraControl.observeCorrection();
@@ -304,17 +333,17 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			};
 		},
 		'world': function (scene, camera) {
-			var ocean = BaseComponents.createOcean(scene);
-			var ships = [];
 
 			var user = userStorage.get();
+			var ships = [];
 			var ship = BaseComponents.createShip(scene, {
 				id: user.id,
 				location: user.location,
 				alpha: user.alpha
 			});
-			ocean.addObject(ship);
+
 			ships.push(ship);
+			var ocean = BaseComponents.createOcean(scene);
 
 			var curves = BaseComponents.getCurves(scene);
 
@@ -461,6 +490,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					curves.update(ship.getPosition(), targetDirection);
 
 					axis.move();
+
+					ocean.alive(ship.getPosition());
 
 					for (var item in ships) {
 						ships[item].move(delay);

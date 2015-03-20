@@ -8,6 +8,12 @@ function randomRange(min, max) {
 	return Math.random() * (max - min) + min;
 }
 
+//Calculate coordinates of the plane
+function coordinateOrigin(location, size) {
+	if (!location || !size) return new BABYLON.Vector3(0, 0, 0);
+	return new BABYLON.Vector3((location.x / size).toFixed() * size || 0, 0, (location.z / size).toFixed() * size || 0);
+}
+
 //Common objects
 var TargetingDirections = {
 	none: 0,
@@ -58,7 +64,7 @@ function calculateCurve(position, options) {
 	} else {
 		var curve = [];
 
-		var angles = resolveAngles(options.alpha , options.direction);
+		var angles = resolveAngles(options.alpha, options.direction);
 		var distance = getDistance(100, correctAngle(options.angle || 0));
 		var scatter = options.scatter || 0;
 
