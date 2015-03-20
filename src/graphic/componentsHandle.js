@@ -44,21 +44,21 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				verticalPlanes[i] = BABYLON.Mesh.CreateGround('water_v_' + i, planeSize, planeSize, 1, scene, false);
 				verticalPlanes[i].isPickable = false;
 				verticalPlanes[i].material = waterMaterial;
+				verticalPlanes[i].position.x = i * planeSize;
 			}
-			verticalPlanes[1].position = new BABYLON.Vector3(planeSize, 0, 0) //coordinateOrigin(origin).add(new BABYLON.Vector3(planeSize, 0, 0));
-			console.log(origin);
+			//coordinateOrigin(origin).add(new BABYLON.Vector3(planeSize, 0, 0));
 
 			var horizontalPlanes = [];
 			for (var i = 0; i < 2; i++) {
 				horizontalPlanes[i] = BABYLON.Mesh.CreateGround('water_h_' + i, planeSize, planeSize, 1, scene, false);
 				horizontalPlanes[i].isPickable = false;
 				horizontalPlanes[i].material = waterMaterial;
+				horizontalPlanes[i].position.z = i * planeSize || -planeSize;
 			}
-			horizontalPlanes[0].position = new BABYLON.Vector3(0, 0, -planeSize);
-			horizontalPlanes[1].position = new BABYLON.Vector3(0, 0, planeSize);
 
 			return {
 				alive: function (origin) {
+					if (!origin) return;
 					skybox.position.x = lerp(skybox.position.x, origin.x, 0.2);
 					skybox.position.z = lerp(skybox.position.z, origin.z, 0.2);
 
@@ -68,7 +68,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					for (var i in verticalPlanes) {
 						var deltaX = origin.x - verticalPlanes[i].position.x;
 						if (Math.abs(deltaX) > 50) {
-							verticalPlanes[i].position.x += planeSize * Math.sign(deltaX);
+							verticalPlanes[i].position.x += origin.x + planeSize * Math.sign(deltaX);
 						}
 					}
 
@@ -78,6 +78,12 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 							horizontalPlanes[j].position.z += planeSize * Math.sign(deltaZ);
 						}
 					}
+				},
+				setOrigin: function (origin) {
+					//coordinateOrigin(origin, planeSize).add(new BABYLON.Vector3(planeSize, 0, 0));
+					console.log(origin);
+					console.log(planeSize);
+					console.log(coordinateOrigin(origin, planeSize));
 				}
 			};
 		},
@@ -334,6 +340,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		},
 		'world': function (scene, camera) {
 
+			var ocean = BaseComponents.createOcean(scene);
+
 			var user = userStorage.get();
 			var ships = [];
 			var ship = BaseComponents.createShip(scene, {
@@ -343,7 +351,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			});
 
 			ships.push(ship);
-			var ocean = BaseComponents.createOcean(scene);
+			ocean.setOrigin(ship.getPosition());
 
 			var curves = BaseComponents.getCurves(scene);
 
