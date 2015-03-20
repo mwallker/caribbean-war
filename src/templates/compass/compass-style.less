@@ -5,16 +5,15 @@
 	bottom: 10px;
 	right: 10px;
 	z-index: 10;
-	height: 200px;
-	width: 200px;
-	border: 3px solid #ddd;
-	border-radius: 150px;
+	height: 16em;
+	width: 16em;
+	border: 0.2em solid #ddd;
+	border-radius: 10em;
 }
 
 .compass-axes {
 	width: 100%;
 	height: 100%;
-	padding: 3px;
 	will-change: transform;
 	div {
 		&.axes-vertical {
@@ -23,9 +22,9 @@
 			text-align: center;
 		}
 		&.axes-horizontal {
-			height: 33%;
-			width: 48%;
-			text-align: center;
+			height: 34%;
+			width: 49%;
+			padding: 0.2em;
 			display: inline-block;
 			&.right {
 				text-align: right;
@@ -55,21 +54,29 @@
 
 span {
 	&.node {
-		vertical-align: middle;
 		display: inline-block;
 	}
 	&.helper {
 		display: inline-block;
 		vertical-align: middle;
 		height: 100%;
-		width: 0px;
+		width: 0;
 	}
 }
 
 .compass-content {
-	height: 100%;
+	height: 12.8em;
+	width: 12.8em;
 	text-align: center;
-	margin: -190px 0;
+	margin: -14.2em 1.4em;
+	border: 0.2em solid #ddd;
+	border-radius: 10em;
+	.compass-arrow {
+		position: absolute;
+		font-weight: 800;
+		width: 100%;
+		left: 0;
+	}
 }
 
 .test {

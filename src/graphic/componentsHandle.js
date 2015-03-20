@@ -363,7 +363,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				};
 
 				if (targetDirection == TargetingDirections.both) {
-					optionsLocal.alpha = -ship.getPosition().alpha - TargetingDirections.left * Math.PI / 2;
+					optionsLocal.alpha = -ship.getPosition().alpha + Math.PI / 2;
 					optionsServer.direction = TargetingDirections.left;
 					$rootScope.$emit('send', {
 						action: 'shoot',
@@ -371,7 +371,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					});
 					BaseComponents.cannonBall(scene, optionsLocal);
 
-					optionsLocal.alpha = -ship.getPosition().alpha - TargetingDirections.right * Math.PI / 2;
+					optionsLocal.alpha = -ship.getPosition().alpha - Math.PI / 2;
 					optionsServer.direction = TargetingDirections.right;
 					$rootScope.$emit('send', {
 						action: 'shoot',
