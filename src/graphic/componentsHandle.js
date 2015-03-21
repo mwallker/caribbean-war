@@ -37,7 +37,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			waterMaterial.refractionTexture.renderList.push(extraGround);
 			waterMaterial.reflectionTexture.renderList.push(skybox);
 
-			var planeSize = 50;
+			var planeSize = 1000;
 			var initiated = false;
 			var waterPlanes = [];
 			for (var i = 0; i < 4; i++) {
@@ -47,26 +47,28 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				waterPlanes[i].position.x = i * planeSize;
 			}
 
-
 			return {
 				alive: function (origin) {
-					if (!origin || !initiated) return;
-					console.log(origin);
+					if (!origin) return;
 					skybox.position.x = lerp(skybox.position.x, origin.x, 0.2);
 					skybox.position.z = lerp(skybox.position.z, origin.z, 0.2);
 
 					extraGround.position.x = lerp(extraGround.position.x, origin.x, 0.2);
 					extraGround.position.z = lerp(extraGround.position.z, origin.z, 0.2);
 
-					var center = coordinateOrigin(origin, planeSize);
-					for (var i in waterPlanes) {
-						var deltaX = origin.x - waterPlanes[i].position.x;
-						var deltaZ = origin.z - waterPlanes[i].position.z;
+					if (initiated) {
+						var center = coordinateOrigin(origin, planeSize);
+						for (var i in waterPlanes) {
+							var deltaX = origin.x - waterPlanes[i].position.x;
+							var deltaZ = origin.z - waterPlanes[i].position.z;
 
-						var verticalAlign = (Math.abs(deltaX) > planeSize * 0.9) ? planeSize * Math.sign(deltaX) : 0;
-						var horizontalAlign = (Math.abs(deltaZ) > planeSize * 0.9) ? planeSize * Math.sign(deltaZ) : 0;
-						waterPlanes[i].position = center.add(new BABYLON.Vector3(verticalAlign, 0, horizontalAlign));
-						//console.log(waterPlanes[i].position.x + ' ' + waterPlanes[i].position.z);
+							if (Math.abs(deltaX) > planeSize) {
+								waterPlanes[i].position.x = center.x + planeSize * Math.sign(deltaX);
+							}
+							if (Math.abs(deltaZ) > planeSize) {
+								waterPlanes[i].position.z = center.z + planeSize * Math.sign(deltaZ);
+							}
+						}
 					}
 				},
 				setOrigin: function (origin) {
@@ -79,9 +81,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					waterPlanes[1].position = center.add(new BABYLON.Vector3(planeSize * verticalAlign, 0, 0));
 					waterPlanes[2].position = center.add(new BABYLON.Vector3(planeSize * verticalAlign, 0, planeSize * horizontalAlign));
 					waterPlanes[3].position = center.add(new BABYLON.Vector3(0, 0, planeSize * horizontalAlign));
-					for (i in waterPlanes) {
-						console.log(waterPlanes[i].position);
-					}
+
 					initiated = true;
 				}
 			};
@@ -90,6 +90,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		createShip: function (scene, details) {
 			var ship = null;
 			var shipMesh = null;
+			var initiated = false;
 
 			BABYLON.SceneLoader.ImportMesh('ship', 'graphic/models/', 'ship01.babylon', scene, function (meshes) {
 				shipMesh = meshes[0];
@@ -112,6 +113,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					maxSpeed: 12,
 					weight: 1000
 				});
+
+				initiated = true;
 			});
 
 			var shipId = details.id;
@@ -171,6 +174,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				getPosition: function () {
 					return {
 						x: ship ? ship.position.x : 0,
+						y: 0,
 						z: ship ? ship.position.z : 0,
 						alpha: ship ? ship.rotation.y : 0
 					};
@@ -192,6 +196,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						ship.rotation.x = lerp(ship.rotation.x, wheelMode * ship.speed + obs, 0.02);
 						ship.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.02;
 					}
+				},
+				isReady: function () {
+					return initiated;
 				},
 				remove: function () {
 					shipMesh.dispose();
@@ -499,7 +506,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 					axis.move();
 
-					ocean.alive(ship.getPosition());
+					if (ship.isReady()) ocean.alive(ship.getPosition());
 
 					for (var item in ships) {
 						ships[item].move(delay);
