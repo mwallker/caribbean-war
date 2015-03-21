@@ -207,7 +207,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		},
 		//Cannon Ball
 		cannonBall: function (scene, details) {
-			var ball = new BABYLON.Mesh.CreateSphere('cannon_ball_' + details.id + Math.random().toFixed(2) * 100, 8.0, 0.4, scene);
+			var ball = new BABYLON.Mesh.CreateSphere('cannon_ball_' + details.id + Math.random().toFixed(3) * 100, 8.0, 0.4, scene);
 			ball.position = new BABYLON.Vector3(details.location.x, details.location.y, details.location.z);
 
 			var ballMaterialA = new BABYLON.StandardMaterial('shipMaterial', scene);
@@ -221,14 +221,15 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			ball.material = details.id ? ballMaterialA : ballMaterialB;
 
 			var t = 0;
+			var alpha = - details.alpha  - details.direction * Math.PI / 2;
 			var intervalId = setInterval(function () {
 				t += (scene.getEngine().getDeltaTime() * 0.001);
 				if (ball.position.y < 0) {
 					ball.dispose();
 					clearInterval(intervalId);
 				} else {
-					ball.position.x = details.location.x + 100 * t * Math.cos(details.angle) * Math.cos(details.alpha);
-					ball.position.z = details.location.z + 100 * t * Math.cos(details.angle) * Math.sin(details.alpha);
+					ball.position.x = details.location.x + 100 * t * Math.cos(details.angle) * Math.cos(alpha);
+					ball.position.z = details.location.z + 100 * t * Math.cos(details.angle) * Math.sin(alpha);
 					ball.position.y = details.location.y + 100 * t * Math.sin(details.angle) - (9.8 * t * t) / 2;
 				}
 			}, 20);
@@ -385,7 +386,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			});
 
 			$('#renderCanvas').on('shootKey', function (event) {
-				var shootAlpha = -ship.getPosition().alpha - targetDirection * Math.PI / 2;
+				//var shootAlpha = -ship.getPosition().alpha - targetDirection * Math.PI / 2;
+				//console.log(shootAlpha);
 				var optionsLocal = {
 					id: 0,
 					location: {
@@ -394,7 +396,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						z: ship.getPosition().z
 					},
 					angle: curves.angle(),
-					alpha: shootAlpha
+					alpha: ship.getPosition().alpha,
+					direction: targetDirection
 				};
 				var optionsServer = {
 					location: {
@@ -407,21 +410,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				};
 
 				if (targetDirection == TargetingDirections.both) {
-					optionsLocal.alpha = -ship.getPosition().alpha + Math.PI / 2;
-					optionsServer.direction = TargetingDirections.left;
-					$rootScope.$emit('send', {
-						action: 'shoot',
-						details: optionsServer
-					});
-					BaseComponents.cannonBall(scene, optionsLocal);
-
-					optionsLocal.alpha = -ship.getPosition().alpha - Math.PI / 2;
-					optionsServer.direction = TargetingDirections.right;
-					$rootScope.$emit('send', {
-						action: 'shoot',
-						details: optionsServer
-					});
-					BaseComponents.cannonBall(scene, optionsLocal);
+					//BaseComponents.cannonBall(scene, optionsLocal);
 				} else {
 					BaseComponents.cannonBall(scene, optionsLocal);
 					$rootScope.$emit('send', {

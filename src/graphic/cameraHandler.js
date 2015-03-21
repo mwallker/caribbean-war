@@ -44,7 +44,7 @@ function CameraController(bindedCamera, options) {
 	return {
 		baseCorrection: function () {
 			if (camera) {
-				camera.alpha %= (2 * Math.PI);
+				//camera.alpha %= (2 * Math.PI);
 
 				if (camera.beta < minBeta) {
 					camera.beta = minBeta;
@@ -63,7 +63,7 @@ function CameraController(bindedCamera, options) {
 					camera.alpha = lerp(camera.alpha, -(Math.PI + targetAlpha), lerpFactor);
 					camera.beta = lerp(camera.beta, minBeta, lerpFactor);
 				} else {
-					camera.alpha = lerp(camera.alpha, -(Math.PI + targetAlpha) % (2 * Math.PI) - (direction * Math.PI), lerpFactor);
+					camera.alpha = lerp(camera.alpha, -(Math.PI + targetAlpha) - (direction * Math.PI), lerpFactor);
 					camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
 				}
 			}
@@ -75,7 +75,7 @@ function CameraController(bindedCamera, options) {
 				targetAlpha = target.alpha || 0;
 			}
 			if (!locked) {
-				camera.alpha = lerp(camera.alpha, (-targetAlpha + normalAlpha) % (2 * Math.PI), lerpFactor);
+				camera.alpha = lerp(camera.alpha, (-targetAlpha + normalAlpha), lerpFactor);
 				camera.beta = lerp(camera.beta, normalBeta, lerpFactor);
 			}
 		},
