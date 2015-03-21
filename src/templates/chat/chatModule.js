@@ -23,7 +23,7 @@ angular.module('caribbean-war')
 					function prepareTemplate(msg) {
 						return '<li> [' + timeFormat(msg.timestamp) + '] ' +
 							'<a href="" data-sender="' + msg.senderId + '"> [' + msg.sender + '] </a>: ' +
-							(msg.receiverId ? '<span class="glyphicon glyphicon-user"></span>' : '') + msg.message +
+							(msg.receiverId ? '<span class="glyphicon glyphicon-user"></span> ' : '') + msg.message +
 							'</li>';
 					}
 

@@ -64,7 +64,7 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 		});
 
 		function update(fn) {
-			var phase = $scope.$root.$$phase;
+			var phase = $rootScope.$$phase;
 
 			if (phase == '$apply' || phase == '$digest') {
 				if (fn && (typeof (fn) === 'function')) {
