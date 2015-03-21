@@ -38,52 +38,51 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			waterMaterial.reflectionTexture.renderList.push(skybox);
 
 			var planeSize = 50;
-
-			var verticalPlanes = [];
-			for (var i = 0; i < 2; i++) {
-				verticalPlanes[i] = BABYLON.Mesh.CreateGround('water_v_' + i, planeSize, planeSize, 1, scene, false);
-				verticalPlanes[i].isPickable = false;
-				verticalPlanes[i].material = waterMaterial;
-				verticalPlanes[i].position.x = i * planeSize;
+			var initiated = false;
+			var waterPlanes = [];
+			for (var i = 0; i < 4; i++) {
+				waterPlanes[i] = BABYLON.Mesh.CreateGround('water_plane_' + i, planeSize, planeSize, 1, scene, false);
+				waterPlanes[i].isPickable = false;
+				waterPlanes[i].material = waterMaterial;
+				waterPlanes[i].position.x = i * planeSize;
 			}
-			//coordinateOrigin(origin).add(new BABYLON.Vector3(planeSize, 0, 0));
 
-			var horizontalPlanes = [];
-			for (var i = 0; i < 2; i++) {
-				horizontalPlanes[i] = BABYLON.Mesh.CreateGround('water_h_' + i, planeSize, planeSize, 1, scene, false);
-				horizontalPlanes[i].isPickable = false;
-				horizontalPlanes[i].material = waterMaterial;
-				horizontalPlanes[i].position.z = i * planeSize || -planeSize;
-			}
 
 			return {
 				alive: function (origin) {
-					if (!origin) return;
+					if (!origin || !initiated) return;
+					console.log(origin);
 					skybox.position.x = lerp(skybox.position.x, origin.x, 0.2);
 					skybox.position.z = lerp(skybox.position.z, origin.z, 0.2);
 
 					extraGround.position.x = lerp(extraGround.position.x, origin.x, 0.2);
 					extraGround.position.z = lerp(extraGround.position.z, origin.z, 0.2);
 
-					for (var i in verticalPlanes) {
-						var deltaX = origin.x - verticalPlanes[i].position.x;
-						if (Math.abs(deltaX) > 50) {
-							verticalPlanes[i].position.x += origin.x + planeSize * Math.sign(deltaX);
-						}
-					}
+					var center = coordinateOrigin(origin, planeSize);
+					for (var i in waterPlanes) {
+						var deltaX = origin.x - waterPlanes[i].position.x;
+						var deltaZ = origin.z - waterPlanes[i].position.z;
 
-					for (var j in horizontalPlanes) {
-						var deltaZ = origin.z - horizontalPlanes[j].position.z;
-						if (Math.abs(deltaZ) > 50) {
-							horizontalPlanes[j].position.z += planeSize * Math.sign(deltaZ);
-						}
+						var verticalAlign = (Math.abs(deltaX) > planeSize * 0.9) ? planeSize * Math.sign(deltaX) : 0;
+						var horizontalAlign = (Math.abs(deltaZ) > planeSize * 0.9) ? planeSize * Math.sign(deltaZ) : 0;
+						waterPlanes[i].position = center.add(new BABYLON.Vector3(verticalAlign, 0, horizontalAlign));
+						//console.log(waterPlanes[i].position.x + ' ' + waterPlanes[i].position.z);
 					}
 				},
 				setOrigin: function (origin) {
-					//coordinateOrigin(origin, planeSize).add(new BABYLON.Vector3(planeSize, 0, 0));
-					console.log(origin);
-					console.log(planeSize);
-					console.log(coordinateOrigin(origin, planeSize));
+					var center = coordinateOrigin(origin, planeSize);
+
+					var verticalAlign = Math.sign(origin.x - center.x) || 1;
+					var horizontalAlign = Math.sign(origin.z - center.z) || 1;
+
+					waterPlanes[0].position = center;
+					waterPlanes[1].position = center.add(new BABYLON.Vector3(planeSize * verticalAlign, 0, 0));
+					waterPlanes[2].position = center.add(new BABYLON.Vector3(planeSize * verticalAlign, 0, planeSize * horizontalAlign));
+					waterPlanes[3].position = center.add(new BABYLON.Vector3(0, 0, planeSize * horizontalAlign));
+					for (i in waterPlanes) {
+						console.log(waterPlanes[i].position);
+					}
+					initiated = true;
 				}
 			};
 		},
@@ -96,7 +95,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				shipMesh = meshes[0];
 
 				if (details.location) {
-					shipMesh.position = new BABYLON.Vector3(details.location.x, 0, details.location.y);
+					shipMesh.position = details.location;
 				}
 				shipMesh.rotation.y = details.alpha || 0;
 
@@ -344,14 +343,15 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 			var user = userStorage.get();
 			var ships = [];
+			var shipPosition = new BABYLON.Vector3(user.location.x, 0, user.location.y);
 			var ship = BaseComponents.createShip(scene, {
 				id: user.id,
-				location: user.location,
+				location: shipPosition,
 				alpha: user.alpha
 			});
 
 			ships.push(ship);
-			ocean.setOrigin(ship.getPosition());
+			ocean.setOrigin(shipPosition);
 
 			var curves = BaseComponents.getCurves(scene);
 
