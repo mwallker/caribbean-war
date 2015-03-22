@@ -1,5 +1,4 @@
 angular.module('caribbean-war').controller('harborCtrl', function ($scope, $rootScope, userStorage) {
-	//SCENE INIT
 	if (!userStorage.status()) {
 		$rootScope.$emit('close', false);
 	} else {

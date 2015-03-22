@@ -18,25 +18,25 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 			$scope.currentHealth -= damage || 100;
 		};
 
-		$rootScope.$on('hit', function (event, details) {
-			if (user.id != details.id) {
+		$rootScope.callbacks.push($rootScope.$on('hit', function (event, details) {
+			if ($scope.user.id != details.id) {
 				$scope.hit(details.damage);
 			}
-		});
+		}));
 
-		$rootScope.$on('miss', function (event, details) {
+		$rootScope.callbacks.push($rootScope.$on('miss', function (event, details) {
 			//miss actions
-		});
+		}));
 
-		$rootScope.$on('movementKey', function (event, command) {
+		$rootScope.callbacks.push($rootScope.$on('movementKey', function (event, command) {
 			if (connection.status() && $scope.user.id) {
 				connection.send('move', {
 					type: command
 				});
 			}
-		});
+		}));
 
-		$rootScope.$on('move', function (event, command) {
+		$rootScope.callbacks.push($rootScope.$on('move', function (event, command) {
 			if ($scope.user.id != command.id) return;
 			switch (command.type) {
 			case 'upward':
@@ -57,13 +57,14 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 			default:
 				break;
 			}
-		});
+		}));
 
-		$rootScope.$on('position', function (event, details) {
+		$rootScope.callbacks.push($rootScope.$on('position', function (event, details) {
 			update(function () {
 				$scope.position = details;
 			});
-		});
+		}));
+
 
 		function update(fn) {
 			var phase = $rootScope.$$phase;

@@ -2,6 +2,8 @@ angular.module('caribbean-war')
 	.controller('appCtrl', ['$scope', '$rootScope', '$q', '$state', 'renderHandler', 'audioControl',
 		function ($scope, $rootScope, $q, $state, renderHandler, audioControl) {
 
+			$rootScope.callbacks = [];
+
 			$scope.appLoading = true;
 			$scope.manageTasks = function (tasks) {
 				//$scope.appLoading = true;
@@ -22,6 +24,12 @@ angular.module('caribbean-war')
 
 			$rootScope.$on('$stateChangeSuccess',
 				function (event, toState) {
+					console.log('clear events(' + $rootScope.callbacks.length + ')');
+					for (var c in $rootScope.callbacks) {
+						$rootScope.callbacks[c]();
+					}
+					$rootScope.callbacks = [];
+
 					$rootScope.loading = false;
 					renderHandler.load(toState.name);
 					//$scope.manageTasks([]);

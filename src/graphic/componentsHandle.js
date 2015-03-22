@@ -158,9 +158,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				},
 				correctPosition: function (next) {
 					if (!ship) return;
-					$('#coordXL').text(ship.position.x.toFixed(2));
-					$('#coordYL').text(ship.position.z.toFixed(2));
-					$('#coordAlphaL').text(ship.rotation.y.toFixed(2));
 
 					if (correctionTimer > 0.05) {
 						ship.position.x = lerp(ship.position.x, next.x, 0.2);
@@ -374,11 +371,12 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			var neighbors = userStorage.getNeighbors();
 			for (var n in neighbors) {
 				var position = new BABYLON.Vector3(neighbors[n].location.x, 0, neighbors[n].location.y);
-				ships.push(BaseComponents.createShip(scene, {
+				var newShip = BaseComponents.createShip(scene, {
 					id: neighbors[n].id,
 					location: position,
 					alpha: neighbors[n].alpha
-				}));
+				});
+				ships.push(newShip);
 			}
 
 			$('#renderCanvas').on('directionKey', function (event, data) {
@@ -421,6 +419,11 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				if (users) {
 					if (users.added) {
 						for (var i in users.added) {
+							for (var j in ships) {
+								if (ships[j].getId() == users.added[i].id) {
+									return;
+								}
+							}
 							if (users.added[i].id != user.id) {
 								var position = new BABYLON.Vector3(users.added[i].location.x, 0, users.added[i].location.y);
 								var newShip = BaseComponents.createShip(scene, {
@@ -433,9 +436,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						}
 					}
 					if (users.removed) {
-						for (var j in users.removed) {
+						for (var k in users.removed) {
 							for (var s in ships) {
-								if (ships[s].getId() == users.removed[j].id) {
+								if (ships[s].getId() == users.removed[k].id) {
 									ships[s].remove();
 									ships.splice(s, 1);
 								}
@@ -457,9 +460,15 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			var onMoveCallback = $rootScope.$on('move', function (event, details) {
 				for (var i in ships) {
 					if (ships[i].getId() == details.id) {
+						if (ship.getId() != details.id) {
+							ships[i].correctPosition({
+								x: details.location.x,
+								z: details.location.y,
+								alpha: details.alpha
+							});
+						}
 						ships[i].changeState(details.type);
-						//ships[i].correctPosition(details.location);
-						break;
+						return;
 					}
 				}
 			});
@@ -481,6 +490,15 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				console.warn('Someone miss, MYAXAXAXAXAXA!');
 			});
 
+			function findShip(id) {
+				for (var i in ships) {
+					if (ships[i].getId() == id) {
+						return ships[i];
+					}
+				}
+				return false;
+			}
+
 			return {
 				onUpdate: function (delay) {
 					cameraControl.baseCorrection();
@@ -501,6 +519,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					onNeigboursCallback();
 					onMoveCallback();
 					onShootCallback();
+					onHitCallback();
+					onMissCallback();
 					cameraControl.removeEvents();
 				}
 			};
