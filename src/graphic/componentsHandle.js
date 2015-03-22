@@ -109,8 +109,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				shipMesh.material = shipMaterial;
 
 				ship = angular.extend(shipMesh, {
-					speed: 0,
-					maxSpeed: 12,
+					currentSpeed: 0,
+					speed: 12,
 					weight: 1000
 				});
 
@@ -181,17 +181,17 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						timer += delay % (2 * Math.PI);
 						obs = lerp(obs, randomRange(-0.7, 0.7), 0.001);
 
-						ship.speed = lerp(ship.speed, sailsMode * ship.maxSpeed * delay / 4, _velocity);
+						ship.currentSpeed = lerp(ship.currentSpeed, sailsMode * ship.speed * delay / 4, _velocity);
 
 						//Movement
-						ship.position.x += Math.cos(ship.rotation.y) * ship.speed;
-						ship.position.z += Math.sin(-ship.rotation.y) * ship.speed;
+						ship.position.x += Math.cos(ship.rotation.y) * ship.currentSpeed;
+						ship.position.z += Math.sin(-ship.rotation.y) * ship.currentSpeed;
 						ship.position.y += Math.sin(timer * 1.2) * 0.0007;
 
 						//Rotation
-						ship.rotation.y = (ship.rotation.y + (wheelMode * ship.speed * _angleSpeed) / (sailsMode + 1)) % (2 * Math.PI);
-						ship.rotation.x = lerp(ship.rotation.x, wheelMode * ship.speed + obs, 0.02);
-						ship.rotation.z = ship.speed * 0.4 + Math.sin(timer * 1.2) * 0.02;
+						ship.rotation.y = (ship.rotation.y + (wheelMode * ship.currentSpeed * _angleSpeed) / (sailsMode + 1)) % (2 * Math.PI);
+						ship.rotation.x = lerp(ship.rotation.x, wheelMode * ship.currentSpeed + obs, 0.02);
+						ship.rotation.z = ship.currentSpeed * 0.4 + Math.sin(timer * 1.2) * 0.02;
 					}
 				},
 				isReady: function () {

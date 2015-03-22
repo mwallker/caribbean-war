@@ -42,5 +42,5 @@
 	"ERRORS_ROUT": "Load fail",
 	"ERRORS_UNKNOWN_ACTION": "Bad command",
 	"ERRORS_NOT_READY": "O_o",
-	"ERRORS_SEND": "Ooops",
+	"ERRORS_SEND": "Ooops"
 }
