@@ -19,7 +19,9 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 		};
 
 		$rootScope.$on('hit', function (event, details) {
-			$scope.hit(details.damage);
+			if (user.id != details.id) {
+				$scope.hit(details.damage);
+			}
 		});
 
 		$rootScope.$on('miss', function (event, details) {

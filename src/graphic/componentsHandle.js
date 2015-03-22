@@ -373,10 +373,10 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 			var neighbors = userStorage.getNeighbors();
 			for (var n in neighbors) {
-				console.log(neighbors[n]);
+				var position = new BABYLON.Vector3(neighbors[n].location.x, 0, neighbors[n].location.y);
 				ships.push(BaseComponents.createShip(scene, {
 					id: neighbors[n].id,
-					location: neighbors[n].location,
+					location: position,
 					alpha: neighbors[n].alpha
 				}));
 			}
@@ -422,9 +422,10 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					if (users.added) {
 						for (var i in users.added) {
 							if (users.added[i].id != user.id) {
+								var position = new BABYLON.Vector3(users.added[i].location.x, 0, users.added[i].location.y);
 								var newShip = BaseComponents.createShip(scene, {
 									id: users.added[i].id,
-									location: users.added[i].location,
+									location: position,
 									alpha: users.added[i].alpha
 								});
 								ships.push(newShip);
