@@ -427,7 +427,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 									location: users.added[i].location,
 									alpha: users.added[i].alpha
 								});
-								ocean.addObject(newShip);
 								ships.push(newShip);
 							}
 						}
