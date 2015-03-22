@@ -55,10 +55,6 @@ angular.module('caribbean-war')
 			};
 			$rootScope.$on('error', $scope.errorHandler);
 
-			//TODO: bad event, remove it later on
-			$rootScope.$on('fuckup', function () {
-				$rootScope.$emit('error', 'ERRORS_FUCKUP');
-			});
 
 			//WORLD GLOBAL EVENTS
 			$rootScope.$on('enterWorld', function (event, details) {
