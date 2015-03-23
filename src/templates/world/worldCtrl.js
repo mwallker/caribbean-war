@@ -15,12 +15,15 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 		$scope.position = {};
 
 		$scope.hit = function (damage) {
-			$scope.currentHealth -= damage || 100;
+			$rootScope.$emit('hit', {
+				id: $scope.user.id,
+				damage: 87
+			});
 		};
 
 		$rootScope.callbacks.push($rootScope.$on('hit', function (event, details) {
 			if ($scope.user.id != details.id) {
-				$scope.hit(details.damage);
+				$scope.currentHealth -= details.damage || 0;
 			}
 		}));
 

@@ -90,6 +90,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		createShip: function (scene, details) {
 			var ship = null;
 			var shipMesh = null;
+			var healthBar = null;
 			var initiated = false;
 
 			BABYLON.SceneLoader.ImportMesh('ship', 'graphic/models/', 'ship01.babylon', scene, function (meshes) {
@@ -111,9 +112,16 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				ship = angular.extend(shipMesh, {
 					currentSpeed: 0,
 					speed: 12,
-					weight: 1000
+					weight: 1000,
+					baseHealth: 1
 				});
-
+				if (details.health) {
+					ship.baseHealth = details.health;
+					healthBar = BaseComponents.createHealthBar(scene, {
+						id: details.id,
+						health: details.health
+					});
+				}
 				initiated = true;
 			});
 
@@ -176,7 +184,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						alpha: ship ? ship.rotation.y : 0
 					};
 				},
-				move: function (delay) {
+				move: function (delay, cameraAlpha) {
 					if (ship) {
 						timer += delay % (2 * Math.PI);
 						obs = lerp(obs, randomRange(-0.7, 0.7), 0.001);
@@ -192,30 +200,87 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						ship.rotation.y = (ship.rotation.y + (wheelMode * ship.currentSpeed * _angleSpeed) / (sailsMode + 1)) % (2 * Math.PI);
 						ship.rotation.x = lerp(ship.rotation.x, wheelMode * ship.currentSpeed + obs, 0.02);
 						ship.rotation.z = ship.currentSpeed * 0.4 + Math.sin(timer * 1.2) * 0.02;
+
+						if (cameraAlpha && healthBar) {
+							healthBar.update({
+								alpha: cameraAlpha,
+								x: ship.position.x,
+								y: 6,
+								z: ship.position.z
+							});
+						}
 					}
 				},
 				isReady: function () {
 					return initiated;
+				},
+				takeDamage: function (param) {
+					console.log(param);
+					if (param && param.damage) {
+						ship.health -= param.damage;
+						if (healthBar) healthBar.updateValue(param.damage);
+					}
+					return 0;
 				},
 				remove: function () {
 					shipMesh.dispose();
 				}
 			};
 		},
+		//Health Bar
+		createHealthBar: function (scene, details) {
+			if (!details) return;
+
+			var baseHealth = details.health || 1;
+			var currentHealth = details.health || 1;
+
+			var size = 0.3;
+
+			var healthBarScale = new BABYLON.Vector3(0.6, 0.6, 15);
+
+			var healthBar = BABYLON.Mesh.CreateBox('bar_' + details.id, size, scene);
+			var healthBarEntry = BABYLON.Mesh.CreateBox('bar_entry_' + details.id, size, scene);
+
+			var healthBarMaterial = new BABYLON.StandardMaterial('healthBarMaterial', scene);
+			healthBarMaterial.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+			healthBarMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+			healthBarMaterial.emissiveColor = new BABYLON.Color3(0, 0, 0);
+			healthBarMaterial.alpha = 0.3;
+
+			var healthBarEntryMaterial = new BABYLON.StandardMaterial('healthBarEntryMaterial', scene);
+			healthBarEntryMaterial.diffuseColor = new BABYLON.Color3(0.3, 0.6, 0.8);
+			healthBarEntryMaterial.specularColor = new BABYLON.Color3(0.3, 0.6, 0.8);
+			healthBarEntryMaterial.emissiveColor = new BABYLON.Color3(0.3, 0.6, 0.8);
+
+			healthBar.scaling = new BABYLON.Vector3(0.6, 0.6, 15);
+			healthBar.material = healthBarMaterial;
+
+			healthBarEntry.scaling = new BABYLON.Vector3(0.65, 0.65, (currentHealth / baseHealth) * 15 + 0.5);
+			healthBarEntry.material = healthBarEntryMaterial;
+
+			return {
+				update: function (location) {
+					healthBar.rotation.y = -location.alpha;
+					healthBar.position = new BABYLON.Vector3(location.x, location.y, location.z);
+					healthBarEntry.rotation.y = -location.alpha;
+					healthBarEntry.position = new BABYLON.Vector3(location.x + (15 * size / 2 - 15 * size / 2 * (currentHealth / baseHealth)) * Math.cos(-location.alpha), location.y, location.z + (15 * size / 2 - 15 * size / 2 * (currentHealth / baseHealth)) * Math.sin(-location.alpha));
+				},
+				updateValue: function (damage) {
+					currentHealth -= damage || 0;
+					healthBarEntry.scaling = new BABYLON.Vector3(0.65, 0.65, (currentHealth / baseHealth) * 15 + 0.5);
+				}
+			}
+		},
 		//Cannon Ball
 		cannonBall: function (scene, details) {
-			var ball = new BABYLON.Mesh.CreateSphere('cannon_ball_' + details.id + Math.random().toFixed(3) * 100, 8.0, 0.4, scene);
+			var ball = new BABYLON.Mesh.CreateSphere('cannon_ball_' + details.id + Math.random().toFixed(3) * 100, 8.0, 0.1, scene);
 			ball.position = new BABYLON.Vector3(details.location.x, details.location.y, details.location.z);
 
-			var ballMaterialA = new BABYLON.StandardMaterial('shipMaterial', scene);
-			ballMaterialA.diffuseColor = new BABYLON.Color3(1, 1, 1);
-			ballMaterialA.specularColor = new BABYLON.Color3(1, 1, 1);
+			var ballMaterial = new BABYLON.StandardMaterial('shipMaterial', scene);
+			ballMaterial.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+			ballMaterial.specularColor = new BABYLON.Color3(0, 0, 1);
 
-			var ballMaterialB = new BABYLON.StandardMaterial('shipMaterial', scene);
-			ballMaterialB.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.1);
-			ballMaterialB.specularColor = new BABYLON.Color3(0, 0, 1);
-
-			ball.material = details.id ? ballMaterialA : ballMaterialB;
+			ball.material = ballMaterial;
 
 			var t = 0;
 			var alpha = -details.alpha - details.direction * Math.PI / 2;
@@ -236,9 +301,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		//Box
 		axis: function (scene) {
 			var _axis = [];
-			var count = 30,
+			var count = 40,
 				ratio = 0.2,
-				velocity = 20;
+				distance = 10;
 			var materials = [
 				new BABYLON.StandardMaterial('xMaterial', scene),
 				new BABYLON.StandardMaterial('yMaterial', scene),
@@ -251,11 +316,11 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			for (var d = 0; d < 3; d++) {
 				var temp = [];
 				for (var i = 0; i < count; i++) {
-					var obj = BABYLON.Mesh.CreateBox('ax_' + d + '_' + i, 5, scene);
+					var obj = BABYLON.Mesh.CreateBox('ax_' + d + '_' + i, 2, scene);
 					obj.material = materials[d];
-					if (d === 0) obj.position.x = velocity * i;
-					if (d === 1) obj.position.y = velocity * i;
-					if (d === 2) obj.position.z = velocity * i;
+					if (d === 0) obj.position.x = distance * i;
+					if (d === 1) obj.position.y = distance * i;
+					if (d === 2) obj.position.z = distance * i;
 					temp.push(obj);
 				}
 				_axis.push(temp);
@@ -269,9 +334,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				move: function () {
 					for (var d = 0; d < 3; d++) {
 						for (var i = 0; i < count; i++) {
-							if (d === 0) _axis[d][i].position.x = (_axis[d][i].position.x < count * velocity) ? _axis[d][i].position.x + ratio : 0;
-							if (d === 1) _axis[d][i].position.y = (_axis[d][i].position.y < count * velocity) ? _axis[d][i].position.y + ratio : 0;
-							if (d === 2) _axis[d][i].position.z = (_axis[d][i].position.z < count * velocity) ? _axis[d][i].position.z + ratio : 0;
+							if (d === 0) _axis[d][i].position.x = (_axis[d][i].position.x < count * distance) ? _axis[d][i].position.x + ratio : 0;
+							if (d === 1) _axis[d][i].position.y = (_axis[d][i].position.y < count * distance) ? _axis[d][i].position.y + ratio : 0;
+							if (d === 2) _axis[d][i].position.z = (_axis[d][i].position.z < count * distance) ? _axis[d][i].position.z + ratio : 0;
 						}
 					}
 				}
@@ -317,13 +382,12 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 			return {
 				onUpdate: function (delay) {
-					//cameraControl.observeCorrection();
+					cameraControl.observeCorrection();
 					cameraControl.baseCorrection();
 					ship.move(delay);
 				},
 				unsubscribe: function () {
 					cameraControl.removeEvents();
-					return null;
 				}
 			};
 		},
@@ -338,7 +402,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				},
 				unsubscribe: function () {
 					cameraControl.removeEvents();
-					return null;
 				}
 			};
 		},
@@ -352,7 +415,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			var ship = BaseComponents.createShip(scene, {
 				id: user.id,
 				location: shipPosition,
-				alpha: user.alpha
+				alpha: user.alpha,
+				health: userStorage.getShip().hp
 			});
 
 			ships.push(ship);
@@ -374,7 +438,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				var newShip = BaseComponents.createShip(scene, {
 					id: neighbors[n].id,
 					location: position,
-					alpha: neighbors[n].alpha
+					alpha: neighbors[n].alpha,
+					health: neighbors[n].ship.hp
 				});
 				ships.push(newShip);
 			}
@@ -429,7 +494,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 								var newShip = BaseComponents.createShip(scene, {
 									id: users.added[i].id,
 									location: position,
-									alpha: users.added[i].alpha
+									alpha: users.added[i].alpha,
+									health: users.added[i].ship.hp
 								});
 								ships.push(newShip);
 							}
@@ -483,11 +549,12 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			});
 
 			var onHitCallback = $rootScope.$on('hit', function (event, details) {
-				console.log('Boooooooooom!');
-			});
-
-			var onMissCallback = $rootScope.$on('miss', function (event, details) {
-				console.warn('Someone miss, MYAXAXAXAXAXA!');
+				for (var i in ships) {
+					if (ships[i].getId() == details.id) {
+						ships[i].takeDamage(details);
+						return;
+					}
+				}
 			});
 
 			function findShip(id) {
@@ -512,7 +579,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					if (ship.isReady()) ocean.alive(ship.getPosition());
 
 					for (var item in ships) {
-						ships[item].move(delay);
+						ships[item].move(delay, cameraControl.getRotation().alpha);
 					}
 				},
 				unsubscribe: function () {
@@ -520,7 +587,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					onMoveCallback();
 					onShootCallback();
 					onHitCallback();
-					onMissCallback();
 					cameraControl.removeEvents();
 				}
 			};

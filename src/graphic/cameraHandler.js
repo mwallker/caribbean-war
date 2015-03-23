@@ -85,6 +85,12 @@ function CameraController(bindedCamera, options) {
 			camera.beta = Math.cos(observeTimer) * Math.PI / 7 + Math.PI / 3;
 			camera.radius = maxDist / 2;
 		},
+		getRotation: function () {
+			return {
+				alpha: camera.alpha,
+				beta: camera.beta
+			}
+		},
 		removeEvents: function () {
 			$('#renderCanvas').off('mousedown');
 			$(document).off('mouseup');
