@@ -223,6 +223,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					return 0;
 				},
 				remove: function () {
+					healthBar.dispose();
 					shipMesh.dispose();
 				}
 			};
@@ -235,6 +236,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			var currentHealth = details.health || 1;
 
 			var size = 0.3;
+			var length = 15;
 
 			var healthBarScale = new BABYLON.Vector3(0.6, 0.6, 15);
 
@@ -252,10 +254,10 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			healthBarEntryMaterial.specularColor = new BABYLON.Color3(0.3, 0.6, 0.8);
 			healthBarEntryMaterial.emissiveColor = new BABYLON.Color3(0.3, 0.6, 0.8);
 
-			healthBar.scaling = new BABYLON.Vector3(0.6, 0.6, 15);
+			healthBar.scaling = new BABYLON.Vector3(0.6, 0.6, length);
 			healthBar.material = healthBarMaterial;
 
-			healthBarEntry.scaling = new BABYLON.Vector3(0.65, 0.65, (currentHealth / baseHealth) * 15 + 0.5);
+			healthBarEntry.scaling = new BABYLON.Vector3(0.65, 0.65, (currentHealth / baseHealth) * length + 0.5);
 			healthBarEntry.material = healthBarEntryMaterial;
 
 			return {
@@ -263,11 +265,15 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					healthBar.rotation.y = -location.alpha;
 					healthBar.position = new BABYLON.Vector3(location.x, location.y, location.z);
 					healthBarEntry.rotation.y = -location.alpha;
-					healthBarEntry.position = new BABYLON.Vector3(location.x + (15 * size / 2 - 15 * size / 2 * (currentHealth / baseHealth)) * Math.cos(-location.alpha), location.y, location.z + (15 * size / 2 - 15 * size / 2 * (currentHealth / baseHealth)) * Math.sin(-location.alpha));
+					healthBarEntry.position = new BABYLON.Vector3(location.x + (length * size / 2 - length * size / 2 * (currentHealth / baseHealth)) * Math.cos(-location.alpha), location.y, location.z + (length * size / 2 - length * size / 2 * (currentHealth / baseHealth)) * Math.sin(-location.alpha));
 				},
 				updateValue: function (damage) {
 					currentHealth -= damage || 0;
-					healthBarEntry.scaling = new BABYLON.Vector3(0.65, 0.65, (currentHealth / baseHealth) * 15 + 0.5);
+					healthBarEntry.scaling = new BABYLON.Vector3(0.65, 0.65, (currentHealth / baseHealth) * length + 0.5);
+				},
+				dispose: function () {
+					healthBar.dispose();
+					healthBarEntry.dispose();
 				}
 			}
 		},
