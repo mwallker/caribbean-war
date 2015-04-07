@@ -228,6 +228,20 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				}
 			};
 		},
+		//Water spalsh
+		createSplash: function (scene, details) {
+			if (!details) return;
+			var splashId = details.id + '_' + randomRange(0, 1000);
+			var emitter = new BABYLON.Mesh.CreateBox('splash_emitter_' + splashId, details.id ? 0.5 : 1, scene);
+			emitter.position = details.location;
+
+			var particleSystem = new BABYLON.ParticleSystem("splash_system_" + randomRange(0, 1000), 2000, scene, null);
+
+			particleSystem.emitter = emitter;
+			particleSystem.gravity = new BABYLON.Vector3(0, 9.81, 0);
+			particleSystem.start();
+
+		},
 		//Health Bar
 		createHealthBar: function (scene, details) {
 			if (!details) return;
@@ -293,6 +307,11 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			var intervalId = setInterval(function () {
 				t += (scene.getEngine().getDeltaTime() * 0.001);
 				if (ball.position.y < 0) {
+					console.log(ball.position);
+					BaseComponents.createSplash(scene, {
+						id: details.id,
+						location: ball.position
+					});
 					ball.dispose();
 					clearInterval(intervalId);
 				} else {
@@ -300,7 +319,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					ball.position.z = details.location.z + 100 * t * Math.cos(details.angle) * Math.sin(alpha);
 					ball.position.y = details.location.y + 100 * t * Math.sin(details.angle) - (9.8 * t * t) / 2;
 				}
-			}, 20);
+			}, 10);
 
 			return ball;
 		},
@@ -563,6 +582,13 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				}
 			});
 
+			var onMissCallback = $rootScope.$on('miss', function (event, details) {
+				BaseComponents.createSplash(scene, {
+					id: details.id,
+					location: details.position
+				});
+			});
+
 			function findShip(id) {
 				for (var i in ships) {
 					if (ships[i].getId() == id) {
@@ -593,6 +619,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					onMoveCallback();
 					onShootCallback();
 					onHitCallback();
+					onMissCallback();
 					cameraControl.removeEvents();
 				}
 			};

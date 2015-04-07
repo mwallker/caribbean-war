@@ -89,7 +89,7 @@ function CameraController(bindedCamera, options) {
 			return {
 				alpha: camera.alpha,
 				beta: camera.beta
-			}
+			};
 		},
 		removeEvents: function () {
 			$('#renderCanvas').off('mousedown');
