@@ -240,6 +240,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			particleSystem.particleTexture = new BABYLON.Texture("./images/light.png", scene);
 			particleSystem.emitter = emitter;
 			particleSystem.emitRate = 500;
+			particleSystem.minSize = 0.1;
+			particleSystem.maxSize = 0.5;
 			particleSystem.gravity = new BABYLON.Vector3(0, 9.81, 0);
 			particleSystem.start();
 
@@ -247,7 +249,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				particleSystem.stop();
 				particleSystem.dispose();
 				emitter.dispose();
-			}, 500);
+				clearInterval(intervalId);
+			}, 5000);
 		},
 		//Health Bar
 		createHealthBar: function (scene, details) {

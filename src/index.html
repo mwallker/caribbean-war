@@ -34,8 +34,8 @@
 
 		<div ui-view></div>
 
-		<div id="error-layer">
-			<div class="alert alert-danger" role="alert" ng-show="errorShown">
+		<div id="ui-error-layer" ng-show="errorShown">
+			<div class="alert alert-danger" role="alert">
 				<a class="close" aria-label="Close" ng-click="errorHandler()">
 					<span aria-hidden="true">&times;</span>
 				</a>
@@ -53,6 +53,7 @@
 	<script src="app-events-controller.js"></script>
 
 	<script src="shared/shared-script.js"></script>
+	<script src="shared/kitchen.js"></script>
 	<script src="services/connectService.js"></script>
 	<script src="services/userService.js"></script>
 

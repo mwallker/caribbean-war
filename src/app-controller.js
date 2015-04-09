@@ -39,5 +39,9 @@ angular.module('caribbean-war')
 				function (event, toState) {
 					$rootScope.$emit('error', 'ERROR_ROUT');
 				});
+
+			setTimeout(function () {
+				loadConsole();
+			}, 5000);
 		}
 	]);

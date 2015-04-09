@@ -1,4 +1,4 @@
-<div id="login-layer" class="primary-theme">
+<div id="ui-login-layer" class="primary-theme">
 	<form ng-submit="submit()" role="form">
 		<div class="form-group">
 			<label for="inputEmail" class="control-label">{{'LOGIN_EMAIL' | translate}}: </label>
@@ -43,7 +43,7 @@
 	</div>
 </div>
 
-<div id="status-bar" class="primary-theme">Version: {{::devInfo.version}} | Server: {{::devInfo.environment}} | Status:
+<div id="ui-status-bar" class="primary-theme">Version: {{::devInfo.version}} | Server: {{::devInfo.environment}} | Status:
 	<span class="up glyphicon glyphicon-ok-circle" ng-show="status == 1"></span>
 	<span class="down glyphicon glyphicon-ban-circle" ng-show="status == 0"></span>
 	<span class="refresh glyphicon glyphicon-refresh" ng-show="status == -1"></span>
