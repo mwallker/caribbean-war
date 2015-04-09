@@ -237,10 +237,17 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 			var particleSystem = new BABYLON.ParticleSystem("splash_system_" + randomRange(0, 1000), 2000, scene, null);
 
+			particleSystem.particleTexture = new BABYLON.Texture("./images/light.png", scene);
 			particleSystem.emitter = emitter;
+			particleSystem.emitRate = 500;
 			particleSystem.gravity = new BABYLON.Vector3(0, 9.81, 0);
 			particleSystem.start();
 
+			var intervalId = setInterval(function () {
+				particleSystem.stop();
+				particleSystem.dispose();
+				emitter.dispose();
+			}, 500);
 		},
 		//Health Bar
 		createHealthBar: function (scene, details) {
