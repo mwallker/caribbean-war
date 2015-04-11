@@ -10,7 +10,7 @@ angular.module('caribbean-war')
 				$q.all(tasks).then(function () {
 					$scope.appLoading = false;
 				}, function () {
-					console.log('fail');
+					console.error('Fail execute tasks');
 				});
 			};
 
@@ -24,7 +24,7 @@ angular.module('caribbean-war')
 
 			$rootScope.$on('$stateChangeSuccess',
 				function (event, toState) {
-					console.log('clear events(' + $rootScope.callbacks.length + ')');
+					console.info('Clear ' + $rootScope.callbacks.length + ' events');
 					for (var c in $rootScope.callbacks) {
 						$rootScope.callbacks[c]();
 					}

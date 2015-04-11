@@ -84,8 +84,6 @@ function calculateCurve(position, options) {
 		//Count of steps
 		var n = 5;
 
-		console.log(height);
-
 		for (var i = 0; i < angles.length; i++) {
 			cosA = Math.cos(angles[i]);
 			sinA = Math.sin(angles[i]);

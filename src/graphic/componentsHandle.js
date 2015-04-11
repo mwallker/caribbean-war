@@ -215,7 +215,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					return initiated;
 				},
 				takeDamage: function (param) {
-					console.log(param);
 					if (param && param.damage) {
 						ship.health -= param.damage;
 						if (healthBar) healthBar.updateValue(param.damage);
@@ -329,7 +328,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			var intervalId = setInterval(function () {
 				t += (scene.getEngine().getDeltaTime() * 0.001);
 				if (ball.position.y < 0) {
-					console.log(ball.position);
 					BaseComponents.createSplash(scene, {
 						id: details.id,
 						location: ball.position

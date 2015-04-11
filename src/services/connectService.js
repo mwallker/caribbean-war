@@ -25,7 +25,7 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 				socket = new WebSocket(socketUrl);
 
 				socket.onopen = function () {
-					console.log('Connection opened: ' + socketUrl);
+					console.info('Connection opened: ' + socketUrl);
 					deferred.resolve();
 				};
 
@@ -38,13 +38,12 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 				};
 
 				socket.onerror = socket.onclose = function (e) {
-					console.log(e);
+					console.error(e);
 					deferred.reject();
 					$rootScope.$emit('close', e);
 					if (!e.wasClean) $rootScope.$emit('error', 'ERRORS_CONN_CLOSE');
 				};
 			} catch (e) {
-				console.log('Catch ' + e);
 				$rootScope.$emit('error', 'ERRORS_CONN');
 			}
 		}

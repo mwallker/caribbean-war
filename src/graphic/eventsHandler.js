@@ -127,7 +127,6 @@ angular.module('render').factory('KeyEvents', function ($rootScope) {
 		function () {
 			if (!holdenM && checkFocus()) {
 				holdenM = true;
-				console.log('Toggle map');
 			}
 		},
 		function () {
