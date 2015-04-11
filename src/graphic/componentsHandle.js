@@ -113,19 +113,24 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					currentSpeed: 0,
 					speed: 12,
 					weight: 1000,
-					baseHealth: 1
+					baseHealth: 1,
+					currentHealth: 1
 				});
-				if (details.health) {
-					ship.baseHealth = details.health;
+				if (details.hasOwnProperty('baseHealth') && details.hasOwnProperty('currentHealth')) {
+					ship.baseHealth = details.baseHealth;
+					ship.currentHealth = details.currentHealth;
 					healthBar = BaseComponents.createHealthBar(scene, {
 						id: details.id,
-						health: details.health
+						baseHealth: details.baseHealth,
+						currentHealth: details.currentHealth
 					});
 				}
 				initiated = true;
 			});
 
 			var shipId = details.id;
+
+			var alive = true;
 
 			var sailsMode = 0;
 			var wheelMode = 0;
@@ -140,6 +145,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 			return {
 				changeState: function (type) {
+					if (!alive) return;
 					switch (type) {
 					case 'upward':
 						sailsMode = Math.min(sailsMode + 1, 3);
@@ -160,6 +166,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						wheelMode = 0;
 						break;
 					}
+				},
+				isAlive: function () {
+					return alive;
 				},
 				getId: function () {
 					return shipId;
@@ -185,6 +194,10 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					};
 				},
 				move: function (delay, cameraAlpha) {
+					if (!alive) {
+						ship.currentSpeed = 0;
+						return;
+					}
 					if (ship) {
 						timer += delay % (2 * Math.PI);
 						obs = lerp(obs, randomRange(-0.7, 0.7), 0.001);
@@ -216,10 +229,21 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				},
 				takeDamage: function (param) {
 					if (param && param.damage) {
-						ship.health -= param.damage;
+						ship.currentHealth = Math.max(ship.currentHealth - param.damage, 0);
 						if (healthBar) healthBar.updateValue(param.damage);
 					}
 					return 0;
+				},
+				sink: function () {
+					alive = false;
+					console.log(alive);
+					var timer = 4;
+					var intervalId = setInterval(function () {
+						ship.position.y -= 0.01;
+						if (ship.position.y < -6) {
+							clearInterval(intervalId);
+						}
+					}, 10);
 				},
 				remove: function () {
 					healthBar.dispose();
@@ -255,8 +279,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		createHealthBar: function (scene, details) {
 			if (!details) return;
 
-			var baseHealth = details.health || 1;
-			var currentHealth = details.health || 1;
+			var baseHealth = details.baseHealth;
+			var currentHealth = details.currentHealth;
 
 			var size = 0.3;
 			var baseLength = 15;
@@ -297,10 +321,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				},
 				updateValue: function (damage) {
 					damage = damage || 0;
-					if(currentHealth - damage > 0){
+					if (currentHealth - damage > 0) {
 						currentHealth -= damage;
-					}
-					else{
+					} else {
 						currentHealth = 0;
 						healthBarEntry.isVisible = false;
 					}
@@ -456,12 +479,13 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 			var user = userStorage.get();
 			var ships = [];
-			var shipPosition = new BABYLON.Vector3(user.location.x, 0, user.location.y);
+			var shipPosition = new BABYLON.Vector3(user.location.x, 0, user.location.z);
 			var ship = BaseComponents.createShip(scene, {
 				id: user.id,
 				location: shipPosition,
 				alpha: user.alpha,
-				health: userStorage.getShip().hp
+				baseHealth: userStorage.getShip().baseHP,
+				currentHealth: userStorage.getShip().currentHP
 			});
 
 			ships.push(ship);
@@ -479,12 +503,14 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 			var neighbors = userStorage.getNeighbors();
 			for (var n in neighbors) {
-				var position = new BABYLON.Vector3(neighbors[n].location.x, 0, neighbors[n].location.y);
+				if (!neighbors[n].ship) break;
+				var position = new BABYLON.Vector3(neighbors[n].location.x, 0, neighbors[n].location.z);
 				var newShip = BaseComponents.createShip(scene, {
 					id: neighbors[n].id,
 					location: position,
 					alpha: neighbors[n].alpha,
-					health: neighbors[n].ship.hp
+					baseHealth: neighbors[n].ship.baseHP,
+					currentHealth: neighbors[n].ship.currentHP
 				});
 				ships.push(newShip);
 			}
@@ -535,12 +561,13 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 								}
 							}
 							if (users.added[i].id != user.id) {
-								var position = new BABYLON.Vector3(users.added[i].location.x, 0, users.added[i].location.y);
+								var position = new BABYLON.Vector3(users.added[i].location.x, 0, users.added[i].location.z);
 								var newShip = BaseComponents.createShip(scene, {
 									id: users.added[i].id,
 									location: position,
 									alpha: users.added[i].alpha,
-									health: users.added[i].ship.hp
+									baseHealth: users.added[i].ship.baseHP,
+									currentHealth: users.added[i].ship.currentHP
 								});
 								ships.push(newShip);
 							}
@@ -562,7 +589,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			var onPositionCallback = $rootScope.$on('position', function (event, details) {
 				ship.correctPosition({
 					x: details.x,
-					z: details.y,
+					z: details.z,
 					alpha: details.alpha
 				});
 
@@ -574,7 +601,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						if (ship.getId() != details.id) {
 							ships[i].correctPosition({
 								x: details.location.x,
-								z: details.location.y,
+								z: details.location.z,
 								alpha: details.alpha
 							});
 						}
@@ -609,6 +636,15 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				});
 			});
 
+			var onDeathCallback = $rootScope.$on('death', function (event, details) {
+				for (var i in ships) {
+					if (ships[i].getId() == details.id) {
+						ships[i].sink(details);
+						return;
+					}
+				}
+			});
+
 			function findShip(id) {
 				for (var i in ships) {
 					if (ships[i].getId() == id) {
@@ -640,6 +676,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					onShootCallback();
 					onHitCallback();
 					onMissCallback();
+					onDeathCallback();
 					cameraControl.removeEvents();
 				}
 			};

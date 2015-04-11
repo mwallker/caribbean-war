@@ -15,5 +15,11 @@
 	<chat></chat>
 
 	<compass location="position"></compass>
+</div>
 
+<div id="ui-respawn-layer" ng-show="isDeathCloakVisiable">
+	<p>You have been killed</p>
+	<button type="submit" ng-disabled="false" ng-click="respawn()" class="btn btn-primary">
+		Respawn
+	</button>
 </div>

@@ -38,7 +38,6 @@ caribbeanWarApp.service('connection', function ($q, $rootScope) {
 				};
 
 				socket.onerror = socket.onclose = function (e) {
-					console.error(e);
 					deferred.reject();
 					$rootScope.$emit('close', e);
 					if (!e.wasClean) $rootScope.$emit('error', 'ERRORS_CONN_CLOSE');

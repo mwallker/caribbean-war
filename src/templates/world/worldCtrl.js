@@ -7,19 +7,15 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 
 		$scope.user = userStorage.get();
 
+		$scope.isDeathCloakVisiable = false;
+		$scope.isRespawnAvaible = false;
+
 		$scope.sailsMode = 0;
 		$scope.wheelMode = 0;
-		$scope.baseHealth = userStorage.getShip().hp || 0;
-		$scope.currentHealth = $scope.baseHealth;
+		$scope.baseHealth = userStorage.getShip().baseHP || 0;
+		$scope.currentHealth = userStorage.getShip().currentHP || 0;
 
 		$scope.position = {};
-
-		$scope.hit = function (damage) {
-			$rootScope.$emit('hit', {
-				id: $scope.user.id,
-				damage: 87
-			});
-		};
 
 		$rootScope.callbacks.push($rootScope.$on('hit', function (event, details) {
 			if ($scope.user.id == details.id) {
@@ -37,6 +33,15 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 					type: command
 				});
 			}
+		}));
+
+
+		$rootScope.callbacks.push($rootScope.$on('death', function (event, command) {
+			isDeathCloakVisiable = true;
+			var intervalId = setTimeout(function () {
+				isRespawnAvaible = true;
+				intervalId();
+			}, 3000);
 		}));
 
 		$rootScope.callbacks.push($rootScope.$on('move', function (event, command) {
@@ -68,6 +73,13 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 			});
 		}));
 
+		$scope.respawn = function () {
+			isDeathCloakVisiable = false;
+			$rootScope.$emit('send', {
+				action: 'respawn',
+				details: {}
+			});
+		};
 
 		function update(fn) {
 			var phase = $rootScope.$$phase;
