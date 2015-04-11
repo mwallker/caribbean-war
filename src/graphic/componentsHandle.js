@@ -404,7 +404,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						collection = calculateCurve(point, {
 							alpha: point.alpha,
 							angle: ratio * Math.PI / 24,
-							scatter: Math.PI / 18,
+							scatter: Math.PI / 22,
 							direction: direction
 						});
 						if (collection.length) {

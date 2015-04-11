@@ -28,15 +28,15 @@ function checkFocus() {
 
 function correctAngle(angle) {
 	var min = Math.PI / 180,
-		max = Math.PI / 24;
+		max = Math.PI / 32;
+	if (isNaN(angle)) return min;
 	if (angle > max) {
 		return max;
 	} else {
 		if (angle < min) {
 			return min;
-		} else {
-			return angle;
 		}
+		return angle;
 	}
 }
 
@@ -65,7 +65,8 @@ function calculateCurve(position, options) {
 		var curve = [];
 
 		var angles = resolveAngles(options.alpha, options.direction);
-		var distance = getDistance(100, correctAngle(options.angle || 0));
+		var distance = getDistance(100, correctAngle(options.angle));
+		var height = getHeight(100, correctAngle(options.angle))/2;
 		var scatter = options.scatter || 0;
 
 		//Cashing values
@@ -83,6 +84,8 @@ function calculateCurve(position, options) {
 		//Count of steps
 		var n = 5;
 
+		console.log(height);
+
 		for (var i = 0; i < angles.length; i++) {
 			cosA = Math.cos(angles[i]);
 			sinA = Math.sin(angles[i]);
@@ -92,18 +95,18 @@ function calculateCurve(position, options) {
 			dzU = sinA * cosS + cosA * sinS;
 			dzD = sinA * cosS - cosA * sinS;
 
-			var h = getHeight(100, correctAngle(options.alpha)) * 4;
+
 			for (var j = 0; j <= n; j++) {
 				curve.push({
 					x: position.x + dxU * j / n - sinA,
-					y: Math.sin(Math.PI * j / n) * h,
+					y: Math.sin(Math.PI * j / n) * height,
 					z: position.z + dzU * j / n + cosA
 				});
 			}
 			for (var k = n; k >= 0; k--) {
 				curve.push({
 					x: position.x + dxD * k / n + sinA,
-					y: Math.sin(Math.PI * k / n) * h,
+					y: Math.sin(Math.PI * k / n) * height,
 					z: position.z + dzD * k / n - cosA
 				});
 			}
@@ -116,8 +119,8 @@ function getDistance(speed, alpha) {
 	return speed * speed * Math.sin(2 * alpha) / 9.8;
 }
 
-function getHeight(speed, alpha) {
-	return (speed * speed * Math.sin(alpha) * Math.sin(alpha)) / (2 * 9.8);
+function getHeight(speed, angle) {
+	return (speed * speed * Math.sin(angle) * Math.sin(angle)) / (2 * 9.8);
 }
 
 function timeFormat(timestamp) {
