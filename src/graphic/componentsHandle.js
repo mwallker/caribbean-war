@@ -232,7 +232,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		createSplash: function (scene, details) {
 			if (!details) return;
 			var splashId = details.id + '_' + randomRange(0, 1000);
-			var emitter = new BABYLON.Mesh.CreateBox('splash_emitter_' + splashId, details.id ? 0.5 : 1, scene);
+			var emitter = new BABYLON.Mesh.CreateBox('splash_emitter_' + splashId, 0.01, scene);
 			emitter.position = details.location;
 
 			var particleSystem = new BABYLON.ParticleSystem("splash_system_" + randomRange(0, 1000), 2000, scene, null);
@@ -250,7 +250,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				particleSystem.dispose();
 				emitter.dispose();
 				clearInterval(intervalId);
-			}, 5000);
+			}, 200);
 		},
 		//Health Bar
 		createHealthBar: function (scene, details) {
@@ -260,7 +260,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			var currentHealth = details.health || 1;
 
 			var size = 0.3;
-			var length = 15;
+			var baseLength = 15;
+			var delta = baseLength * size / 2;
 
 			var healthBarScale = new BABYLON.Vector3(0.6, 0.6, 15);
 
@@ -278,10 +279,10 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			healthBarEntryMaterial.specularColor = new BABYLON.Color3(0.3, 0.6, 0.8);
 			healthBarEntryMaterial.emissiveColor = new BABYLON.Color3(0.3, 0.6, 0.8);
 
-			healthBar.scaling = new BABYLON.Vector3(0.6, 0.6, length);
+			healthBar.scaling = new BABYLON.Vector3(0.6, 0.6, baseLength);
 			healthBar.material = healthBarMaterial;
 
-			healthBarEntry.scaling = new BABYLON.Vector3(0.65, 0.65, (currentHealth / baseHealth) * length + 0.5);
+			healthBarEntry.scaling = new BABYLON.Vector3(0.65, 0.65, (currentHealth / baseHealth) * baseLength + 0.5);
 			healthBarEntry.material = healthBarEntryMaterial;
 
 			return {
@@ -289,11 +290,22 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					healthBar.rotation.y = -location.alpha;
 					healthBar.position = new BABYLON.Vector3(location.x, location.y, location.z);
 					healthBarEntry.rotation.y = -location.alpha;
-					healthBarEntry.position = new BABYLON.Vector3(location.x + (length * size / 2 - length * size / 2 * (currentHealth / baseHealth)) * Math.cos(-location.alpha), location.y, location.z + (length * size / 2 - length * size / 2 * (currentHealth / baseHealth)) * Math.sin(-location.alpha));
+					healthBarEntry.position = new BABYLON.Vector3(
+						location.x + (delta - delta * (currentHealth / baseHealth)) * Math.sin(-location.alpha),
+						location.y,
+						location.z + (delta - delta * (currentHealth / baseHealth)) * Math.cos(-location.alpha)
+					);
 				},
 				updateValue: function (damage) {
-					currentHealth -= damage || 0;
-					healthBarEntry.scaling = new BABYLON.Vector3(0.65, 0.65, (currentHealth / baseHealth) * length + 0.5);
+					damage = damage || 0;
+					if(currentHealth - damage > 0){
+						currentHealth -= damage;
+					}
+					else{
+						currentHealth = 0;
+						healthBarEntry.isVisible = false;
+					}
+					healthBarEntry.scaling = new BABYLON.Vector3(0.65, 0.65, (currentHealth / baseHealth) * baseLength + 0.5);
 				},
 				dispose: function () {
 					healthBar.dispose();

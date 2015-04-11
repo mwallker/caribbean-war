@@ -22,7 +22,7 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 		};
 
 		$rootScope.callbacks.push($rootScope.$on('hit', function (event, details) {
-			if ($scope.user.id != details.id) {
+			if ($scope.user.id == details.id) {
 				$scope.currentHealth -= details.damage || 0;
 			}
 		}));
