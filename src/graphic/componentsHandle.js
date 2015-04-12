@@ -587,11 +587,20 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			});
 
 			var onPositionCallback = $rootScope.$on('position', function (event, details) {
+				for (var s in ships) {
+					if (ships[s].getId() == details.id) {
+						ships[s].correctPosition({
+							x: details.x,
+							z: details.z,
+							alpha: details.alpha
+						});
+					}
+				}/*
 				ship.correctPosition({
 					x: details.x,
 					z: details.z,
 					alpha: details.alpha
-				});
+				});*/
 
 			});
 

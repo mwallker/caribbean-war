@@ -13,7 +13,7 @@ angular.module('caribbean-war')
 				scope.$watch('location', function (value) {
 					if (!value) return;
 					scope.positionX = Math.abs(~~value.x) + '°' + (value.x >= 0 ? 'N' : 'S');
-					scope.positionY = Math.abs(~~value.y) + '°' + (value.y >= 0 ? 'E' : 'W');
+					scope.positionY = Math.abs(~~value.z) + '°' + (value.z >= 0 ? 'E' : 'W');
 					element.find('.compass-axes').css({
 						'transform': 'rotate(' + value.alpha + 'rad)'
 					});

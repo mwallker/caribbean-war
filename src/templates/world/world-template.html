@@ -19,7 +19,7 @@
 
 <div id="ui-respawn-layer" ng-show="isDeathCloakVisiable">
 	<p>You have been killed</p>
-	<button type="submit" ng-disabled="false" ng-click="respawn()" class="btn btn-primary">
+	<button type="submit" ng-disabled="!isRespawnAvaible" ng-click="respawn()" class="btn btn-primary">
 		Respawn
 	</button>
 </div>

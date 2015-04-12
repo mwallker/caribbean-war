@@ -35,13 +35,14 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 			}
 		}));
 
-
-		$rootScope.callbacks.push($rootScope.$on('death', function (event, command) {
-			isDeathCloakVisiable = true;
-			var intervalId = setTimeout(function () {
-				isRespawnAvaible = true;
-				intervalId();
-			}, 3000);
+		$rootScope.callbacks.push($rootScope.$on('death', function (event, details) {
+			if (details.id && $scope.user.id == details.id) {
+				$scope.isDeathCloakVisiable = true;
+				var intervalId = setTimeout(function () {
+					$scope.isRespawnAvaible = true;
+					clearInterval(intervalId);
+				}, 3000);
+			}
 		}));
 
 		$rootScope.callbacks.push($rootScope.$on('move', function (event, command) {
@@ -69,12 +70,14 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 
 		$rootScope.callbacks.push($rootScope.$on('position', function (event, details) {
 			update(function () {
-				$scope.position = details;
+				if (details.id && $scope.user.id == details.id) {
+					$scope.position = details;
+				}
 			});
 		}));
 
 		$scope.respawn = function () {
-			isDeathCloakVisiable = false;
+			$scope.isDeathCloakVisiable = false;
 			$rootScope.$emit('send', {
 				action: 'respawn',
 				details: {}
