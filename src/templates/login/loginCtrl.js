@@ -6,6 +6,7 @@ angular.module('caribbean-war').controller('loginCtrl', function ($scope, $rootS
 	$rootScope.authorized = false;
 	$rootScope.loading = false;
 
+	$rootScope._token = Date.now();
 
 	connection.testConnection();
 	var stopConnectionUpdate = $interval(function () {

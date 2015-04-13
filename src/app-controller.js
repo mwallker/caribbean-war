@@ -18,6 +18,10 @@ angular.module('caribbean-war')
 
 			$rootScope.$on('$stateChangeStart',
 				function (event, toState) {
+					/*if (toState.name != 'login' && !$rootScope._token) {
+						$state.go('login');
+						return;
+					}*/
 					$rootScope.$emit('error', false);
 					renderHandler.dispose();
 				});

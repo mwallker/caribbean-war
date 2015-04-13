@@ -239,7 +239,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					var timer = 4;
 					var intervalId = setInterval(function () {
 						ship.position.y -= 0.01;
-						if (ship.position.y < -6) {
+						if (ship.position.y < -4) {
 							clearInterval(intervalId);
 						}
 					}, 10);
@@ -251,7 +251,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					ship.position.x = details.position.x;
 					ship.position.y = 0;
 					ship.position.z = details.position.z;
-					ship.rotation.y = details.rotation.y;
+					ship.rotation.y = details.rotation;
 					alive = true;
 				},
 				remove: function () {
@@ -610,6 +610,15 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				}
 			});
 
+			var onShootCallback = $rootScope.$on('shoot', function (event, details) {
+				for (var i in ships) {
+					if (ships[i].getId() == details.id) {
+						BaseComponents.cannonBall(scene, details);
+						return;
+					}
+				}
+			});
+
 			var onMoveCallback = $rootScope.$on('move', function (event, details) {
 				for (var i in ships) {
 					if (ships[i].getId() == details.id) {
@@ -621,15 +630,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 							});
 						}
 						ships[i].changeState(details.type);
-						return;
-					}
-				}
-			});
-
-			var onShootCallback = $rootScope.$on('shoot', function (event, details) {
-				for (var i in ships) {
-					if (ships[i].getId() == details.id) {
-						BaseComponents.cannonBall(scene, details);
 						return;
 					}
 				}
