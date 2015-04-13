@@ -23,6 +23,13 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 			}
 		}));
 
+		$rootScope.callbacks.push($rootScope.$on('respawn', function (event, details) {
+			//if ($scope.user.id == details.id) {
+				$scope.currentHealth = $scope.baseHealth;
+				$scope.isDeathCloakVisiable = false;
+			//}
+		}));
+
 		$rootScope.callbacks.push($rootScope.$on('miss', function (event, details) {
 			//miss actions
 		}));
@@ -77,7 +84,6 @@ caribbeanWarApp.controller('worldCtrl', ['$scope', '$state', '$rootScope', 'conn
 		}));
 
 		$scope.respawn = function () {
-			$scope.isDeathCloakVisiable = false;
 			$rootScope.$emit('send', {
 				action: 'respawn',
 				details: {}

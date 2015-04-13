@@ -236,7 +236,6 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				},
 				sink: function () {
 					alive = false;
-					console.log(alive);
 					var timer = 4;
 					var intervalId = setInterval(function () {
 						ship.position.y -= 0.01;
@@ -244,6 +243,16 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 							clearInterval(intervalId);
 						}
 					}, 10);
+				},
+				respawn: function (details) {
+					if (alive) return;
+					ship.currentHealth = ship.baseHealth;
+					healthBar.reset(details);
+					ship.position.x = details.position.x;
+					ship.position.y = 0;
+					ship.position.z = details.position.z;
+					ship.rotation.y = details.rotation.y;
+					alive = true;
 				},
 				remove: function () {
 					healthBar.dispose();
@@ -318,6 +327,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						location.y,
 						location.z + (delta - delta * (currentHealth / baseHealth)) * Math.cos(-location.alpha)
 					);
+				},
+				reset: function (location) {
+					currentHealth = baseHealth;
 				},
 				updateValue: function (damage) {
 					damage = damage || 0;
@@ -595,13 +607,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 							alpha: details.alpha
 						});
 					}
-				}/*
-				ship.correctPosition({
-					x: details.x,
-					z: details.z,
-					alpha: details.alpha
-				});*/
-
+				}
 			});
 
 			var onMoveCallback = $rootScope.$on('move', function (event, details) {
@@ -652,6 +658,16 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						return;
 					}
 				}
+			});
+
+			var onRespawnCallback = $rootScope.$on('respawn', function (event, details) {
+				ship.respawn(details);
+				//for (var i in ships) {
+					//if (ships[i].getId() == details.id) {
+						//ships[i].respawn(details);
+						//return;
+					//}
+				//}
 			});
 
 			function findShip(id) {
