@@ -1,6 +1,6 @@
 /*common properties*/
-@import "shared-style-variables.less";
 
+@import "shared-style-variables.less";
 html,
 body {
 	width: 100%;
@@ -39,7 +39,7 @@ li {
 	height: 100%;
 	position: fixed;
 	z-index: 0;
-	top:0;
+	top: 0;
 }
 
 #ui-tooltip-panel {
@@ -57,13 +57,13 @@ li {
 	z-index: 10;
 	border-top: 2px solid #ddd;
 	span {
-		&.up{
+		&.up {
 			color: #1c6c1c;
 		}
-		&.down{
+		&.down {
 			color: #b12121;
 		}
-		&.refresh{
+		&.refresh {
 			color: #428bca;
 		}
 	}
@@ -139,4 +139,13 @@ li {
 			}
 		}
 	}
+}
+
+#kithen {
+	z-index: 2000;
+	position: absolute;
+	background-color: rgba(0, 0, 0, 0.61);
+	padding: 5px;
+	margin: 10px;
+	color: #ddd;
 }

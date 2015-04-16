@@ -5,12 +5,17 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		createOcean: function (scene) {
 
 			//Light
-			var light = new BABYLON.DirectionalLight('light', new BABYLON.Vector3(-1, -10, 0), scene);
+			var light = new BABYLON.DirectionalLight('light', new BABYLON.Vector3(-10, -20, -10), scene);
 
-			light.position = new BABYLON.Vector3(0, 40, 0);
+			light.position = new BABYLON.Vector3(20, 40, 20);
 			light.diffuse = new BABYLON.Color3(1, 1, 1);
 			light.specular = new BABYLON.Color3(1, 1, 1);
 			light.intensity = 1;
+
+			var lensFlareSystem = new BABYLON.LensFlareSystem("lensFlareSystem", light, scene);
+			var flare0 = new BABYLON.LensFlare(0.2, 0, new BABYLON.Color3(1, 1, 1), "images/Flare_01.jpg", lensFlareSystem);
+
+			var shadowGenerator = new BABYLON.ShadowGenerator(1024, light);
 
 			// Skybox
 			var skybox = BABYLON.Mesh.CreateBox('skyBox', 800, scene);
@@ -43,6 +48,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			for (var i = 0; i < 4; i++) {
 				waterPlanes[i] = BABYLON.Mesh.CreateGround('water_plane_' + i, planeSize, planeSize, 1, scene, false);
 				waterPlanes[i].isPickable = false;
+				waterPlanes[i].receiveShadows = true;
 				waterPlanes[i].material = waterMaterial;
 				waterPlanes[i].position.x = i * planeSize;
 			}
@@ -83,6 +89,10 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					waterPlanes[3].position = center.add(new BABYLON.Vector3(0, 0, planeSize * horizontalAlign));
 
 					initiated = true;
+				},
+				addObject: function (object){
+					waterMaterial.reflectionTexture.renderList.push(object);
+					shadowGenerator.getShadowMap().renderList.push(object);
 				}
 			};
 		},
@@ -105,7 +115,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 				shipMaterial.specularColor = new BABYLON.Color3(0, 0, 1);
 				shipMaterial.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.1);
-				shipMaterial.alpha = 0.5;
+				shipMaterial.alpha = 0.9;
 
 				shipMesh.material = shipMaterial;
 
@@ -125,6 +135,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						currentHealth: details.currentHealth
 					});
 				}
+				if(details.ocean) details.ocean.addObject(shipMesh);
 				initiated = true;
 			});
 
@@ -192,6 +203,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						z: ship ? ship.position.z : 0,
 						alpha: ship ? ship.rotation.y : 0
 					};
+				},
+				getMesh: function (){
+					return shipMesh;
 				},
 				move: function (delay, cameraAlpha) {
 					if (!alive) {
@@ -349,7 +363,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		},
 		//Cannon Ball
 		cannonBall: function (scene, details) {
-			var ball = new BABYLON.Mesh.CreateSphere('cannon_ball_' + details.id + Math.random().toFixed(3) * 100, 8.0, 0.1, scene);
+			var ball = new BABYLON.Mesh.CreateSphere('cannon_ball_' + details.id + Math.random().toFixed(3) * 100, 8.0, 0.2, scene);
 			ball.position = new BABYLON.Vector3(details.location.x, details.location.y, details.location.z);
 
 			var ballMaterial = new BABYLON.StandardMaterial('shipMaterial', scene);
@@ -456,8 +470,8 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 	return {
 		'login': function (scene, camera) {
-			var ship = BaseComponents.createShip(scene, {});
 			var ocean = BaseComponents.createOcean(scene);
+			var ship = BaseComponents.createShip(scene, {ocean:ocean});
 			var cameraControl = new CameraController(camera, {});
 
 			return {
@@ -473,7 +487,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		},
 		'harbor': function (scene, camera) {
 			var ocean = BaseComponents.createOcean(scene);
-			var ship = BaseComponents.createShip(scene, {});
+			var ship = BaseComponents.createShip(scene, {ocean:ocean});
 			var cameraControl = new CameraController(camera, {});
 
 			return {
@@ -496,6 +510,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				id: user.id,
 				location: shipPosition,
 				alpha: user.alpha,
+				ocean:ocean,
 				baseHealth: userStorage.getShip().baseHP,
 				currentHealth: userStorage.getShip().currentHP
 			});
@@ -661,13 +676,12 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			});
 
 			var onRespawnCallback = $rootScope.$on('respawn', function (event, details) {
-				ship.respawn(details);
-				//for (var i in ships) {
-					//if (ships[i].getId() == details.id) {
-						//ships[i].respawn(details);
-						//return;
-					//}
-				//}
+				for (var i in ships) {
+					if (ships[i].getId() == details.id) {
+						ships[i].respawn(details);
+						return;
+					}
+				}
 			});
 
 			function findShip(id) {
