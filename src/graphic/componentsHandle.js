@@ -29,6 +29,10 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 			skybox.material = skyboxMaterial;
 
+			var landscape = BABYLON.Mesh.CreateGroundFromHeightMap("landscape", "images/landscape.jpg", 200, 200, 250, 0, 20, scene, false);
+			landscape.position.y = -11;
+			landscape.position.x = 200;
+
 			//Water
 			var extraGround = BABYLON.Mesh.CreateGround('extraGround', 1024, 1024, 2, scene, false);
 			var extraGroundMaterial = new BABYLON.StandardMaterial('extraGround', scene);
@@ -41,6 +45,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 			var waterMaterial = new WORLDMONGER.WaterMaterial('water', scene, light);
 			waterMaterial.refractionTexture.renderList.push(extraGround);
 			waterMaterial.reflectionTexture.renderList.push(skybox);
+			waterMaterial.reflectionTexture.renderList.push(landscape);
 
 			var planeSize = 1000;
 			var initiated = false;
@@ -90,7 +95,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 					initiated = true;
 				},
-				addObject: function (object){
+				addObject: function (object) {
 					waterMaterial.reflectionTexture.renderList.push(object);
 					shadowGenerator.getShadowMap().renderList.push(object);
 				}
@@ -110,12 +115,13 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 					shipMesh.position = details.location;
 				}
 				shipMesh.rotation.y = details.alpha || 0;
+				shipMesh.receiveShadows = true;
 
 				var shipMaterial = new BABYLON.StandardMaterial('shipMaterial', scene);
 
 				shipMaterial.specularColor = new BABYLON.Color3(0, 0, 1);
-				shipMaterial.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.1);
-				shipMaterial.alpha = 0.9;
+				shipMaterial.diffuseColor = new BABYLON.Color3(0.9, 0.9, 0.9);
+				shipMaterial.alpha = 0.74;
 
 				shipMesh.material = shipMaterial;
 
@@ -135,7 +141,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						currentHealth: details.currentHealth
 					});
 				}
-				if(details.ocean) details.ocean.addObject(shipMesh);
+				if (details.ocean) details.ocean.addObject(shipMesh);
 				initiated = true;
 			});
 
@@ -204,7 +210,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 						alpha: ship ? ship.rotation.y : 0
 					};
 				},
-				getMesh: function (){
+				getMesh: function () {
 					return shipMesh;
 				},
 				move: function (delay, cameraAlpha) {
@@ -285,10 +291,15 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 			particleSystem.particleTexture = new BABYLON.Texture("./images/light.png", scene);
 			particleSystem.emitter = emitter;
-			particleSystem.emitRate = 500;
+			particleSystem.emitRate = 400;
+			particleSystem.color1 = new BABYLON.Color4(0.7, 0.8, 1.0, 1.0);
+			particleSystem.color2 = new BABYLON.Color4(0.2, 0.5, 1.0, 1.0);
+			particleSystem.colorDead = new BABYLON.Color4(0, 0, 0.2, 0.0);
 			particleSystem.minSize = 0.1;
 			particleSystem.maxSize = 0.5;
 			particleSystem.gravity = new BABYLON.Vector3(0, 9.81, 0);
+			particleSystem.direction1 = new BABYLON.Vector3(-7, 8, 3);
+			particleSystem.direction2 = new BABYLON.Vector3(7, 8, -3);
 			particleSystem.start();
 
 			var intervalId = setInterval(function () {
@@ -296,7 +307,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				particleSystem.dispose();
 				emitter.dispose();
 				clearInterval(intervalId);
-			}, 200);
+			}, 300);
 		},
 		//Health Bar
 		createHealthBar: function (scene, details) {
@@ -471,7 +482,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 	return {
 		'login': function (scene, camera) {
 			var ocean = BaseComponents.createOcean(scene);
-			var ship = BaseComponents.createShip(scene, {ocean:ocean});
+			var ship = BaseComponents.createShip(scene, {
+				ocean: ocean
+			});
 			var cameraControl = new CameraController(camera, {});
 
 			return {
@@ -487,7 +500,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 		},
 		'harbor': function (scene, camera) {
 			var ocean = BaseComponents.createOcean(scene);
-			var ship = BaseComponents.createShip(scene, {ocean:ocean});
+			var ship = BaseComponents.createShip(scene, {
+				ocean: ocean
+			});
 			var cameraControl = new CameraController(camera, {});
 
 			return {
@@ -510,7 +525,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 				id: user.id,
 				location: shipPosition,
 				alpha: user.alpha,
-				ocean:ocean,
+				ocean: ocean,
 				baseHealth: userStorage.getShip().baseHP,
 				currentHealth: userStorage.getShip().currentHP
 			});
@@ -522,7 +537,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 			var targetDirection = TargetingDirections.none;
 
-			var axis = BaseComponents.axis(scene);
+			//var axis = BaseComponents.axis(scene);
 
 			var cameraControl = new CameraController(camera, {
 				target: ship.getPosition()
@@ -701,7 +716,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 					curves.update(ship.getPosition(), targetDirection);
 
-					axis.move();
+					//axis.move();
 
 					if (ship.isReady()) ocean.alive(ship.getPosition());
 
