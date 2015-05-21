@@ -119,9 +119,9 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 
 				var shipMaterial = new BABYLON.StandardMaterial('shipMaterial', scene);
 
-				shipMaterial.specularColor = new BABYLON.Color3(0, 0, 1);
-				shipMaterial.diffuseColor = new BABYLON.Color3(0.9, 0.9, 0.9);
-				shipMaterial.alpha = 0.74;
+				shipMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+				shipMaterial.diffuseColor = new BABYLON.Color3(0.18, 0.30, 0.30);
+				shipMaterial.alpha = 0.71;
 
 				shipMesh.material = shipMaterial;
 
@@ -238,7 +238,7 @@ angular.module('render').factory('Components', function ($rootScope, KeyEvents, 
 							healthBar.update({
 								alpha: cameraAlpha,
 								x: ship.position.x,
-								y: 6,
+								y: 7,
 								z: ship.position.z
 							});
 						}

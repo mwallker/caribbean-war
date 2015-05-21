@@ -18,7 +18,7 @@ angular.module('caribbean-war')
 
 					$scope.unreaded = 0;
 					$scope.receiverId = 0;
-					$scope.chatCollapsed = true;
+					$scope.chatCollapsed = false;
 
 					function prepareTemplate(msg) {
 						return '<li> [' + timeFormat(msg.timestamp) + '] ' +
